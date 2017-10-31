@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
+using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
@@ -47,11 +48,21 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,SchoolName")] Class @class)
+        public ActionResult Create(CreateClassViewModel @class)
         {
+            
             if (ModelState.IsValid)
             {
-                db.Classes.Add(@class);
+                //Maybe create another "Data helper" class that holds a method, "create from vm", update from vm, etc,
+                //lots of decision making for different input data for the method, but consistent updating. THis would remove
+                // the data aspect of the controllers into another module
+                Class newClass = new Class
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = @class.Name,
+                    SchoolName = @class.SchoolName
+                };
+                db.Classes.Add(newClass);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
