@@ -204,6 +204,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Advanced\AdvancedClass.cs" />
     <Compile Include="Models\Answer.cs" />
     <Compile Include="Models\AspNetUser.cs" />
     <Compile Include="Models\Class.cs" />
@@ -283,6 +284,7 @@
     <Content Include="Views\Classes\Details.cshtml" />
     <Content Include="Views\Classes\Edit.cshtml" />
     <Content Include="Views\Classes\Index.cshtml" />
+    <Content Include="Views\Classes\ManageClass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
