@@ -27,10 +27,22 @@
         </dd>
 
     </dl>
-    @foreach (var item in Model.Students)
-    {
-        <div>@item.First  @item.Last</div>
-    }
+    <table>
+        <tr>
+            <th>First</th> <th>Last</th><th>Parent Email</th><th>Action</th>
+        </tr>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>@item.First</td><td>@item.Last</td><td>@item.Email</td>
+                <td>
+                    @Html.ActionLink("Edit","Edit","Students", new { Id = item.Id}, null) |
+                    @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Students)
@@ -50,7 +62,7 @@
     @Html.ActionLink("Back to List", "Index")
 </p>
      
-<button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { clasId = Model.Id }, null)</button>
+<button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.Id }, null)</button>
 <script>
     function myFunction() {
         document.getElementById("AddField").innerHTML = "YOU CLICKED ME!";

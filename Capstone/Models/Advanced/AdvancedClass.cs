@@ -19,7 +19,7 @@ namespace Capstone.Models.Advanced
         public HashSet<Teach> Teachers { get; set; }
     }
 
-   /* public class ClassQuizzes
+   /* public class ClassQuizzes 
     {
         public HashSet<ClassQuiz> Quizzes { get; set; }
     }

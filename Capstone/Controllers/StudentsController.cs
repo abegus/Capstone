@@ -15,11 +15,11 @@ namespace Capstone.Controllers
         private MasterModel db = new MasterModel();
 
         // GET: Students
-        public ActionResult Index()
+       /* public ActionResult Index()
         {
             var students = db.Students.Include(s => s.Class);
             return View(students.ToList());
-        }
+        }*/
 
         // GET: Students/Details/5
         public ActionResult Details(string id)
@@ -37,13 +37,16 @@ namespace Capstone.Controllers
         }
 
         // GET: Students/Create
-        public ActionResult Create()
+        public ActionResult Create(String classId)
         {
+            //do this to maintain the student to class relationship for a backtrack
             Student student = new Student();
+            student.ClassId = classId;
+            //student.First = classId;
 
   
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
-            return View();
+            return View(student);
         }
 
         // POST: Students/Create
@@ -58,7 +61,9 @@ namespace Capstone.Controllers
                 student.Id = Guid.NewGuid().ToString();
                 db.Students.Add(student);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                
+
+                return RedirectToAction("Advanced","Classes", new { Id = student.ClassId});
             }
 
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", student.ClassId);
@@ -92,7 +97,7 @@ namespace Capstone.Controllers
             {
                 db.Entry(student).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Advanced", "Classes", new { Id = student.ClassId });
             }
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", student.ClassId);
             return View(student);
@@ -119,9 +124,10 @@ namespace Capstone.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Student student = db.Students.Find(id);
+            var classId = student.ClassId;
             db.Students.Remove(student);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Advanced", "Classes", new { Id = classId });
         }
 
         protected override void Dispose(bool disposing)
