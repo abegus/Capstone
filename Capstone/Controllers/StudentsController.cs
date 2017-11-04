@@ -7,138 +7,119 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
-using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
-    public class ClassesController : Controller
+    public class StudentsController : Controller
     {
         private MasterModel db = new MasterModel();
 
-        // GET: Classes
+        // GET: Students
         public ActionResult Index()
         {
-            //db.
-            return View(db.Classes.ToList());
+            var students = db.Students.Include(s => s.Class);
+            return View(students.ToList());
         }
 
-        // GET: Classes/Advanced/5
-        public ActionResult Advanced(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
-            {
-                return HttpNotFound();
-            }
-            return View(@class);
-        }
-
-        // GET: Classes/Details/5
+        // GET: Students/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
+            Student student = db.Students.Find(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            return View(student);
         }
 
-        // GET: Classes/Create
+        // GET: Students/Create
         public ActionResult Create()
         {
+            Student student = new Student();
+
+  
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
             return View();
         }
 
-        // POST: Classes/Create
+        // POST: Students/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateClassViewModel @class)
+        public ActionResult Create([Bind(Include = "First,Last,Email,ClassId")] Student student)
         {
-            
             if (ModelState.IsValid)
             {
-                //Maybe create another "Data helper" class that holds a method, "create from vm", update from vm, etc,
-                //lots of decision making for different input data for the method, but consistent updating. THis would remove
-                // the data aspect of the controllers into another module
-                Class newClass = new Class
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = @class.Name,
-                    SchoolName = @class.SchoolName
-                };
-                db.Classes.Add(newClass);
+                student.Id = Guid.NewGuid().ToString();
+                db.Students.Add(student);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            Guid.NewGuid().ToString();
 
-            return View(@class);
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", student.ClassId);
+            return View(student);
         }
 
-        // GET: Classes/Edit/5
+        // GET: Students/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
+            Student student = db.Students.Find(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", student.ClassId);
+            return View(student);
         }
 
-        // POST: Classes/Edit/5
+        // POST: Students/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,SchoolName")] Class @class)
+        public ActionResult Edit([Bind(Include = "Id,First,Last,Email,ClassId")] Student student)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(@class).State = EntityState.Modified;
+                db.Entry(student).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(@class);
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", student.ClassId);
+            return View(student);
         }
 
-        // GET: Classes/Delete/5
+        // GET: Students/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
+            Student student = db.Students.Find(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            return View(student);
         }
 
-        // POST: Classes/Delete/5
+        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Class @class = db.Classes.Find(id);
-            db.Classes.Remove(@class);
+            Student student = db.Students.Find(id);
+            db.Students.Remove(student);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
