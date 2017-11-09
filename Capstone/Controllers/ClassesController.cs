@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
 using Capstone.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace Capstone.Controllers
 {
@@ -18,13 +19,24 @@ namespace Capstone.Controllers
         // GET: Classes
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login","Account");
+
+            var userid = User.Identity.GetUserId();
             //db.
+            var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == false select cl ;
+            //any() == false models a NOT EXISTS
+            var b = 2;
+           // 
             return View(db.Classes.ToList());
         }
 
         // GET: Classes/Advanced/5
         public ActionResult Advanced(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -37,9 +49,14 @@ namespace Capstone.Controllers
             return View(@class);
         }
 
+        //POST for Advanced, need this if dynamic creation
+
         // GET: Classes/Details/5
         public ActionResult Details(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -55,6 +72,9 @@ namespace Capstone.Controllers
         // GET: Classes/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             return View();
         }
 
@@ -65,7 +85,9 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CreateClassViewModel @class)
         {
-            
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
                 //Maybe create another "Data helper" class that holds a method, "create from vm", update from vm, etc,
@@ -89,6 +111,9 @@ namespace Capstone.Controllers
         // GET: Classes/Edit/5
         public ActionResult Edit(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -108,6 +133,9 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,SchoolName")] Class @class)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
                 db.Entry(@class).State = EntityState.Modified;
@@ -120,6 +148,9 @@ namespace Capstone.Controllers
         // GET: Classes/Delete/5
         public ActionResult Delete(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -137,6 +168,9 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             Class @class = db.Classes.Find(id);
             db.Classes.Remove(@class);
             db.SaveChanges();
@@ -150,6 +184,14 @@ namespace Capstone.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private ActionResult PreConditionCheck()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            return null;
         }
     }
 }

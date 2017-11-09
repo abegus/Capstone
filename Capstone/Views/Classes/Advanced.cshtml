@@ -27,7 +27,7 @@
         </dd>
 
     </dl>
-    <table>
+    <table class="table" id="StudentTable">
         <tr>
             <th>First</th> <th>Last</th><th>Parent Email</th><th>Action</th>
         </tr>
@@ -43,7 +43,7 @@
         }
     </table>
 
-    <dl class="dl-horizontal">
+    <!--<dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Students)
         </dt>
@@ -54,22 +54,29 @@
     <div id="StudentSection" class="section">
 
     </div>
-    <button onclick="myFunction()" id="AddField" type="button" class="btn btn-primary">AddNew</button>
-
+    <button onclick="addRow()" id="AddField" type="button" class="btn btn-primary">AddNew</button>-->
+    <button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.Id }, null)</button>
 </div>
+<br /><br />
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
      
-<button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.Id }, null)</button>
+
 <script>
-    function myFunction() {
-        document.getElementById("AddField").innerHTML = "YOU CLICKED ME!";
+    function addRow() {
+        /*document.getElementById("AddField").innerHTML = "YOU CLICKED ME!";
         var parent = document.getElementById("StudentSection");
         var node = document.createElement("div");
         var nameBox = document.createElement("textarea");
         parent.appendChild(node);
-        parent.appendChild(nameBox);
+        parent.appendChild(nameBox);*/
+        var table = document.getElementById("StudentTable");
+        var tbody = table.firstChild();
+        var row = document.createElement("tr");
+        var firstTd = document.createElement("td");
+        var first = firstTd.appendChild(document.createElement());
+        tbody.addRow();
     }
 </script>
