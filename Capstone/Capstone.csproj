@@ -193,8 +193,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="Controllers\CoreStandardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuizsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -291,6 +293,16 @@
     <Content Include="Views\Students\Delete.cshtml" />
     <Content Include="Views\Students\Details.cshtml" />
     <Content Include="Views\Students\Edit.cshtml" />
+    <Content Include="Views\Quizs\Create.cshtml" />
+    <Content Include="Views\Quizs\Delete.cshtml" />
+    <Content Include="Views\Quizs\Details.cshtml" />
+    <Content Include="Views\Quizs\Edit.cshtml" />
+    <Content Include="Views\Quizs\Index.cshtml" />
+    <Content Include="Views\CoreStandards\Create.cshtml" />
+    <Content Include="Views\CoreStandards\Delete.cshtml" />
+    <Content Include="Views\CoreStandards\Details.cshtml" />
+    <Content Include="Views\CoreStandards\Edit.cshtml" />
+    <Content Include="Views\CoreStandards\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -26,7 +26,7 @@ namespace Capstone.Controllers
             //db.
             var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == false select cl ;
             //any() == false models a NOT EXISTS
-            var b = 2;
+            //var b = 2;
            // 
             return View(db.Classes.ToList());
         }

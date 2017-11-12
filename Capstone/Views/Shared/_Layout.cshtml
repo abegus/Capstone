@@ -32,6 +32,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                     <li>@Html.ActionLink("Classes", "Index", "Classes")</li>
+                    <li>@Html.ActionLink("Quizzes", "Index", "Quizs")</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
