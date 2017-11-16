@@ -13,6 +13,9 @@ namespace Capstone.Models
         public Quiz()
         {
             ClassQuizs = new HashSet<ClassQuiz>();
+
+            //added this for EF issue not mapping many to many relationship
+            Questions = new HashSet<Question>();
         }
 
         public string Id { get; set; }
@@ -32,6 +35,9 @@ namespace Capstone.Models
 
         public virtual CoreStandard CoreStandard { get; set; }
 
-        public virtual Question Question { get; set; }
+        //public virtual Question Question { get; set; }
+        //[InverseProperty("Quiz")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Question> Questions { get; set; }
     }
 }

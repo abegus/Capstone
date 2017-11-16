@@ -196,6 +196,7 @@
     <Compile Include="Controllers\CoreStandardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\QuizsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -204,6 +205,10 @@
     <Compile Include="Migrations\201710301915339_inital.cs" />
     <Compile Include="Migrations\201710301915339_inital.Designer.cs">
       <DependentUpon>201710301915339_inital.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711160235330_errors.cs" />
+    <Compile Include="Migrations\201711160235330_errors.Designer.cs">
+      <DependentUpon>201711160235330_errors.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -303,6 +308,11 @@
     <Content Include="Views\CoreStandards\Details.cshtml" />
     <Content Include="Views\CoreStandards\Edit.cshtml" />
     <Content Include="Views\CoreStandards\Index.cshtml" />
+    <Content Include="Views\Questions\Create.cshtml" />
+    <Content Include="Views\Questions\Delete.cshtml" />
+    <Content Include="Views\Questions\Details.cshtml" />
+    <Content Include="Views\Questions\Edit.cshtml" />
+    <Content Include="Views\Questions\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -323,6 +333,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201710301915339_inital.resx">
       <DependentUpon>201710301915339_inital.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711160235330_errors.resx">
+      <DependentUpon>201711160235330_errors.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

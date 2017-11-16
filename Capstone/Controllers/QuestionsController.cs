@@ -10,114 +10,112 @@ using Capstone.Models;
 
 namespace Capstone.Controllers
 {
-    public class QuizsController : Controller
+    public class QuestionsController : Controller
     {
         private MasterModel db = new MasterModel();
 
-        // GET: Quizs
+        // GET: Questions
         public ActionResult Index()
         {
-            //changing this temporarily because core standards dont exist yet
-            //var quizs = db.Quizs;
-            var quizs = db.Quizs.Include(q => q.CoreStandard);
-            return View(quizs.ToList());
+            var questions = db.Questions.Include(q => q.CoreStandard);
+            return View(questions.ToList());
         }
 
-        // GET: Quizs/Details/5
+        // GET: Questions/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            Question question = db.Questions.Find(id);
+            if (question == null)
             {
                 return HttpNotFound();
             }
-            return View(quiz);
+            return View(question);
         }
 
-        // GET: Quizs/Create
+        // GET: Questions/Create
         public ActionResult Create()
         {
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
             return View();
         }
 
-        // POST: Quizs/Create
+        // POST: Questions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,StandardId,Description")] Quiz quiz)
+        public ActionResult Create([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question)
         {
             if (ModelState.IsValid)
             {
-                db.Quizs.Add(quiz);
+                db.Questions.Add(question);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+            return View(question);
         }
 
-        // GET: Quizs/Edit/5
+        // GET: Questions/Edit/5
         public ActionResult Edit(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            Question question = db.Questions.Find(id);
+            if (question == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+            return View(question);
         }
 
-        // POST: Quizs/Edit/5
+        // POST: Questions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,StandardId,Description")] Quiz quiz)
+        public ActionResult Edit([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(quiz).State = EntityState.Modified;
+                db.Entry(question).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+            return View(question);
         }
 
-        // GET: Quizs/Delete/5
+        // GET: Questions/Delete/5
         public ActionResult Delete(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            Question question = db.Questions.Find(id);
+            if (question == null)
             {
                 return HttpNotFound();
             }
-            return View(quiz);
+            return View(question);
         }
 
-        // POST: Quizs/Delete/5
+        // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Quiz quiz = db.Quizs.Find(id);
-            db.Quizs.Remove(quiz);
+            Question question = db.Questions.Find(id);
+            db.Questions.Remove(question);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

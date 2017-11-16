@@ -40,6 +40,7 @@ namespace Capstone.Models
 
         public virtual CoreStandard CoreStandard { get; set; }
 
+        //[InverseProperty("Question")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Quiz> Quizs { get; set; }
     }
