@@ -17,15 +17,39 @@ namespace Capstone.Controllers
         // GET: Quizs
         public ActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             //changing this temporarily because core standards dont exist yet
             //var quizs = db.Quizs;
             var quizs = db.Quizs.Include(q => q.CoreStandard);
             return View(quizs.ToList());
         }
 
+        // GET: Quizs/Advanced/5
+        public ActionResult Advanced(string id)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Quiz quiz = db.Quizs.Find(id);
+            if (quiz == null)
+            {
+                return HttpNotFound();
+            }
+            return View(quiz);
+        }
+
         // GET: Quizs/Details/5
         public ActionResult Details(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -41,6 +65,9 @@ namespace Capstone.Controllers
         // GET: Quizs/Create
         public ActionResult Create()
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
             return View();
         }
@@ -50,11 +77,22 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,StandardId,Description")] Quiz quiz)
+        public ActionResult Create([Bind(Include = "Name,StandardId,Description")] Quiz quiz)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
-                db.Quizs.Add(quiz);
+                Quiz newQuiz = new Quiz
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = quiz.Name,
+                    StandardId = quiz.StandardId,
+                    Description = quiz.Description
+                };
+
+                db.Quizs.Add(newQuiz);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -66,6 +104,9 @@ namespace Capstone.Controllers
         // GET: Quizs/Edit/5
         public ActionResult Edit(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -86,6 +127,9 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,StandardId,Description")] Quiz quiz)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (ModelState.IsValid)
             {
                 db.Entry(quiz).State = EntityState.Modified;
@@ -99,6 +143,9 @@ namespace Capstone.Controllers
         // GET: Quizs/Delete/5
         public ActionResult Delete(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -116,6 +163,9 @@ namespace Capstone.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
             Quiz quiz = db.Quizs.Find(id);
             db.Quizs.Remove(quiz);
             db.SaveChanges();

@@ -1,0 +1,71 @@
+﻿@model Capstone.Models.Quiz
+
+@{
+    ViewBag.Title = "Advanced";
+}
+
+<h2>Advanced</h2>
+
+<div>
+    <h4>Quiz</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CoreStandard.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoreStandard.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+</div>
+<div>
+     <table class="table" id="StudentTable">
+        <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Parent Email</th>
+            <th>Action</th>
+        </tr>
+        @if (Model.Questions.Count > 0)
+        {
+            foreach (var item in Model.Questions)
+            {
+                <tr>
+                    <td>@item.Description</td>
+                    <td>@item.Answer</td>
+                    <td>@item.Text</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id }, null) |
+                        @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id }, null)
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <!--<button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>-->
+    @Html.ActionLink("Add Question", "Create", "Questions", null, null)
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
