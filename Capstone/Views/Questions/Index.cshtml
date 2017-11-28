@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Capstone.Models.Question>
+@using Capstone.Helpers
 
 @{
     ViewBag.Title = "Index";
@@ -41,6 +42,10 @@
             @Html.DisplayFor(modelItem => item.Type)
         </td>
         <td>
+            @if(item.Picture != null)
+            {
+                @Html.Image(item.Picture);
+            }
             @Html.DisplayFor(modelItem => item.Picture)
         </td>
         <td>

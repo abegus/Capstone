@@ -202,6 +202,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Migrations\201710301915339_inital.cs" />
     <Compile Include="Migrations\201710301915339_inital.Designer.cs">
       <DependentUpon>201710301915339_inital.cs</DependentUpon>
@@ -228,6 +229,7 @@
     <Compile Include="Models\Teach.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModels.cs" />
   </ItemGroup>
   <ItemGroup>

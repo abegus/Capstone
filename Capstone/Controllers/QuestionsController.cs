@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
+using Capstone.ViewModels;
+using System.IO;
 
 namespace Capstone.Controllers
 {
@@ -43,23 +45,59 @@ namespace Capstone.Controllers
             return View();
         }
 
+
         // POST: Questions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Questions.Add(question);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public ActionResult Create(QuestionViewModel question, HttpPostedFileBase file)
+         {
+             if (ModelState.IsValid)
+             {
+                //used for converting image file into bytes that can be stored in database
+                MemoryStream target = new MemoryStream();
+                //question.Picture.InputStream.CopyTo(target);
+                file.InputStream.CopyTo(target);
+                byte[] data = target.ToArray();
 
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
-            return View(question);
-        }
+                Question q = new Question()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Answer = question.Answer,
+                    Type = question.Type,
+                    Text = question.Text,
+                    Description = question.Description,
+                    StandardId = question.StandardId,
+                    Picture = data
+
+                };
+                 db.Questions.Add(q);
+                 db.SaveChanges();
+                 return RedirectToAction("Index");
+             }
+
+             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+             return View(question);
+         }
+
+         // POST: Questions/Create
+         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /* [HttpPost]
+         [ValidateAntiForgeryToken]
+         public ActionResult Create([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question)
+         {
+             if (ModelState.IsValid)
+             {
+                 db.Questions.Add(question);
+                 db.SaveChanges();
+                 return RedirectToAction("Index");
+             }
+
+             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+             return View(question);
+         }*/
 
         // GET: Questions/Edit/5
         public ActionResult Edit(string id)
