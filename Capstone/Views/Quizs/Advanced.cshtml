@@ -1,4 +1,5 @@
 ﻿@model Capstone.Models.Quiz
+@using Capstone.Helpers
 
 @{
     ViewBag.Title = "Advanced";
@@ -39,9 +40,11 @@
 <div>
      <table class="table" id="StudentTable">
         <tr>
-            <th>First</th>
-            <th>Last</th>
-            <th>Parent Email</th>
+            <th>Description</th>
+            <th>Type (1 = text, 2 = picture)</th>
+            <th>Text</th>
+            <th>Picture</th>
+            <th>Answer</th>
             <th>Action</th>
         </tr>
         @if (Model.Questions.Count > 0)
@@ -50,8 +53,13 @@
             {
                 <tr>
                     <td>@item.Description</td>
-                    <td>@item.Answer</td>
+                    <td>@item.Type</td>
                     <td>@item.Text</td>
+                    <td>@if (item.Picture != null)
+                    {
+                        @Html.Image(item.Picture);
+                    }</td>
+                    <td>@item.Answer</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id }, null) |
                         @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id }, null)
@@ -62,7 +70,8 @@
     </table>
 
     <!--<button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>-->
-    @Html.ActionLink("Add Question", "Create", "Questions", null, null)
+    <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
+    <button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>
 </div>
 
 <p>
