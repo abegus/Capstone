@@ -168,7 +168,7 @@ namespace Capstone.Controllers
         }
 
         // GET: Questions/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string id, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -177,6 +177,7 @@ namespace Capstone.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            ViewBag.quizId = quizId;
             Question question = db.Questions.Find(id);
             if (question == null)
             {
@@ -188,15 +189,34 @@ namespace Capstone.Controllers
         // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string id, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
+
+            
             Question question = db.Questions.Find(id);
-            db.Questions.Remove(question);
+            Quiz q = db.Quizs.Find(quizId);
+
+            //Problem is that I am not passing the quizId (for the respective quiz) that has the question.
+            //I also need to pass the quiz data to the Delete (from the quiz views) ___?
+            //https://stackoverflow.com/questions/20942926/pass-multiple-parameters-in-html-beginform-mvc4-controller-action
+            //QuestionQuiz qq = (from x in db.QuestionQuizs where x.Question_Id.Equals(id) && x.Quiz_Id.Equals(quizId) select x).FirstOrDefault();
+
+
+            //this would delete it if it is the only entiyt left. Still have to implement
+
+            // db.QuestionQuizs.Remove(qq);
+            //if it is the only instance, remove
+
+
+            //db.Quizs.
+            q.Questions.Remove(question);
+            //db.Quizs.
+            //db.Questions.Remove(question);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Advanced","Quizs",new { id = quizId });
         }
 
         protected override void Dispose(bool disposing)

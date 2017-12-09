@@ -23,6 +23,9 @@ namespace Capstone.Models
         public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<Teach> Teaches { get; set; }
 
+        //added for many to many relationship
+        //public virtual DbSet<QuestionQuizs> QuestionQuizs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AspNetUser>()
@@ -47,6 +50,12 @@ namespace Capstone.Models
                 .HasForeignKey(e => new { e.QuizId, e.ClassId })
                 .WillCascadeOnDelete(false);
 
+            /*modelBuilder.Entity<QuestionQuizs>()
+                .HasMany(e => e.Answers)
+                .WithRequired(e => e.ClassQuiz)
+                .HasForeignKey(e => new { e.QuizId, e.ClassId })
+                .WillCascadeOnDelete(false);*/
+
             modelBuilder.Entity<CoreStandard>()
                 .Property(e => e.Grade)
                 .IsFixedLength();
@@ -67,6 +76,16 @@ namespace Capstone.Models
                 .HasMany(e => e.Answers)
                 .WithRequired(e => e.Question)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Quiz>()
+                .HasMany<Question>(s => s.Questions)
+                .WithMany(c => c.Quizs)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("Quiz_Id");
+                    cs.MapRightKey("Question_Id");
+                    cs.ToTable("QuestionQuizs");
+                });
 
             modelBuilder.Entity<Quiz>()
                 .HasMany(e => e.ClassQuizs)
