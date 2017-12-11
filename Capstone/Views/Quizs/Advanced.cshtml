@@ -41,9 +41,8 @@
      <table class="table" id="StudentTable">
         <tr>
             <th>Description</th>
-            <th>Type (1 = text, 2 = picture)</th>
-            <th>Text</th>
-            <th>Picture</th>
+            <th>Type</th>
+            <th>Question</th>
             <th>Answer</th>
             <th>Action</th>
         </tr>
@@ -53,17 +52,26 @@
             {
                 <tr>
                     <td>@item.Description</td>
-                    <td>@item.Type</td>
-                    <td>@item.Text</td>
-                    <td>@if (item.Picture != null)
+                    <td>@if (item.Type == 0)
+                    {
+                        <div>Picture</div>
+                    }
+                    @if (item.Type == 1)
+                    {
+                        <div>Text</div>
+                    }</td>
+                    <td>@if (item.Type == 0)
                     {
                         @Html.Image(item.Picture);
+                    }
+                    @if(item.Type == 1){
+                        @item.Text
                     }</td>
                     <td>@item.Answer</td>
                     <td>
                         <!--Edit too??? not for now-->
-                        @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id }, null) |
-                        @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id, quizId = Model.Id }, null)
+                        @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, null) |
+                        @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, null)
                     </td>
                 </tr>
             }

@@ -14,6 +14,8 @@ namespace Capstone.ViewModels
         //[DataType(DataType.Upload)]
         //public HttpPostedFileBase Picture { get; set; }
 
+        public string TypeText { get; set; }
+
         public string Text { get; set; }
 
         [Required]

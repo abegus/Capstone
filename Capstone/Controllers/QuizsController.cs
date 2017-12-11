@@ -37,6 +37,7 @@ namespace Capstone.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Quiz quiz = db.Quizs.Find(id);
+            ViewBag.quizId = id;
             if (quiz == null)
             {
                 return HttpNotFound();

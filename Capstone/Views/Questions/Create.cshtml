@@ -5,26 +5,39 @@
 }
 
 <h2>Create</h2>
+<h4>Question</h4>
+<hr />
 
 
-@using (Html.BeginForm("Create", "Questions", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+@using (Html.BeginForm("Create", "Questions", new { quizId = ViewBag.quizId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Question</h4>
-        <hr />
-
+        
         <div class="form-group">
+            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label>Picture</label>
+                @Html.RadioButtonFor(model => model.TypeText,"Picture", new { @onclick = "PictureOn()", htmlAttributes = new { @class = "form-control"} })
+                @Html.ValidationMessageFor(model => model.TypeText, "", new { @class = "text-danger" })
+                <label>Text</label>
+                @Html.RadioButtonFor(model => model.TypeText, "Text", new { @onClick = "TextOn()" , htmlAttributes = new { @class = "form-control"} })
+                @Html.ValidationMessageFor(model => model.TypeText, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!--<div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>-->
 
-        <div class="form-group">
-            <label class="control-label col-md-2">Image Upload</label>
+        <div class="form-group" id="pic" style="display:none">
+            <label class="control-label col-md-2">Picture Question Upload</label>
             <div class="col-md-10">
                 <input type="file" id="file" name="file" />
                <p>@Html.Raw(ViewBag.FileError) </p>
@@ -32,8 +45,8 @@
             
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group" id="txt" style="display:none">
+            @Html.LabelFor(model => model.Text,"Text Question Contents", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
@@ -65,7 +78,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.StandardId, "StandardId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.StandardId, "Core Standard", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("StandardId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.StandardId, "", new { @class = "text-danger" })
@@ -83,7 +96,35 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
+<br />
+<div class="jumbotron">
+    <h2>What type of question should I use?</h2>
+    <ul>
+        <li>For a <label>textual</label> question, you could do something like: <label>2 + 1 = ?</label></li>
+        <li>For a <label>picture</label> question, you could upload a <label>Blue Picture</label> </li>
+    </ul>
+    <h2>Description and Answer?</h2>
+    <ul>
+        <li>The <label>Description</label> is meant to remind you what this question is for. EX:<label>Evaluate if the student knows the color blue</label></li>
+        <li>The <label>Answer</label> is the expected answer for the question. EX: <label>This color is blue</label> </li>
+    </ul>
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+
 }
+<script>
+    function TextOn() {
+        var di = document.getElementById("txt");
+        var dd = document.getElementById("pic");
+        di.style.display = "inline";
+        dd.style.display = "none"
+    }
+    function PictureOn() {
+        var di = document.getElementById("txt");
+        var dd = document.getElementById("pic");
+        dd.style.display = "inline";
+        di.style.display = "none"
+    }
+</script>

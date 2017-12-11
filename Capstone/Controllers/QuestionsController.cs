@@ -55,6 +55,7 @@ namespace Capstone.Controllers
             ques.QuizId = QuizId;
 
             ViewBag.FileError = "";
+            ViewBag.quizId = QuizId;
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
             return View(ques);
         }
@@ -65,42 +66,59 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
          [HttpPost]
          [ValidateAntiForgeryToken]
-         public ActionResult Create(QuestionViewModel question, HttpPostedFileBase file)
+         public ActionResult Create(QuestionViewModel question, HttpPostedFileBase file, string quizId)
          {
-            if (!User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated) 
                 return RedirectToAction("Login", "Account");
 
-            if (ModelState.IsValid)
-             {
-                //used for converting image file into bytes that can be stored in database
-                MemoryStream target = new MemoryStream();
-                file.InputStream.CopyTo(target);
-                byte[] data = ReduceSize(file.InputStream, 300, 300);
-                //if the file is not valid (IE not an image)
-                if (data == null)
+            if (ModelState.IsValid && question.TypeText != null)
+            {
+                int type = 0;
+                if (question.TypeText.Equals("Text"))
                 {
-                    ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
-                    ViewBag.FileError = "Not a valid Image file format";
-                    return View(question);
+                    type = 1;
                 }
 
                 Question q = new Question()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Answer = question.Answer,
-                    Type = question.Type,
+                    Type = type,
                     Text = question.Text,
                     Description = question.Description,
                     StandardId = question.StandardId,
-                    Picture = data
+                   // Picture = data
 
                 };
+
+                //if its a picture
+                if (type == 0)
+                {
+                    //used for converting image file into bytes that can be stored in database
+                    MemoryStream target = new MemoryStream();
+                    file.InputStream.CopyTo(target);
+                    byte[] data = ReduceSize(file.InputStream, 300, 300);
+                    //if the file is not valid (IE not an image)
+                    if (data == null)
+                    {
+                        ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
+                        ViewBag.FileError = "Not a valid Image file format";
+                        return View(question);
+                    }
+
+                    q.Picture = data;
+                }
+
+               
                 Quiz ques = (from x in db.Quizs where x.Id == question.QuizId select x).FirstOrDefault();
                 q.Quizs.Add(ques);
                 db.Questions.Add(q);
                  db.SaveChanges();
-                 return RedirectToAction("Index");
-             }
+
+                if (quizId != null)
+                    return RedirectToAction("Advanced", "Quizs", new { id = quizId });
+                return RedirectToAction("Index", "Questions");
+            }
 
              ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
              return View(question);
@@ -129,7 +147,7 @@ namespace Capstone.Controllers
         }
 
         // GET: Questions/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -143,6 +161,7 @@ namespace Capstone.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.quizId = quizId;
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
             return View(question);
         }
@@ -152,16 +171,44 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question)
+        public ActionResult Edit([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question, HttpPostedFileBase file, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (ModelState.IsValid)
             {
+                //if its a picture
+                if (question.Type == 0)
+                {
+                    if(file == null)
+                    {
+                        ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
+                        ViewBag.FileError = "Not a valid Image file format";
+                        return View(question);
+                    }
+                    //used for converting image file into bytes that can be stored in database
+                    MemoryStream target = new MemoryStream();
+                    file.InputStream.CopyTo(target);
+                    byte[] data = ReduceSize(file.InputStream, 300, 300);
+                    //if the file is not valid (IE not an image)
+                    if (data == null)
+                    {
+                        ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
+                        ViewBag.FileError = "Not a valid Image file format";
+                        return View(question);
+                    }
+
+                    question.Picture = data;
+                }
+
                 db.Entry(question).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+
+                if (quizId != null)
+                    return RedirectToAction("Advanced", "Quizs", new { id = quizId });
+                return RedirectToAction("Index", "Questions");
             }
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
             return View(question);
@@ -205,18 +252,19 @@ namespace Capstone.Controllers
             //QuestionQuiz qq = (from x in db.QuestionQuizs where x.Question_Id.Equals(id) && x.Quiz_Id.Equals(quizId) select x).FirstOrDefault();
 
 
+            //if this, then it is not deleted from a quiz (quizID is null)
+            if(q != null)
+            {
+                q.Questions.Remove(question);
+            }
+            
             //this would delete it if it is the only entiyt left. Still have to implement
+            db.Questions.Remove(question);
 
-            // db.QuestionQuizs.Remove(qq);
-            //if it is the only instance, remove
-
-
-            //db.Quizs.
-            q.Questions.Remove(question);
-            //db.Quizs.
-            //db.Questions.Remove(question);
             db.SaveChanges();
-            return RedirectToAction("Advanced","Quizs",new { id = quizId });
+            if(quizId != null)
+                return RedirectToAction("Advanced","Quizs",new { id = quizId });
+            return RedirectToAction("Index", "Questions");
         }
 
         protected override void Dispose(bool disposing)
