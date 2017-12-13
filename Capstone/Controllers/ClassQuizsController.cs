@@ -7,45 +7,25 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
+using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
-    public class QuizsController : Controller
+    public class ClassQuizsController : Controller
     {
         private MasterModel db = new MasterModel();
 
-        // GET: Quizs
+        // GET: ClassQuizs
         public ActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            //changing this temporarily because core standards dont exist yet
-            //var quizs = db.Quizs;
-            var quizs = db.Quizs.Include(q => q.CoreStandard);
-            return View(quizs.ToList());
+            var classQuizs = db.ClassQuizs.Include(c => c.Class).Include(c => c.Quiz);
+            return View(classQuizs.ToList());
         }
 
-        // GET: Quizs/Advanced/5
-        public ActionResult Advanced(string id)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Quiz quiz = db.Quizs.Find(id);
-            ViewBag.quizId = id;
-            if (quiz == null)
-            {
-                return HttpNotFound();
-            }
-            return View(quiz);
-        }
-
-        // GET: Quizs/Details/5
+        // GET: ClassQuizs/Details/5
         public ActionResult Details(string id)
         {
             if (!User.Identity.IsAuthenticated)
@@ -55,54 +35,50 @@ namespace Capstone.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
+            if (classQuiz == null)
             {
                 return HttpNotFound();
             }
-            return View(quiz);
+            return View(classQuiz);
         }
 
-        // GET: Quizs/Create
-        public ActionResult Create()
+        // GET: ClassQuizs/Create
+        public ActionResult Create(ManageClassViewModel vm)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
+            //get every quiz that isnt already in your class (that belongs to you FOR NOW. if I am going to change this, then make a browsing search that shows all of them).
+
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
+            ViewBag.QuizId = new SelectList(db.Quizs, "Id", "Name");
             return View();
         }
 
-        // POST: Quizs/Create
+        // POST: ClassQuizs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,StandardId,Description")] Quiz quiz)
+        public ActionResult Create([Bind(Include = "QuizId,ClassId,Description")] ClassQuiz classQuiz)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (ModelState.IsValid)
             {
-                Quiz newQuiz = new Quiz
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = quiz.Name,
-                    StandardId = quiz.StandardId,
-                    Description = quiz.Description
-                };
-
-                db.Quizs.Add(newQuiz);
+                db.ClassQuizs.Add(classQuiz);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", classQuiz.ClassId);
+            ViewBag.QuizId = new SelectList(db.Quizs, "Id", "Name", classQuiz.QuizId);
+            return View(classQuiz);
         }
 
-        // GET: Quizs/Edit/5
+        // GET: ClassQuizs/Edit/5
         public ActionResult Edit(string id)
         {
             if (!User.Identity.IsAuthenticated)
@@ -112,36 +88,38 @@ namespace Capstone.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
+            if (classQuiz == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", classQuiz.ClassId);
+            ViewBag.QuizId = new SelectList(db.Quizs, "Id", "Name", classQuiz.QuizId);
+            return View(classQuiz);
         }
 
-        // POST: Quizs/Edit/5
+        // POST: ClassQuizs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,StandardId,Description")] Quiz quiz)
+        public ActionResult Edit([Bind(Include = "QuizId,ClassId,Description")] ClassQuiz classQuiz)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (ModelState.IsValid)
             {
-                db.Entry(quiz).State = EntityState.Modified;
+                db.Entry(classQuiz).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", classQuiz.ClassId);
+            ViewBag.QuizId = new SelectList(db.Quizs, "Id", "Name", classQuiz.QuizId);
+            return View(classQuiz);
         }
 
-        // GET: Quizs/Delete/5
+        // GET: ClassQuizs/Delete/5
         public ActionResult Delete(string id)
         {
             if (!User.Identity.IsAuthenticated)
@@ -151,15 +129,15 @@ namespace Capstone.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
+            if (classQuiz == null)
             {
                 return HttpNotFound();
             }
-            return View(quiz);
+            return View(classQuiz);
         }
 
-        // POST: Quizs/Delete/5
+        // POST: ClassQuizs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
@@ -167,24 +145,8 @@ namespace Capstone.Controllers
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            Quiz quiz = db.Quizs.Find(id);
-
-           /* IQueryable<QuestionQuizs> qqs = (from qq in db.QuestionQuizs where qq.Quiz_Id.Equals(id) select qq);
-            foreach(var qq in qqs)
-            {
-                db.QuestionQuizs.Remove(qq);
-            }*/
-
-            //THIS IS A VERY INEFFICIENT QUERY. IT IS LOOKING AT THE ENTIRE QUIZ OBJECT
-           // IQueryable<Question> questions = (from q in db.Questions where q.Quizs.Contains(quiz) select q);
-
-            /*foreach(var que in questions)
-            {
-                quiz.Questions.Remove(que);
-            }*/
-            
-            
-            db.Quizs.Remove(quiz);
+            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
+            db.ClassQuizs.Remove(classQuiz);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -241,7 +241,7 @@ namespace Capstone.Controllers
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-
+            // I WILL HAVE TO CHANGE THE DELETION FOR THE RELATIONSHIPS IN QUIZCONTROLLER DELETE AS WELL
             
             Question question = db.Questions.Find(id);
             Quiz q = db.Quizs.Find(quizId);

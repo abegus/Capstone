@@ -192,10 +192,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
+    <Compile Include="Controllers\ClassQuizsController.cs" />
     <Compile Include="Controllers\CoreStandardsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OverviewController.cs" />
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\QuizsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
@@ -230,6 +233,7 @@
     <Compile Include="Models\Teach.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\BrowseQuizViewModels.cs" />
     <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModels.cs" />
   </ItemGroup>
@@ -317,6 +321,17 @@
     <Content Include="Views\Questions\Edit.cshtml" />
     <Content Include="Views\Questions\Index.cshtml" />
     <Content Include="Views\Quizs\Advanced.cshtml" />
+    <Content Include="Views\Overview\Index.cshtml" />
+    <Content Include="Views\Answers\Create.cshtml" />
+    <Content Include="Views\Answers\Delete.cshtml" />
+    <Content Include="Views\Answers\Details.cshtml" />
+    <Content Include="Views\Answers\Edit.cshtml" />
+    <Content Include="Views\Answers\Index.cshtml" />
+    <Content Include="Views\ClassQuizs\Create.cshtml" />
+    <Content Include="Views\ClassQuizs\Delete.cshtml" />
+    <Content Include="Views\ClassQuizs\Details.cshtml" />
+    <Content Include="Views\ClassQuizs\Edit.cshtml" />
+    <Content Include="Views\ClassQuizs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

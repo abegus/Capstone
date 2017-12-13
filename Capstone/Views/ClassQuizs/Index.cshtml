@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Capstone.Models.Quiz>
+﻿@model IEnumerable<Capstone.Models.ClassQuiz>
 
 @{
     ViewBag.Title = "Index";
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CoreStandard.Name)
+            @Html.DisplayNameFor(model => model.Class.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Quiz.Name)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -26,18 +26,18 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CoreStandard.Name)
+            @Html.DisplayFor(modelItem => item.Class.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => item.Quiz.Name)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.ActionLink("Select", "Advanced", new { id = item.Id }) |
-            @Html.ActionLink("Edit Quiz Info", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete Quiz", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
     </tr>
 }

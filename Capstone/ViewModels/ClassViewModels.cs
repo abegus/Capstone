@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Capstone.Models;
+using System.Collections;
 
 namespace Capstone.ViewModels
 {
@@ -25,6 +27,10 @@ namespace Capstone.ViewModels
 
     public class ManageClassViewModel
     {
+        public Class currentClass { get; set; }
 
+        public List<Quiz> quizzes { get; set; }
+
+        public ICollection<Student> students { get; set; }
     }
 }

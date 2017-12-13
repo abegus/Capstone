@@ -87,10 +87,20 @@ namespace Capstone.Models
                     cs.ToTable("QuestionQuizs");
                 });
 
+            modelBuilder.Entity<Question>()
+                .HasMany<Quiz>(s => s.Quizs)
+                .WithMany(c => c.Questions)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("Question_Id");
+                    cs.MapRightKey("Quiz_Id");
+                    cs.ToTable("QuestionQuizs");
+                });
+
             modelBuilder.Entity<Quiz>()
                 .HasMany(e => e.ClassQuizs)
                 .WithRequired(e => e.Quiz)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true); //changed from false;
 
             modelBuilder.Entity<Student>()
                 .HasMany(e => e.Answers)

@@ -1,7 +1,7 @@
-﻿@model Capstone.Models.Class
+﻿@model Capstone.ViewModels.ManageClassViewModel
 
 @{
-    ViewBag.Title = "Advanced";
+    ViewBag.Title = "Class Overview";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,27 +11,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.currentClass.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.currentClass.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.SchoolName)
+            @Html.DisplayNameFor(model => model.currentClass.SchoolName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SchoolName)
+            @Html.DisplayFor(model => model.currentClass.SchoolName)
         </dd>
 
     </dl>
     <table class="table" id="StudentTable">
         <tr>
-            <th>First</th> <th>Last</th><th>Parent Email</th><th>Action</th>
+            <th>First Name</th> <th>Last Name</th><th>Parent Email</th><th>Action</th>
         </tr>
-        @foreach (var item in Model.Students)
+        @foreach (var item in Model.students)
         {
             <tr>
                 <td>@item.First</td><td>@item.Last</td><td>@item.Email</td>
@@ -43,25 +43,48 @@
         }
     </table>
 
-    <!--<dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Students)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Students)
-        </dd>
-    </dl>
-    <div id="StudentSection" class="section">
-
-    </div>
-    <button onclick="addRow()" id="AddField" type="button" class="btn btn-primary">AddNew</button>-->
-    <button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.Id }, null)</button>
+   
+    <!--<button onclick="addRow()" id="AddField" type="button" class="btn btn-primary">AddNew</button>-->
+    <button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.currentClass.Id }, null)</button>
 </div>
+
+<br />
+
+<div>
+    <table class="table" id="QuizTable">
+        <tr>
+            <th>Quiz Name</th>
+            <th>Quiz Description</th>
+            <th>Core Standard</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var item in Model.quizzes)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.CoreStandard</td>
+                <td>
+                    @Html.ActionLink("Take Quiz", "Index", "Overview", new { Id = item.Id, classId = Model.currentClass.Id }, null) |
+                    @Html.ActionLink("Details", "Advanced", "Quizs", new { Id = item.Id }, null) |
+                    @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>
+
+    <!--<button class="btn btn-primary">Html.ActionLink("Add Quiz to Class", "AddQuiz", "Classes", new { classId = Model.currentClass.Id }, null)</button>-->
+    <button class="btn btn-primary">@Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { viewModel = Model }, null)</button>
+</div>
+
 <br /><br />
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.currentClass.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+
      
 
 <script>

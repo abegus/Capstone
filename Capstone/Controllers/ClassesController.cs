@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Capstone.Models;
 using Capstone.ViewModels;
 using Microsoft.AspNet.Identity;
+using System.Collections;
 
 namespace Capstone.Controllers
 {
@@ -41,13 +42,43 @@ namespace Capstone.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            ManageClassViewModel vm = new ManageClassViewModel();
             Class @class = db.Classes.Find(id);
+
+            var students = @class.Students;
+            List<Quiz> quizzes = new List<Quiz>();
+            
+            foreach(var cq in @class.ClassQuizs)
+            {
+                quizzes.Add((from q in db.Quizs where q.Id == cq.QuizId select q).FirstOrDefault());
+            }
+
+            vm.currentClass = @class;
+            vm.quizzes = quizzes;
+            vm.students = students;
+
+
             if (@class == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            //return View(@class);
+
+            return View(vm);
         }
+
+        //GET: Classes/AddQuiz
+       /* public ActionResult AddQuiz(ManageClassViewModel vm)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (vm == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            return View(vm);
+        }*/
 
         //POST for Advanced, need this if dynamic creation
 
