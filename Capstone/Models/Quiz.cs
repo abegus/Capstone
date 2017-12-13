@@ -30,6 +30,13 @@ namespace Capstone.Models
 
         public string Description { get; set; }
 
+
+
+        //  ADDING OWNERSHIP TO QUIZZES AND QUESITONS
+        public string UserId { get; set; }
+
+        public virtual AspNetUser AspNetUser { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ClassQuiz> ClassQuizs { get; set; }
 

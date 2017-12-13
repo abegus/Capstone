@@ -12,6 +12,8 @@ namespace Capstone.Models
         public AspNetUser()
         {
             Teaches = new HashSet<Teach>();
+            Quizs = new HashSet<Quiz>();
+            Questions = new HashSet<Question>();
         }
 
         public string Id { get; set; }
@@ -43,5 +45,12 @@ namespace Capstone.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teach> Teaches { get; set; }
+
+        //ADDING OWNERSHIP TO QUIZ AND QUESTIONS
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Quiz> Quizs { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Question> Questions { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Capstone.Controllers
 {
@@ -88,6 +89,7 @@ namespace Capstone.Controllers
                 Quiz newQuiz = new Quiz
                 {
                     Id = Guid.NewGuid().ToString(),
+                    UserId = User.Identity.GetUserId(),
                     Name = quiz.Name,
                     StandardId = quiz.StandardId,
                     Description = quiz.Description
@@ -126,7 +128,7 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,StandardId,Description")] Quiz quiz)
+        public ActionResult Edit([Bind(Include = "Id,UserId,Name,StandardId,Description")] Quiz quiz)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -176,12 +178,12 @@ namespace Capstone.Controllers
             }*/
 
             //THIS IS A VERY INEFFICIENT QUERY. IT IS LOOKING AT THE ENTIRE QUIZ OBJECT
-           // IQueryable<Question> questions = (from q in db.Questions where q.Quizs.Contains(quiz) select q);
+            IQueryable<Question> questions = (from q in db.Questions from qui in q.Quizs where qui.Id == id select q);
 
-            /*foreach(var que in questions)
+            foreach(var que in questions)
             {
                 quiz.Questions.Remove(que);
-            }*/
+            }
             
             
             db.Quizs.Remove(quiz);

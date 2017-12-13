@@ -214,6 +214,10 @@
     <Compile Include="Migrations\201711160235330_errors.Designer.cs">
       <DependentUpon>201711160235330_errors.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712131903158_ownershiptoquizandquestion.cs" />
+    <Compile Include="Migrations\201712131903158_ownershiptoquizandquestion.Designer.cs">
+      <DependentUpon>201712131903158_ownershiptoquizandquestion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Advanced\AdvancedClass.cs" />
@@ -355,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711160235330_errors.resx">
       <DependentUpon>201711160235330_errors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712131903158_ownershiptoquizandquestion.resx">
+      <DependentUpon>201712131903158_ownershiptoquizandquestion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

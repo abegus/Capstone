@@ -10,6 +10,7 @@ using Capstone.Models;
 using Capstone.ViewModels;
 using System.IO;
 using System.Drawing;
+using Microsoft.AspNet.Identity;
 
 namespace Capstone.Controllers
 {
@@ -53,6 +54,7 @@ namespace Capstone.Controllers
             
             QuestionViewModel ques = new QuestionViewModel();
             ques.QuizId = QuizId;
+            ques.UserId = User.Identity.GetUserId();
 
             ViewBag.FileError = "";
             ViewBag.quizId = QuizId;
@@ -87,6 +89,7 @@ namespace Capstone.Controllers
                     Text = question.Text,
                     Description = question.Description,
                     StandardId = question.StandardId,
+                    UserId = User.Identity.GetUserId()
                    // Picture = data
 
                 };
@@ -171,7 +174,7 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Type,Picture,Text,Answer,Description,StandardId")] Question question, HttpPostedFileBase file, string quizId)
+        public ActionResult Edit([Bind(Include = "Id,UserId,Type,Picture,Text,Answer,Description,StandardId")] Question question, HttpPostedFileBase file, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");

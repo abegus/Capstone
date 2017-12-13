@@ -34,6 +34,19 @@ namespace Capstone.Models
                 .HasForeignKey(e => e.UserId)
                 .WillCascadeOnDelete(false);
 
+            //ADDING OWNERSHIP TO QUESTIONS
+            modelBuilder.Entity<AspNetUser>()
+               .HasMany(e => e.Questions)
+               .WithRequired(e => e.AspNetUser)
+               .HasForeignKey(e => e.UserId)
+               .WillCascadeOnDelete(false);
+            //ADDING OWNERSHIP TO QUIZS
+            modelBuilder.Entity<AspNetUser>()
+               .HasMany(e => e.Quizs)
+               .WithRequired(e => e.AspNetUser)
+               .HasForeignKey(e => e.UserId)
+               .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Class>()
                 .HasMany(e => e.ClassQuizs)
                 .WithRequired(e => e.Class)
