@@ -5,84 +5,96 @@
     ViewBag.Title = "Advanced";
 }
 
-<h2>Advanced</h2>
+<h2>Quiz Overview</h2>
 
-<div>
-    <h4>Quiz</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CoreStandard.Name)
-        </dt>
+<div class="panel panel-default">
+    <div class="panel panel-body">
+        <h4>Quiz Details</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Quiz Name
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CoreStandard.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+            <dt>
+               Core Standard
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.CoreStandard.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
 
-    </dl>
+        </dl>
+    </div>
 </div>
-<div>
-     <table class="table" id="StudentTable">
-        <tr>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Question</th>
-            <th>Answer</th>
-            <th>Action</th>
-        </tr>
-        @if (Model.Questions.Count > 0)
-        {
-            foreach (var item in Model.Questions)
+
+<br />
+<div class="panel panel-default">
+    <div class="panel panel-body">
+        <div class="col-sm-2">
+            <h4>Quiz Questions</h4>
+        </div>
+        <div class="col-sm-4" style="margin-bottom:15px;">
+            @Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, new { @class = "btn btn-primary" })
+        </div>
+         <table class="table" id="StudentTable">
+            <tr>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Action</th>
+            </tr>
+            @if (Model.Questions.Count > 0)
             {
-                <tr>
-                    <td>@item.Description</td>
-                    <td>@if (item.Type == 0)
-                    {
-                        <div>Picture</div>
-                    }
-                    @if (item.Type == 1)
-                    {
-                        <div>Text</div>
-                    }</td>
-                    <td>@if (item.Type == 0)
-                    {
-                        @Html.Image(item.Picture);
-                    }
-                    @if(item.Type == 1){
-                        @item.Text
-                    }</td>
-                    <td>@item.Answer</td>
-                    <td>
-                        <!--Edit too??? not for now-->
-                        @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, null) |
-                        @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, null)
-                    </td>
-                </tr>
+                foreach (var item in Model.Questions)
+                {
+                    <tr>
+                        <td>@item.Description</td>
+                        <td>@if (item.Type == 0)
+                        {
+                            <div>Picture</div>
+                        }
+                        @if (item.Type == 1)
+                        {
+                            <div>Text</div>
+                        }</td>
+                        <td>@if (item.Type == 0)
+                        {
+                            @Html.Image(item.Picture);
+                        }
+                        @if(item.Type == 1){
+                            @item.Text
+                        }</td>
+                        <td>@item.Answer</td>
+                        <td>
+                            <!--Edit too??? not for now-->
+                            @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, new { @class = "btn btn-primary" })
+                            @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, new { @class = "btn btn-primary" })
+
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </table>
+        </table>
 
-    <!--<button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>-->
-    <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
-    <button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>
-</div>
-
+        <!--<button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>-->
+        <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
+        @Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
+    </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

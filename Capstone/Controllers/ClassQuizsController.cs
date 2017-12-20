@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
 using Capstone.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace Capstone.Controllers
 {
@@ -44,16 +45,71 @@ namespace Capstone.Controllers
         }
 
         // GET: ClassQuizs/Create
-        public ActionResult Create(ManageClassViewModel vm)
+        //public ActionResult Create(BrowseViewModel bm)
+        public ActionResult Create(string classId, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            //get every quiz that isnt already in your class (that belongs to you FOR NOW. if I am going to change this, then make a browsing search that shows all of them).
+            var userId = User.Identity.GetUserId();
+            //THIS HANDLES 2 CASES: COMING FROM CLASS,     COMING FROM QUIZ
 
-            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
+            BrowseViewModel bm = new BrowseViewModel();
+
+            if(classId != null)
+            {
+                bm = CreateFromClass(classId,bm);
+               //get every quiz that isnt already in your class (that belongs to you FOR NOW. if I am going to change this, then make a browsing search that shows all of them).
+                List<Quiz> allUsersQuizzes = (from q in db.Quizs where q.UserId == userId select q).ToList();
+                if(bm.quizzes != null)
+                {
+                    List<Quiz> nonQuizzes = (allUsersQuizzes.Where(q => !bm.quizzes.Any(q2 => q2.Id == q.Id))).ToList();
+                    allUsersQuizzes = nonQuizzes;
+                }
+                List<Class> singleClass = new List<Class>();
+                singleClass.Add(bm.currentClass);
+                ViewBag.ClassId = new SelectList(singleClass, "Id", "Name");
+                ViewBag.QuizId = new SelectList(allUsersQuizzes, "Id", "Name");
+
+                //if there are no quizzes, then redirect to quiz creation
+                //CHANGE THIS IN THE FUTURE, IT IS A TEMPORARY FIX
+                if(allUsersQuizzes.Count < 1)
+                {
+                    return RedirectToAction("Create", "Quizs");
+                }
+                return View();
+            }
+
+            else
+            {
+                bm = CreateFromQuiz(quizId,bm);
+            }
+            
+
+
+            //ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
             ViewBag.QuizId = new SelectList(db.Quizs, "Id", "Name");
             return View();
+        }
+
+        private BrowseViewModel CreateFromQuiz(string quizId, BrowseViewModel bm)
+        {
+            return bm;
+        }
+
+        public BrowseViewModel CreateFromClass(string classId, BrowseViewModel bm)
+        {
+            Class @class = db.Classes.Find(classId);
+            List<Quiz> quizzes = new List<Quiz>();
+
+            foreach (var cq in @class.ClassQuizs)
+            {
+                quizzes.Add((from q in db.Quizs where q.Id == cq.QuizId select q).FirstOrDefault());
+            }
+
+            bm.currentClass = @class;
+            bm.quizzes = quizzes;
+            return bm;
         }
 
         // POST: ClassQuizs/Create
@@ -70,7 +126,9 @@ namespace Capstone.Controllers
             {
                 db.ClassQuizs.Add(classQuiz);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Advanced", "Classes", new { id = classQuiz.ClassId });
+                // RedirectToAction("Index");
             }
 
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", classQuiz.ClassId);

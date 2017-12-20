@@ -1,4 +1,5 @@
 ﻿@model Capstone.ViewModels.ManageClassViewModel
+@using Capstone.ViewModels
 
 @{
     ViewBag.Title = "Class Overview";
@@ -45,6 +46,10 @@
 
    
     <!--<button onclick="addRow()" id="AddField" type="button" class="btn btn-primary">AddNew</button>-->
+    <!--Recreate button to do an AJAX (script) call that goes to that address, which will then reply with the information and it will create the modal window,
+        and then on submit, do an ajax post and then remove the dynmically created elements.
+        
+        In the StudentCreate controller method, I would want to return a partial view instead.-->
     <button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.currentClass.Id }, null)</button>
 </div>
 
@@ -63,7 +68,7 @@
             <tr>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
-                <td>@item.CoreStandard</td>
+                <td>@item.CoreStandard.Name</td>
                 <td>
                     @Html.ActionLink("Take Quiz", "Index", "Overview", new { Id = item.Id, classId = Model.currentClass.Id }, null) |
                     @Html.ActionLink("Details", "Advanced", "Quizs", new { Id = item.Id }, null) |
@@ -74,7 +79,7 @@
     </table>
 
     <!--<button class="btn btn-primary">Html.ActionLink("Add Quiz to Class", "AddQuiz", "Classes", new { classId = Model.currentClass.Id }, null)</button>-->
-    <button class="btn btn-primary">@Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { viewModel = Model }, null)</button>
+    <button class="btn btn-primary">@Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new {  classId = Model.currentClass.Id }, null)</button>
 </div>
 
 <br /><br />

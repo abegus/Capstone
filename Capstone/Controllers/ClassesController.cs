@@ -43,6 +43,8 @@ namespace Capstone.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ManageClassViewModel vm = new ManageClassViewModel();
+            //BrowseViewModel bm = new BrowseViewModel();
+            
             Class @class = db.Classes.Find(id);
 
             var students = @class.Students;
@@ -56,6 +58,12 @@ namespace Capstone.Controllers
             vm.currentClass = @class;
             vm.quizzes = quizzes;
             vm.students = students;
+
+           // bm.currentClass = @class;
+            //bm.quizzes = quizzes;
+
+            //vm.browseModel = bm;
+            
 
 
             if (@class == null)
