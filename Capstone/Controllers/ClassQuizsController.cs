@@ -178,16 +178,16 @@ namespace Capstone.Controllers
         }
 
         // GET: ClassQuizs/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string quizId, string classId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            if (id == null)
+            if (quizId == null || classId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
+            ClassQuiz classQuiz = db.ClassQuizs.Find(quizId,classId);
             if (classQuiz == null)
             {
                 return HttpNotFound();
@@ -198,12 +198,12 @@ namespace Capstone.Controllers
         // POST: ClassQuizs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string quizId, string classId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
+            ClassQuiz classQuiz = db.ClassQuizs.Find(quizId,classId);
             db.ClassQuizs.Remove(classQuiz);
             db.SaveChanges();
             return RedirectToAction("Index");

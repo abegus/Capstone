@@ -70,9 +70,9 @@
                 <td>@item.Description</td>
                 <td>@item.CoreStandard.Name</td>
                 <td>
-                    @Html.ActionLink("Take Quiz", "Index", "Overview", new { Id = item.Id, classId = Model.currentClass.Id }, null) |
+                    @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = item.Id, classId = Model.currentClass.Id }, null) |
                     @Html.ActionLink("Details", "Advanced", "Quizs", new { Id = item.Id }, null) |
-                    @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)
+                    @Html.ActionLink("Remove Quiz", "Delete", "ClassQuizs", new { quizId = item.Id, classId = Model.currentClass.Id }, null)
                 </td>
             </tr>
         }

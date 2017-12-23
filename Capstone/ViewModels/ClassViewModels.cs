@@ -35,4 +35,12 @@ namespace Capstone.ViewModels
 
         public BrowseViewModel browseModel { get; set; }
     }
+
+    public class ClassQuizOverview
+    {
+        public Class currentClass { get; set; }
+
+        public Dictionary<Student,int> studentAttempts { get; set; }
+        public Quiz currentQuiz { get; set; }
+    }
 }

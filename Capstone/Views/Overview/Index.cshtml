@@ -1,7 +1,35 @@
-﻿
+﻿@model Capstone.ViewModels.ClassQuizOverview
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Students progress in @Model.currentQuiz.Name</h2>
+
+<div>
+    <table>
+        <tr>
+            <th>Student Name</th><th>Questions Answered</th><th>Completed</th><th>Actions</th>
+        </tr>
+        @foreach(var item in Model.studentAttempts)
+        {
+            <tr>
+                <td>
+                    @item.Key.First  @item.Key.Last
+                </td>
+                <td>
+                    @item.Value / ?
+                </td>
+                <td>
+                    completed?
+                </td>
+                <td>
+                    @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.currentClass.Id, quizId = Model.currentQuiz.Id, studentId = item.Key.Id }, null) |
+                    @Html.ActionLink("Resume Quiz", "Advanced", "DynamicTesting", new { Id = item.Key.Id }, null) |
+                    @Html.ActionLink("Retake Quiz", "Delete", "DynamicTesting", new { quizId = item.Key.Id, classId = Model.currentClass.Id }, null)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 
