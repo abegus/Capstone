@@ -207,6 +207,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
+    <Compile Include="Helpers\JavaScriptConverter.cs" />
     <Compile Include="Migrations\201710301915339_inital.cs" />
     <Compile Include="Migrations\201710301915339_inital.Designer.cs">
       <DependentUpon>201710301915339_inital.cs</DependentUpon>
