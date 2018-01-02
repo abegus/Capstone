@@ -18,6 +18,7 @@ namespace Capstone.Models
 
         public string Id { get; set; }
 
+        //1 is TEXT   0 is PICTURE
         public int Type { get; set; }
 
         [Column(TypeName = "image")]

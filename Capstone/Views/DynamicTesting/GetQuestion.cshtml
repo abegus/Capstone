@@ -1,0 +1,33 @@
+﻿@model Capstone.Models.Question
+@using Capstone.Models
+@using Capstone.Helpers
+
+@{
+    ViewBag.Title = "GetQuestion";
+}
+
+<h2>GetQuestion</h2>
+
+<div class="panel panel-body">
+    <h4>@Model.Description</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Quiz question
+        </dt>
+
+        @if (Model.Type == 1)
+        {
+            <dd>
+                @Model.Text
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Html.Image(Model.Picture)
+            </dd>
+        }
+    </dl>
+</div>
+

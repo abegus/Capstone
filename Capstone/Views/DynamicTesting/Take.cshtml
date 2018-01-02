@@ -1,11 +1,145 @@
 ﻿@model Capstone.ViewModels.DynamicViewModel
+@using Capstone.Helpers
+
+<script src="~/Scripts/quizScript.js" type="text/javascript"></script>
+
+<!-- Maybe instead of holding all of the data in the Javascript, just store it in the model and instead manipulate it with the javascript
+    JS would be being used for the changing of what you see / transitions?-->
+
 
 @{
     ViewBag.Title = "Take";
 }
 
 <h2>Take Quiz</h2>
+<dl class="dl-horizontal">
+    <dt>Class</dt>
+    <dd>@Model.cla.Name</dd>
+    <dt>Student</dt>
+    <dd>@Model.student.First @Model.student.Last</dd>
+    <dt>Quiz</dt>
+    <dd>@Model.quiz.Name</dd>
+</dl>
 
-<div>
-    <a href="https://blog.mariusschulz.com/2014/02/05/passing-net-server-side-data-to-javascript">Link to javascript/json serialization to send data</a>
+
+<div style="width:600px; margin-left:auto; margin-right:auto">
+    <div style="background-color: lightgray">
+        <h2>My Products</h2>
+    </div>
+    <input id="btnPrevAjax" name="btnPrevAjax" type="button" value="Previous Question" />
+    <input id="btnNextAjax" name="btnNextAjax" type="button" value="Next Question" />
+    <div id="PrevIndex">-2</div>
+    <div id="NextIndex" >0</div>
+    <div id="indexStatus"></div>
+    <div id="questionResult" style="background-color:lightskyblue"></div>
 </div>
+
+<div>3c39e89d-9716-4509-b560-39a14e97cb35</div>
+@section Scripts {
+    <script>
+
+        $('#btnNextAjax').click(function () {
+            var nextIndex = $('#NextIndex').html();
+            var curIndex = parseInt($('#NextIndex').html(), 10) - 1;
+            var myArray = [];
+
+            @foreach (var d in Model.questionIds)
+            {
+                @:myArray.push("@d");
+            }
+            if (nextIndex < myArray.length) {
+                var DEST = "/DynamicTesting/GetQuestion/" + myArray[nextIndex];
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#NextIndex").html(parseInt($('#NextIndex').html(), 10) + 1);
+                        $("#PrevIndex").html(parseInt($('#PrevIndex').html(), 10) + 1);
+                        $('#questionResult').html(result);
+                        $('#questionResult').previous("seen previous");
+                        $("#indexStatus").html("Question:"+curIndex+"/"+myArray.length);
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#indexStatus").html("End Of Quiz");
+            }
+
+        });
+
+        $('#btnPrevAjax').click(function () {
+            var prevIndex = $('#PrevIndex').html();
+            var curIndex = parseInt($('#PrevIndex').html(), 10) +1;
+            var myArray = [];
+
+            @foreach (var d in Model.questionIds)
+            {
+                @:myArray.push("@d");
+            }
+            if (prevIndex >= 0) {
+                var DEST = "/DynamicTesting/GetQuestion/" + myArray[prevIndex];
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#PrevIndex").html(parseInt($('#PrevIndex').html(), 10) - 1);
+                        $("#NextIndex").html(parseInt($('#NextIndex').html(), 10) - 1);
+                        $('#questionResult').html(result);
+                        $("#indexStatus").html("Question:" + curIndex + "/" + myArray.length);
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#indexStatus").html("Question:" + curIndex + "/" + myArray.length);
+            }
+
+        });
+    </script>
+}
+
+<!--<div class="section">
+    @foreach (JsonQuestion q in Model.jsonQuestions)
+    {
+        <div class="panel panel-body">
+            <h4>@q.Description</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    Quiz question
+                </dt>
+
+                @if (q.Type == 1)
+                {
+                <dd>
+                    @q.Text
+                </dd>
+                }
+                else{ 
+                <dd>
+                    @Html.Image(q.Picture)
+                </dd>
+                }
+            </dl>
+        </div>
+
+     }        
+</div>
+        <div>
+            <a href="https://blog.mariusschulz.com/2014/02/05/passing-net-server-side-data-to-javascript">Link to javascript/json serialization to send data</a>
+            <div id="consume">
+                Nothing yet
+            </div>
+            <div id="target">Click here</div>
+        </div>-->

@@ -208,6 +208,7 @@
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\JavaScriptConverter.cs" />
+    <Compile Include="ViewModels\JsonQuestion.cs" />
     <Compile Include="Migrations\201710301915339_inital.cs" />
     <Compile Include="Migrations\201710301915339_inital.Designer.cs">
       <DependentUpon>201710301915339_inital.cs</DependentUpon>
@@ -265,6 +266,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\quizScript.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config" />
@@ -340,6 +342,7 @@
     <Content Include="Views\ClassQuizs\Edit.cshtml" />
     <Content Include="Views\ClassQuizs\Index.cshtml" />
     <Content Include="Views\DynamicTesting\Take.cshtml" />
+    <Content Include="Views\DynamicTesting\GetQuestion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
