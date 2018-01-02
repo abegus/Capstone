@@ -13,17 +13,26 @@ namespace Capstone.ViewModels
         [Key]
         public String key = "1";
 
+        //for storing in view...
+        public string studentId { get; set; }
+        public string classId { get; set; }
+        public string quizId { get; set; }
+
+        //for who knows what...?
         public Student student;
-        public Class cla;
-        public Quiz quiz;
-        public ClassQuiz cq;
+        public Class cla { get; set; }
+        public Quiz quiz {get;set;}
+        public ClassQuiz cq { get; set; }
 
         //id's of all questions in an index;
-        public string[] questionIds;
+        public string[] questionIds { get; set; }
+        // answers for all of the questions
+        public int[] answers { get; set; } // -1 for incomplete, 0 for incorrect answer, 1 for correct answer
+
         //all of the questions
-        public List<Question> questions;
+        public List<Question> questions { get; set; }
         //all of the questions to use in the view
-        public List<JsonQuestion> jsonQuestions;
+        public List<JsonQuestion> jsonQuestions { get; set; }
 
     }
 }

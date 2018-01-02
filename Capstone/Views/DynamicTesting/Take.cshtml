@@ -11,6 +11,53 @@
     ViewBag.Title = "Take";
 }
 
+@using (Html.BeginForm("Take", "DynamicTesting", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="DataContent" style="display:none">
+        @for (int i = 0; i < Model.answers.Length; i++)
+        {
+            @Html.EditorFor(m => Model.answers[i])
+            <!--<div id="data @i">@Model.answers[i]</div>-->
+        }
+    </div>
+    <div class="form-group" style="display:none">
+            @Html.EditorFor(model => model.classId, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group" style="display:none">
+        @Html.EditorFor(model => model.studentId, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group" style="display:none">
+        @Html.EditorFor(model => model.quizId, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    
+    <div class="form-group" style="display:none">
+        @Html.EditorFor(model => model.cq, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div id="" style="display:none">
+        @for (int i = 0; i < Model.questionIds.Length; i++)
+        {
+            @Html.EditorFor(m => Model.questionIds[i])
+        }
+    </div>
+
+    <div class="form-group" style="display:none">
+        @Html.EditorFor(model => model.cla, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group" style="display:none">
+        @Html.EditorFor(model => model.quiz, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+    <div class="form-group" style="display:none">
+        @Html.EditorFor(model => model.student, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Take" class="btn btn-default" />
+        </div>
+    </div>
+}
+
 <h2>Take Quiz</h2>
 <dl class="dl-horizontal">
     <dt>Class</dt>
@@ -28,26 +75,58 @@
     </div>
     <input id="btnPrevAjax" name="btnPrevAjax" type="button" value="Previous Question" />
     <input id="btnNextAjax" name="btnNextAjax" type="button" value="Next Question" />
-    <div id="PrevIndex">-2</div>
-    <div id="NextIndex" >0</div>
+    <input id="CorrectAnswer" name="CorrectAnswer" type="button" value="Correct" />
+    <input id="IncorrectAnswer" name="IncorrectAnswer" type="button" value="Incorrect" />
+    <div id="CurIndex">-1</div>
     <div id="indexStatus"></div>
     <div id="questionResult" style="background-color:lightskyblue"></div>
 </div>
 
-<div>3c39e89d-9716-4509-b560-39a14e97cb35</div>
+
+
 @section Scripts {
     <script>
+        jQuery(function () {
+            jQuery('#btnNextAjax').click();
+        });
+
+        $('#CorrectAnswer').click(function () {
+            //var nextIndex = $('#NextIndex').html();
+            var curIndex = parseInt($('#CurIndex').html(), 10);
+            AjaxRequest(curIndex, 1, false, 1); // +1 for next index modifier, 1 for correct answer, false for no skip question
+        });
+
+        $('#IncorrectAnswer').click(function () {
+            //var nextIndex = $('#NextIndex').html();
+            var curIndex = parseInt($('#CurIndex').html(), 10);
+            AjaxRequest(curIndex, 1, false, 0); // -1 for next index modifier, 0 for incorrect answer, false for no skip question
+        });
 
         $('#btnNextAjax').click(function () {
-            var nextIndex = $('#NextIndex').html();
-            var curIndex = parseInt($('#NextIndex').html(), 10) - 1;
-            var myArray = [];
+            //var nextIndex = $('#NextIndex').html();
+            var curIndex = parseInt($('#CurIndex').html(), 10);
+            AjaxRequest(curIndex, 1, true, null);
+        });
 
+        $('#btnPrevAjax').click(function () {
+            //var nextIndex = $('#NextIndex').html();
+            var curIndex = parseInt($('#CurIndex').html(), 10);
+            AjaxRequest(curIndex, -1, true, null);
+        });
+
+        function AjaxRequest(index, modifier, skip, answer) {
+            //preliminary data gathering for Answers and Questions
+            var myArray = [];
             @foreach (var d in Model.questionIds)
             {
                 @:myArray.push("@d");
             }
-            if (nextIndex < myArray.length) {
+
+            //get the next questions index
+            var nextIndex = index + modifier;
+            var incrementedIndex = index + 1;
+
+            if (nextIndex < myArray.length && nextIndex >= 0) {
                 var DEST = "/DynamicTesting/GetQuestion/" + myArray[nextIndex];
                 $.ajax({
                     url: DEST,
@@ -57,89 +136,36 @@
 
                 })
                     .success(function (result) {
-                        $("#NextIndex").html(parseInt($('#NextIndex').html(), 10) + 1);
-                        $("#PrevIndex").html(parseInt($('#PrevIndex').html(), 10) + 1);
+                        $("#CurIndex").html(nextIndex);
                         $('#questionResult').html(result);
-                        $('#questionResult').previous("seen previous");
-                        $("#indexStatus").html("Question:"+curIndex+"/"+myArray.length);
+                        var technicalIndex = nextIndex + 1;
+                        $("#indexStatus").html("Question:" + technicalIndex + "/" + myArray.length);
+
+                        //IF it wasn't a skip, update the answer
+                        if (!skip) {
+                            if (parseInt(answer) == 0) {
+                                $("#DataContent input:nth-child(" + incrementedIndex + ")").attr("value", '0');
+                            }
+                            if (answer == 1) {
+                                $("#DataContent input:nth-child(" + incrementedIndex + ")").attr("value", '1');
+                            }
+                        }
                     })
                     .error(function (xhr, status) {
                         alert(status);
                     })
             }
             else {
+                if (!skip) {
+                    if (parseInt(answer) == 0)
+                        $("#DataContent input:nth-child(" + incrementedIndex + ")").attr("value", '0');
+                    if (answer == 1)
+                        $("#DataContent input:nth-child(" + incrementedIndex + ")").attr("value", '1');
+                }
                 $("#indexStatus").html("End Of Quiz");
             }
-
-        });
-
-        $('#btnPrevAjax').click(function () {
-            var prevIndex = $('#PrevIndex').html();
-            var curIndex = parseInt($('#PrevIndex').html(), 10) +1;
-            var myArray = [];
-
-            @foreach (var d in Model.questionIds)
-            {
-                @:myArray.push("@d");
-            }
-            if (prevIndex >= 0) {
-                var DEST = "/DynamicTesting/GetQuestion/" + myArray[prevIndex];
-                $.ajax({
-                    url: DEST,
-                    contentType: 'application/html; charset=utf-8',
-                    type: 'GET',
-                    dataType: 'html'
-
-                })
-                    .success(function (result) {
-                        $("#PrevIndex").html(parseInt($('#PrevIndex').html(), 10) - 1);
-                        $("#NextIndex").html(parseInt($('#NextIndex').html(), 10) - 1);
-                        $('#questionResult').html(result);
-                        $("#indexStatus").html("Question:" + curIndex + "/" + myArray.length);
-                    })
-                    .error(function (xhr, status) {
-                        alert(status);
-                    })
-            }
-            else {
-                $("#indexStatus").html("Question:" + curIndex + "/" + myArray.length);
-            }
-
-        });
+        }
     </script>
 }
 
-<!--<div class="section">
-    @foreach (JsonQuestion q in Model.jsonQuestions)
-    {
-        <div class="panel panel-body">
-            <h4>@q.Description</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    Quiz question
-                </dt>
 
-                @if (q.Type == 1)
-                {
-                <dd>
-                    @q.Text
-                </dd>
-                }
-                else{ 
-                <dd>
-                    @Html.Image(q.Picture)
-                </dd>
-                }
-            </dl>
-        </div>
-
-     }        
-</div>
-        <div>
-            <a href="https://blog.mariusschulz.com/2014/02/05/passing-net-server-side-data-to-javascript">Link to javascript/json serialization to send data</a>
-            <div id="consume">
-                Nothing yet
-            </div>
-            <div id="target">Click here</div>
-        </div>-->
