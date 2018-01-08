@@ -25,11 +25,12 @@ namespace Capstone.Controllers
 
             var userid = User.Identity.GetUserId();
             //db.
-            var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == false select cl ;
+            var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == true select cl ;
             //any() == false models a NOT EXISTS
             //var b = 2;
-           // 
-            return View(db.Classes.ToList());
+            // 
+            //return View(db.Classes.ToList());
+            return View(x.ToList());
         }
 
         // GET: Classes/Advanced/5
@@ -74,19 +75,7 @@ namespace Capstone.Controllers
 
             return View(vm);
         }
-
-        //GET: Classes/AddQuiz
-       /* public ActionResult AddQuiz(ManageClassViewModel vm)
-        {
-            if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login", "Account");
-
-            if (vm == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            return View(vm);
-        }*/
+        
 
         //POST for Advanced, need this if dynamic creation
 
@@ -138,7 +127,13 @@ namespace Capstone.Controllers
                     Name = @class.Name,
                     SchoolName = @class.SchoolName
                 };
+                Teach t = new Teach
+                {
+                    UserId = User.Identity.GetUserId(),
+                    ClassId = newClass.Id
+                };
                 db.Classes.Add(newClass);
+                db.Teaches.Add(t);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -6,28 +6,24 @@
     ViewBag.Title = "GetQuestion";
 }
 
-<h2>GetQuestion</h2>
 
-<div class="panel panel-body">
-    <h4>@Model.Description</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Quiz question
-        </dt>
+<div class="panel panel-body col-sm-12" style="padding:0">
+    <div class="help-tip" style="margin:10px;">
+        <p>Description: @Model.Description <br />Answer: @Model.Answer</p>
+    </div>
 
         @if (Model.Type == 1)
         {
-            <dd>
+            <div>
                 @Model.Text
-            </dd>
+            </div>
         }
         else
         {
-            <dd>
+            <div class="wrapper" style="border:none">
+                <span class="for-image"></span>
                 @Html.Image(Model.Picture)
-            </dd>
+            </div>
         }
-    </dl>
 </div>
 

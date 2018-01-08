@@ -7,7 +7,7 @@
 <h2>Students progress in @Model.currentQuiz.Name</h2>
 
 <div>
-    <table>
+    <table class="table">
         <tr>
             <th>Student Name</th><th>Questions Answered</th><th>Completed</th><th>Actions</th>
         </tr>
@@ -18,10 +18,15 @@
                     @item.Key.First  @item.Key.Last
                 </td>
                 <td>
-                    @item.Value / ?
+                    @item.Value[0] / @item.Value[1]
                 </td>
                 <td>
-                    completed?
+                    @if (item.Value[0] >= item.Value[1]) {
+                        <div>Yes</div>
+                    }
+                    else{ 
+                        <div>No</div>
+                    }
                 </td>
                 <td>
                     @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.currentClass.Id, quizId = Model.currentQuiz.Id, studentId = item.Key.Id }, null) |

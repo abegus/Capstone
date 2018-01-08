@@ -32,24 +32,35 @@ namespace Capstone.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            ClassQuizOverview viewModel = new ClassQuizOverview();
-            viewModel.studentAttempts = new Dictionary<Student, int>();
-            viewModel.currentClass = db.Classes.Find(classId);
-            viewModel.currentQuiz = db.Quizs.Find(quizId);
-            var classQuiz = db.ClassQuizs.Find(quizId, classId);
-            var students = viewModel.currentClass.Students;
+            ClassQuizOverview viewModel = constructModel(classId, quizId);
 
+            return View(viewModel);
+        }
+
+        public ClassQuizOverview constructModel(string classId, string quizId)
+        {
+            ClassQuizOverview vm = new ClassQuizOverview();
+            vm.studentAttempts = new Dictionary<Student, int[]>(); //an array storing the number of attempts / the total size of the quiz
+            vm.currentClass = db.Classes.Find(classId);
+            vm.currentQuiz = db.Quizs.Find(quizId);
+            var classQuiz = db.ClassQuizs.Find(quizId, classId);
+            var students = vm.currentClass.Students;
+
+            int quizSize = vm.currentQuiz.Questions.Count();
             //grab a count of all attempts for a given Student in the class for that given class quiz. This will be mapped to the dictionary
             //for the given student.
-            foreach(var stud in students)
+            foreach (var stud in students)
             {
                 var numAttempts = (from answer in db.Answers
                                    where answer.ClassQuiz.QuizId == quizId && answer.ClassQuiz.ClassId == classId && answer.StudentId == stud.Id
                                    select answer).Count();
-                viewModel.studentAttempts.Add(stud, numAttempts);
+                int[] tuple = { numAttempts, quizSize };
+                vm.studentAttempts.Add(stud, tuple);
             }
 
-            return View(viewModel);
+
+            return vm;
         }
     }
+    
 }

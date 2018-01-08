@@ -11,77 +11,95 @@
     ViewBag.Title = "Take";
 }
 
-@using (Html.BeginForm("Take", "DynamicTesting", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <div id="DataContent" style="display:none">
-        @for (int i = 0; i < Model.answers.Length; i++)
-        {
-            @Html.EditorFor(m => Model.answers[i])
+
+<div class="col-sm-12">
+    <h3 class="col-sm-12">@Model.quiz.Name - @Model.student.First @Model.student.Last</h3>
+</div>
+<div class="panel panel-default container" style="padding:0; border:none">
+    <div class="page-header" style="margin:0; padding:0; ">
+        <div class="input-group col-md-12" ">
+            <div class="input-group-append">
+                
+                <input id="btnPrevAjax" class="btn btn-primary col-sm-3" name="btnPrevAjax" type="button" value="Previous Question" />
+                <input id="btnNextAjax" class="btn btn-primary col-sm-3" name="btnNextAjax" type="button" value="Next Question" />
+                <input id="CorrectAnswer" class="btn btn-primary col-sm-3" name="CorrectAnswer" type="button" value="Correct" />
+                <input id="IncorrectAnswer" class="btn btn-primary col-sm-3" name="IncorrectAnswer" type="button" value="Incorrect" />
+            </div>
+        </div>
+
+    </div>
+    <div class="panel-body" style="padding:0; border:1px solid #eeeeee; border-top-left-radius: 15px; border-top-right-radius:15px;" >
+        <div id="CurIndex">-1</div>
+        <div id="indexStatus"></div>
+        <div id="questionResult"></div>
+        <div id="EndQuiz" style="display:none">
+            @using (Html.BeginForm("Take", "DynamicTesting", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div id="DataContent" style="display:none">
+                    @for (int i = 0; i < Model.answers.Length; i++)
+                    {
+                        @Html.EditorFor(m => Model.answers[i])
             <!--<div id="data @i">@Model.answers[i]</div>-->
-        }
-    </div>
-    <div class="form-group" style="display:none">
-            @Html.EditorFor(model => model.classId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class="form-group" style="display:none">
-        @Html.EditorFor(model => model.studentId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class="form-group" style="display:none">
-        @Html.EditorFor(model => model.quizId, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    
-    <div class="form-group" style="display:none">
-        @Html.EditorFor(model => model.cq, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div id="" style="display:none">
-        @for (int i = 0; i < Model.questionIds.Length; i++)
-        {
-            @Html.EditorFor(m => Model.questionIds[i])
-        }
-    </div>
+                    }
+                </div>
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.classId, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.studentId, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.quizId, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
 
-    <div class="form-group" style="display:none">
-        @Html.EditorFor(model => model.cla, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class="form-group" style="display:none">
-        @Html.EditorFor(model => model.quiz, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-    <div class="form-group" style="display:none">
-        @Html.EditorFor(model => model.student, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.cq, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div id="" style="display:none">
+                    @for (int i = 0; i < Model.questionIds.Length; i++)
+                    {
+                        @Html.EditorFor(m => Model.questionIds[i])
+                    }
+                </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Take" class="btn btn-default" />
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.cla, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.quiz, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="form-group" style="display:none">
+                    @Html.EditorFor(model => model.student, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Complete Quiz" class="btn btn-default" />
+                    </div>
+                </div>
+
+            }
+
         </div>
     </div>
-}
+</div>
 
-<h2>Take Quiz</h2>
-<dl class="dl-horizontal">
-    <dt>Class</dt>
-    <dd>@Model.cla.Name</dd>
-    <dt>Student</dt>
-    <dd>@Model.student.First @Model.student.Last</dd>
-    <dt>Quiz</dt>
-    <dd>@Model.quiz.Name</dd>
-</dl>
+
+
+
+
 
 
 <div style="width:600px; margin-left:auto; margin-right:auto">
-    <div style="background-color: lightgray">
-        <h2>My Products</h2>
-    </div>
-    <input id="btnPrevAjax" name="btnPrevAjax" type="button" value="Previous Question" />
-    <input id="btnNextAjax" name="btnNextAjax" type="button" value="Next Question" />
-    <input id="CorrectAnswer" name="CorrectAnswer" type="button" value="Correct" />
-    <input id="IncorrectAnswer" name="IncorrectAnswer" type="button" value="Incorrect" />
-    <div id="CurIndex">-1</div>
-    <div id="indexStatus"></div>
-    <div id="questionResult" style="background-color:lightskyblue"></div>
+   
+    
 </div>
 
+
+
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css">
 
 
 @section Scripts {
@@ -136,6 +154,8 @@
 
                 })
                     .success(function (result) {
+
+                        $("#EndQuiz").attr("style", "display:none");
                         $("#CurIndex").html(nextIndex);
                         $('#questionResult').html(result);
                         var technicalIndex = nextIndex + 1;
@@ -162,7 +182,8 @@
                     if (answer == 1)
                         $("#DataContent input:nth-child(" + incrementedIndex + ")").attr("value", '1');
                 }
-                $("#indexStatus").html("End Of Quiz");
+                $("#questionResult").html("");
+                $("#EndQuiz").attr("style", "display:block");
             }
         }
     </script>

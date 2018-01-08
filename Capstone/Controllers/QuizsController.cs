@@ -23,7 +23,9 @@ namespace Capstone.Controllers
 
             //changing this temporarily because core standards dont exist yet
             //var quizs = db.Quizs;
-            var quizs = db.Quizs.Include(q => q.CoreStandard);
+            var userId = User.Identity.GetUserId();
+            var quizs = from qui in db.Quizs where qui.AspNetUser.Id == userId select qui;
+           // var quizs = db.Quizs.Include(q => q.CoreStandard);
             return View(quizs.ToList());
         }
 
