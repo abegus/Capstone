@@ -208,6 +208,7 @@
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\JavaScriptConverter.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\JsonQuestion.cs" />
     <Compile Include="Migrations\201710301915339_inital.cs" />
     <Compile Include="Migrations\201710301915339_inital.Designer.cs">
@@ -261,6 +262,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.fittext.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

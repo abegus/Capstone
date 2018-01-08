@@ -1,39 +1,47 @@
-﻿@{
+﻿@model Capstone.ViewModels.HomeViewModel
+
+@{
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Assessment Software</h1>
-    <p class="lead">All in one class management, quiz creation, teacher collaboration, and assessment software that will help you spend more time teaching.</p>
-    <p><a href="https://github.com/abegus" class="btn btn-primary btn-lg">Github &raquo;</a></p>
+<div class="row-fluid">
+    <h2 style="display: inline-block !important; margin-right:15px;">
+        @Model.clas.Name - @Model.clas.SchoolName
+    </h2>
+    @Html.ActionLink("Change Default Class", "What", "Model", new { classId = Model.clas.Id }, null)
 </div>
 
-<div class="container">
-    
-    <div class="col-sm-4">
-        <h3>
-            Create Custom Quizzes
-        </h3>
-        <p>The <a>Quiz</a> module gives you the ability to create your own quizzes that you can use to individually test your students.
-        Once you create a quiz, you can then add it to your Class to use!</p>
-    </div>
-    <div class="col-sm-4">
-        <h3>
-            Virtualize Your Class
-        </h3>
-        <p>
-            Recreate your classroom in the <a>Class</a> module. This module allows you to:
-        </p>
-        <ul>
-            <li>Create multiple classes</li>
-            <li>Add and Manage students</li>
-            <li>Email Parents</li>
-        </ul>
-    </div>
-    <div class="col-sm-3">
-        <h3>
-            Test Your Students
-        </h3>
-        <p>Once you have added a Quiz to your class, test them one on one to record their information.</p>
+<div class="container panel panel-default">
+    <div class="panel-body">
+        <div class="col-sm-3">
+            <h3>Students</h3>
+            <ul class="list-group">
+                @foreach (var stud in Model.clas.Students)
+                {
+
+                    <li class="list-group-item">
+                        <a>@stud.First @stud.Last</a>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-sm-9">
+            <div class="row-fluid">
+
+                <h3 style="display: inline-block !important; margin-right:15px;">Class Quizzes</h3>
+                @Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { classId = Model.clas.Id }, null)
+            </div>
+            @for (int i = 0; i < Model.quizzes.Length; i++)
+            {
+               
+                <div class="col-sm-3 panel panel-default">
+                    <div class="panel-body">
+                        <p>@Model.quizzes[i].Name</p>
+
+                        @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = Model.quizzes[i].Id, classId = Model.clas.Id }, null)
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

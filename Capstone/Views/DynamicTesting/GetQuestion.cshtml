@@ -7,14 +7,14 @@
 }
 
 
-<div class="panel panel-body col-sm-12" style="padding:0">
-    <div class="help-tip" style="margin:10px;">
+<div class="panel panel-body col-sm-12" style="padding:0; margin:0">
+    <div class="help-tip" style="margin:5px;">
         <p>Description: @Model.Description <br />Answer: @Model.Answer</p>
     </div>
 
         @if (Model.Type == 1)
         {
-            <div>
+            <div id="fit1" style="text-align:center; padding-bottom:50px">
                 @Model.Text
             </div>
         }
@@ -26,4 +26,10 @@
             </div>
         }
 </div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="~/Scripts/jquery.fittext.js"></script>
+<script>
+    jQuery("#fit1").fitText();
+</script>
 
