@@ -27,7 +27,7 @@ namespace Capstone.Controllers
 
             //if there exists a class that they teach, grab it, otherwise redirect them to create a class
             if(classIds.Length < 1) {
-                return RedirectToAction("Classes", "Index");
+                return RedirectToAction("Index", "Classes");
             }
 
             HomeViewModel vm = new HomeViewModel();

@@ -51,9 +51,14 @@ namespace Capstone.Controllers
             //for the given student.
             foreach (var stud in students)
             {
-                var numAttempts = (from answer in db.Answers
+                //pre change
+                /*var numAttempts = (from answer in db.Answers
                                    where answer.ClassQuiz.QuizId == quizId && answer.ClassQuiz.ClassId == classId && answer.StudentId == stud.Id
-                                   select answer).Count();
+                                   select answer).Count();*/
+                var numAttempts = (from qa in db.QuizAttempts
+                                   where qa.QuizId == quizId && qa.ClassId == classId && qa.StudentId == stud.Id
+                                   select qa).Count();
+
                 int[] tuple = { numAttempts, quizSize };
                 vm.studentAttempts.Add(stud, tuple);
             }

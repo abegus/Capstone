@@ -77,11 +77,38 @@ namespace Capstone.Controllers
 
             if (ModelState.IsValid)
             {
+                ClassQuiz cq = db.ClassQuizs.Find(vm.quizId, vm.classId);
+
+                QuizAttempt qa = new QuizAttempt()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    QuizId = vm.quizId,
+                    ClassId = vm.cla.Id,
+                    ClassQuiz = cq,
+                    date = DateTime.UtcNow.Date,
+                    StudentId = vm.studentId,
+                    Student = db.Students.Find(vm.studentId),
+                    numCorrect = 0,
+                    toalQuestions = 0
+                };
+
+                db.QuizAttempts.Add(qa);
+
                 int index = 0;
                 foreach(var que in vm.questionIds)
                 {
-                    ClassQuiz cq = db.ClassQuizs.Find(vm.quizId, vm.classId);
                     Answer ans = new Answer()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        QuestionId = que,
+                        Question = db.Questions.Find(que),
+                        AttemptId = qa.Id,
+                        QuizAttempt = qa,
+                        Correct = vm.answers[index],
+                        Date = DateTime.UtcNow.Date,
+                        Notes = ""
+                    };
+                    /*Answer ans = new Answer()
                     {
                         Id = Guid.NewGuid().ToString(),
                         QuestionId = que,
@@ -93,7 +120,7 @@ namespace Capstone.Controllers
                         Correct = vm.answers[index],
                         Date = DateTime.UtcNow.Date,
                         ClassQuiz = cq
-                    };
+                    };*/
 
                     db.Answers.Add(ans);
                     index++;

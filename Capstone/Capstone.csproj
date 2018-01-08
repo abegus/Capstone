@@ -192,7 +192,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AnswersController.cs" />
     <Compile Include="Controllers\ClassesController.cs" />
     <Compile Include="Controllers\ClassQuizsController.cs" />
     <Compile Include="Controllers\CoreStandardsController.cs" />
@@ -208,21 +207,14 @@
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\JavaScriptConverter.cs" />
-    <Compile Include="ViewModels\HomeViewModel.cs" />
-    <Compile Include="ViewModels\JsonQuestion.cs" />
-    <Compile Include="Migrations\201710301915339_inital.cs" />
-    <Compile Include="Migrations\201710301915339_inital.Designer.cs">
-      <DependentUpon>201710301915339_inital.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711160235330_errors.cs" />
-    <Compile Include="Migrations\201711160235330_errors.Designer.cs">
-      <DependentUpon>201711160235330_errors.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712131903158_ownershiptoquizandquestion.cs" />
-    <Compile Include="Migrations\201712131903158_ownershiptoquizandquestion.Designer.cs">
-      <DependentUpon>201712131903158_ownershiptoquizandquestion.cs</DependentUpon>
+    <Compile Include="Migrations\201801082052091_test.cs" />
+    <Compile Include="Migrations\201801082052091_test.Designer.cs">
+      <DependentUpon>201801082052091_test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\QuizAttempt.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\JsonQuestion.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Advanced\AdvancedClass.cs" />
     <Compile Include="Models\Answer.cs" />
@@ -333,11 +325,6 @@
     <Content Include="Views\Questions\Index.cshtml" />
     <Content Include="Views\Quizs\Advanced.cshtml" />
     <Content Include="Views\Overview\Index.cshtml" />
-    <Content Include="Views\Answers\Create.cshtml" />
-    <Content Include="Views\Answers\Delete.cshtml" />
-    <Content Include="Views\Answers\Details.cshtml" />
-    <Content Include="Views\Answers\Edit.cshtml" />
-    <Content Include="Views\Answers\Index.cshtml" />
     <Content Include="Views\ClassQuizs\Create.cshtml" />
     <Content Include="Views\ClassQuizs\Delete.cshtml" />
     <Content Include="Views\ClassQuizs\Details.cshtml" />
@@ -363,14 +350,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201710301915339_inital.resx">
-      <DependentUpon>201710301915339_inital.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711160235330_errors.resx">
-      <DependentUpon>201711160235330_errors.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712131903158_ownershiptoquizandquestion.resx">
-      <DependentUpon>201712131903158_ownershiptoquizandquestion.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801082052091_test.resx">
+      <DependentUpon>201801082052091_test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -12,7 +12,7 @@ namespace Capstone.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ClassQuiz()
         {
-            Answers = new HashSet<Answer>();
+            QuizAttempts = new HashSet<QuizAttempt>();
         }
 
         [Key]
@@ -26,7 +26,7 @@ namespace Capstone.Models
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<QuizAttempt> QuizAttempts { get; set; }
 
         public virtual Class Class { get; set; }
 

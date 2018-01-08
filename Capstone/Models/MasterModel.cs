@@ -8,7 +8,7 @@ namespace Capstone.Models
     public partial class MasterModel : DbContext
     {
         public MasterModel()
-            : base("name=ClassModel")
+            : base("name=NewCapstoneModel")
         {
         }
 
@@ -22,6 +22,10 @@ namespace Capstone.Models
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Table> Tables { get; set; }
         public virtual DbSet<Teach> Teaches { get; set; }
+
+        //added QuizAttempt in between (ClassQuiz, Student) <== QuizAttempt <== Answer ==> Question
+        //from                         (ClassQuiz, Student) <== Answer ==> Question
+        public virtual DbSet<QuizAttempt> QuizAttempts { get; set; }
 
         //added for many to many relationship
         //public virtual DbSet<QuestionQuizs> QuestionQuizs { get; set; }
@@ -50,18 +54,24 @@ namespace Capstone.Models
             modelBuilder.Entity<Class>()
                 .HasMany(e => e.ClassQuizs)
                 .WithRequired(e => e.Class)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Class>()
                 .HasMany(e => e.Teaches)
                 .WithRequired(e => e.Class)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ClassQuiz>()
+                .HasMany(e => e.QuizAttempts)
+                .WithRequired(e => e.ClassQuiz)
+                .HasForeignKey(e => new { e.QuizId, e.ClassId })
+                .WillCascadeOnDelete(true);
+
+            /*modelBuilder.Entity<ClassQuiz>()
                 .HasMany(e => e.Answers)
                 .WithRequired(e => e.ClassQuiz)
                 .HasForeignKey(e => new { e.QuizId, e.ClassId })
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(false);*/
 
             /*modelBuilder.Entity<QuestionQuizs>()
                 .HasMany(e => e.Answers)
@@ -88,7 +98,7 @@ namespace Capstone.Models
             modelBuilder.Entity<Question>()
                 .HasMany(e => e.Answers)
                 .WithRequired(e => e.Question)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Quiz>()
                 .HasMany<Question>(s => s.Questions)
@@ -116,9 +126,15 @@ namespace Capstone.Models
                 .WillCascadeOnDelete(true); //changed from false;
 
             modelBuilder.Entity<Student>()
-                .HasMany(e => e.Answers)
+                .HasMany(e => e.QuizAttempts)
                 .WithRequired(e => e.Student)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<QuizAttempt>()
+                .HasMany(e => e.Answers)
+                .WithRequired(e => e.QuizAttempt)
+                .WillCascadeOnDelete(true);
         }
+
     }
 }

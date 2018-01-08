@@ -15,26 +15,35 @@ namespace Capstone.Models
 
         public DateTime Date { get; set; }
 
+        public string Notes {get;set;}
+
         [Required]
         [StringLength(128)]
         public string QuestionId { get; set; }
 
         [Required]
         [StringLength(128)]
-        public string QuizId { get; set; }
-
-        [Required]
-        [StringLength(128)]
-        public string ClassId { get; set; }
-
-        [Required]
-        [StringLength(128)]
-        public string StudentId { get; set; }
-
-        public virtual ClassQuiz ClassQuiz { get; set; }
+        public string AttemptId { get; set; }
 
         public virtual Question Question { get; set; }
 
-        public virtual Student Student { get; set; }
+        public virtual QuizAttempt QuizAttempt { get; set; }
+
+        /* [Required]
+         [StringLength(128)]
+         public string QuizId { get; set; }
+
+         [Required]
+         [StringLength(128)]
+         public string ClassId { get; set; }
+
+         [Required]
+         [StringLength(128)]
+         public string StudentId { get; set; }
+
+         public virtual ClassQuiz ClassQuiz { get; set; }*/
+
+
+        // public virtual Student Student { get; set; }
     }
 }

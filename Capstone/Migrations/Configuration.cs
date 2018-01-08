@@ -5,14 +5,14 @@ namespace Capstone.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Capstone.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Capstone.Models.MasterModel>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Capstone.Models.ApplicationDbContext context)
+        protected override void Seed(Capstone.Models.MasterModel context)
         {
             //  This method will be called after migrating to the latest version.
 
