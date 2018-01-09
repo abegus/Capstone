@@ -1,0 +1,28 @@
+﻿@model Capstone.Models.Student
+
+<div>
+    <h4>@Model.First @Model.Last</h4>
+    <hr />
+    <p>
+        Most Recent Quiz Attempts
+    </p>
+    <dl class="dl-horizontal">
+        @foreach (var cq in Model.Class.ClassQuizs)
+        {
+            <dt>@cq.Quiz.Name</dt>
+            foreach (var qa in cq.QuizAttempts)
+            {
+                if (qa.StudentId == Model.Id)
+                {
+                    <dd>@qa.numCorrect / @cq.Quiz.Questions.Count()</dd>
+
+                }
+            }
+        }
+    </dl>
+    
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

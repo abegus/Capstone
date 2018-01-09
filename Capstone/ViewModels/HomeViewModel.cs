@@ -10,5 +10,7 @@ namespace Capstone.ViewModels
     {
         public Class clas { get; set; }
         public Quiz[] quizzes { get; set; }
+
+        public ClassQuiz[] classQuizzes { get; set; }
     }
 }

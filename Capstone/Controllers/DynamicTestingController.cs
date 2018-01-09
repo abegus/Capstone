@@ -92,7 +92,9 @@ namespace Capstone.Controllers
                     toalQuestions = 0
                 };
 
-                db.QuizAttempts.Add(qa);
+                
+
+                int numCorrect = 0;
 
                 int index = 0;
                 foreach(var que in vm.questionIds)
@@ -108,29 +110,23 @@ namespace Capstone.Controllers
                         Date = DateTime.UtcNow.Date,
                         Notes = ""
                     };
-                    /*Answer ans = new Answer()
+
+                    if(ans.Correct == 1)
                     {
-                        Id = Guid.NewGuid().ToString(),
-                        QuestionId = que,
-                        Question = db.Questions.Find(que),
-                        StudentId = vm.studentId,
-                        QuizId = vm.quizId,
-                        Student = db.Students.Find(vm.studentId),
-                        ClassId = vm.cla.Id,
-                        Correct = vm.answers[index],
-                        Date = DateTime.UtcNow.Date,
-                        ClassQuiz = cq
-                    };*/
+                        numCorrect++;
+                    }
 
                     db.Answers.Add(ans);
                     index++;
                 }
+                qa.numCorrect = numCorrect;
+                db.QuizAttempts.Add(qa);
                 db.SaveChanges();
 
-                return RedirectToAction("Advanced", "Classes", new { id = vm.cla.Id });
+                return RedirectToAction("Index", "Home", new { });
             }
 
-            return RedirectToAction("Advanced", "Classes", new { id = vm.cla.Id });
+            return RedirectToAction("Index", "Home", new {  });
         }
 
         public PartialViewResult GetQuestion(string id)

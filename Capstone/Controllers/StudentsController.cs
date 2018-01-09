@@ -36,6 +36,14 @@ namespace Capstone.Controllers
             return View(student);
         }
 
+        /* partial Modal view returned in Home Index */
+        public PartialViewResult Overview(string id)
+        {
+            Student s = db.Students.Find(id);
+
+            return PartialView(s);
+        }
+
         // GET: Students/Create
         public ActionResult Create(String classId)
         {

@@ -4,12 +4,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Students progress in @Model.currentQuiz.Name</h2>
+<h2>@Model.currentQuiz.Name - Progress</h2>
 
 <div>
     <table class="table">
         <tr>
-            <th>Student Name</th><th>Questions Answered</th><th>Completed</th><th>Actions</th>
+            <th>Student Name</th><th>Attempts</th><th>Completed</th><th>Actions</th>
         </tr>
         @foreach(var item in Model.studentAttempts)
         {
@@ -18,20 +18,18 @@
                     @item.Key.First  @item.Key.Last
                 </td>
                 <td>
-                    @item.Value[0] / @item.Value[1]
+                    @item.Value[0] <!--/ item.Value[1]-->
                 </td>
                 <td>
-                    @if (item.Value[0] >= item.Value[1]) {
-                        <div>Yes</div>
+                    @if (item.Value[0] >= 1) {
+                        <div style="color:green">Yes</div>
                     }
                     else{ 
-                        <div>No</div>
+                        <div style="color:red">No</div>
                     }
                 </td>
                 <td>
-                    @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.currentClass.Id, quizId = Model.currentQuiz.Id, studentId = item.Key.Id }, null) |
-                    @Html.ActionLink("Resume Quiz", "Advanced", "DynamicTesting", new { Id = item.Key.Id }, null) |
-                    @Html.ActionLink("Retake Quiz", "Delete", "DynamicTesting", new { quizId = item.Key.Id, classId = Model.currentClass.Id }, null)
+                    @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.currentClass.Id, quizId = Model.currentQuiz.Id, studentId = item.Key.Id }, null) 
                 </td>
             </tr>
         }

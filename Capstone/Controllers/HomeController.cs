@@ -34,13 +34,14 @@ namespace Capstone.Controllers
             //get the first class and load all the data (TEMPORARY AS THE DEFAULT) because I haven't implemented a default class yet...
             vm.clas = db.Classes.Find(classIds[0]);
             vm.quizzes = new Quiz[vm.clas.ClassQuizs.Count];
+            vm.classQuizzes = new ClassQuiz[vm.clas.ClassQuizs.Count];
             int index = 0;
             foreach(var cq in vm.clas.ClassQuizs)
             {
+                
                 vm.quizzes[index] = cq.Quiz;
                 index++;
             }
-
 
             return View( vm);
         }
