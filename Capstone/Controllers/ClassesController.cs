@@ -21,11 +21,11 @@ namespace Capstone.Controllers
         public ActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Login", "Account");
 
             var userid = User.Identity.GetUserId();
             //db.
-            var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == true select cl ;
+            var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == true select cl;
             //any() == false models a NOT EXISTS
             //var b = 2;
             // 
@@ -45,13 +45,13 @@ namespace Capstone.Controllers
             }
             ManageClassViewModel vm = new ManageClassViewModel();
             //BrowseViewModel bm = new BrowseViewModel();
-            
+
             Class @class = db.Classes.Find(id);
 
             var students = @class.Students;
             List<Quiz> quizzes = new List<Quiz>();
-            
-            foreach(var cq in @class.ClassQuizs)
+
+            foreach (var cq in @class.ClassQuizs)
             {
                 quizzes.Add((from q in db.Quizs where q.Id == cq.QuizId select q).FirstOrDefault());
             }
@@ -60,11 +60,11 @@ namespace Capstone.Controllers
             vm.quizzes = quizzes;
             vm.students = students;
 
-           // bm.currentClass = @class;
+            // bm.currentClass = @class;
             //bm.quizzes = quizzes;
 
             //vm.browseModel = bm;
-            
+
 
 
             if (@class == null)
@@ -75,7 +75,7 @@ namespace Capstone.Controllers
 
             return View(vm);
         }
-        
+
 
         //POST for Advanced, need this if dynamic creation
 
@@ -132,6 +132,14 @@ namespace Capstone.Controllers
                     UserId = User.Identity.GetUserId(),
                     ClassId = newClass.Id
                 };
+
+                //if the User doesn't have a default class, set this class as their default:
+                var user = db.AspNetUsers.Find(User.Identity.GetUserId());
+                if (user.DefaultClassId == null)
+                {
+                    user.DefaultClassId = newClass.Id;
+                }
+
                 db.Classes.Add(newClass);
                 db.Teaches.Add(t);
                 db.SaveChanges();
@@ -178,6 +186,42 @@ namespace Capstone.Controllers
             }
             return View(@class);
         }
+
+        // GET: Classes/ChangeDefault/5
+        public ActionResult ChangeDefault()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var userid = User.Identity.GetUserId();
+            var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == true select cl;
+            if (x == null)
+            {
+                return HttpNotFound();
+            }
+            DefaultClassViewModel vm = new DefaultClassViewModel();
+            vm.select = new SelectList(x, "Id", "Name", 1);
+            vm.classId = "-1";
+            //vm.Classes = x;
+
+            return View(vm);
+        }
+
+        // POST: Classes/ChangeDefault/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeDefault(string classId)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+            var user = db.AspNetUsers.Find(User.Identity.GetUserId());
+            user.DefaultClassId = classId;
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
 
         // GET: Classes/Delete/5
         public ActionResult Delete(string id)

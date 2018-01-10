@@ -8,7 +8,7 @@
     <h2 style="display: inline-block !important; margin-right:15px;">
         @Model.clas.Name - @Model.clas.SchoolName
     </h2>
-    @Html.ActionLink("Change Default Class", "What", "Model", new { classId = Model.clas.Id }, null)
+    @Html.ActionLink("Change Default Class", "ChangeDefault", "Classes", new { classId = Model.clas.Id }, null)
 </div>
 
 

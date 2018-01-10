@@ -31,8 +31,19 @@ namespace Capstone.Controllers
             }
 
             HomeViewModel vm = new HomeViewModel();
-            //get the first class and load all the data (TEMPORARY AS THE DEFAULT) because I haven't implemented a default class yet...
-            vm.clas = db.Classes.Find(classIds[0]);
+            AspNetUser u = db.AspNetUsers.Find(userId);
+            Class c = db.Classes.Find(u.DefaultClassId);
+
+            //get the default class if it exists,
+            if (c != null)
+            {
+                vm.clas = c;
+            }
+            //OR get the first class returned by the database
+            else
+            {
+                vm.clas = db.Classes.Find(classIds[0]);
+            }
             vm.quizzes = new Quiz[vm.clas.ClassQuizs.Count];
             vm.classQuizzes = new ClassQuiz[vm.clas.ClassQuizs.Count];
             int index = 0;

@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201801082052091_test.Designer.cs">
       <DependentUpon>201801082052091_test.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801101704340_adding DefaultClassId.cs" />
+    <Compile Include="Migrations\201801101704340_adding DefaultClassId.Designer.cs">
+      <DependentUpon>201801101704340_adding DefaultClassId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -333,6 +337,7 @@
     <Content Include="Views\DynamicTesting\Take.cshtml" />
     <Content Include="Views\DynamicTesting\GetQuestion.cshtml" />
     <Content Include="Views\Students\Overview.cshtml" />
+    <Content Include="Views\Classes\ChangeDefault.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -353,6 +358,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801082052091_test.resx">
       <DependentUpon>201801082052091_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801101704340_adding DefaultClassId.resx">
+      <DependentUpon>201801101704340_adding DefaultClassId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

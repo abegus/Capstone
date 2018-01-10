@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Capstone.Models;
 using System.Collections;
+using System.Web.Mvc;
 
 namespace Capstone.ViewModels
 {
@@ -23,6 +24,13 @@ namespace Capstone.ViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string Id { get; set; }*/
+    }
+
+    public class DefaultClassViewModel
+    {
+        public string classId { get; set; }
+        public IEnumerable<Class> Classes { get; set; }
+        public SelectList select { get; set; }
     }
 
     public class ManageClassViewModel
