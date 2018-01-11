@@ -47,7 +47,20 @@ namespace Capstone.Controllers
         }
 
         // GET: Questions/Create
-        public ActionResult Create(String QuizId)
+        public PartialViewResult Create(string QuizId)
+        {
+            QuestionViewModel ques = new QuestionViewModel();
+            ques.QuizId = QuizId;
+            ques.UserId = User.Identity.GetUserId();
+
+            ViewBag.FileError = "";
+            ViewBag.quizId = QuizId;
+            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
+            return PartialView(ques);
+        }
+
+        // GET: Questions/Create
+        /*public ActionResult Create(String QuizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -60,7 +73,7 @@ namespace Capstone.Controllers
             ViewBag.quizId = QuizId;
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
             return View(ques);
-        }
+        }*/
 
 
         // POST: Questions/Create

@@ -7,6 +7,29 @@
 
 <h2>Quiz Overview</h2>
 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Question</h4>
+            </div>
+            <div id="ModalPopup" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <div class="panel panel-default">
     <div class="panel panel-body">
         <h4>Quiz Details</h4>
@@ -46,9 +69,7 @@
         <div class="col-sm-2">
             <h4>Quiz Questions</h4>
         </div>
-        <div class="col-sm-4" style="margin-bottom:15px;">
-            @Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, new { @class = "btn btn-primary" })
-        </div>
+        <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary" >Add Question</a></p>
          <table class="table" id="StudentTable">
             <tr>
                 <th>Description</th>
@@ -92,10 +113,43 @@
 
         <!--<button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>-->
         <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
-        @Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, new { @class = "btn btn-primary" })
+        <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary">Add Question</a></p>
     </div>
     </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+
+@section Scripts{
+    <script>
+        $('.NewQuestionButton').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var test = "@Model.Id.ToString()";
+            //alert(test);
+
+            if (event.target.id != null) {
+                var DEST = "/Questions/Create?QuizId=" + test;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#ModalPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+    </script>
+}
