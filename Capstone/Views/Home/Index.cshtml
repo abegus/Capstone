@@ -55,7 +55,7 @@
                 }
             </ul>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 container">
             <div class="row-fluid">
 
                 <h3 style="display: inline-block !important; margin-right:15px;">Class Quizzes</h3>
@@ -63,25 +63,40 @@
                 @Html.ActionLink("Create New Quiz", "Create", "Quizs", new {  }, null) | 
                 @Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { classId = Model.clas.Id }, null)
             </div>
-            @foreach (var cq in Model.clas.ClassQuizs)
+            @for (int i = 0; i < Model.clas.ClassQuizs.Count(); i++)
             {
-                <div class="col-sm-3 panel panel-default">
-                    <div class="panel-body">
-                        <p style="font-weight:bolder">@cq.Quiz.Name</p>
+                <div class="row">
+                @for (int j = i + 4; i < j && i < Model.clas.ClassQuizs.Count(); i++)
+                {
+                    <div class="col-sm-3 panel panel-default item" style="padding:0px;font-weight:bolder;">
+                        <div class="panel-heading">@Model.clas.ClassQuizs.ElementAt(i).Quiz.Name</div>
+                        <div class="panel-body">
+                            <p>
+                                Attempts: @Model.clas.ClassQuizs.ElementAt(i).QuizAttempts.Count() <br />
+                                Students: @Model.clas.Students.Count()
+                            </p>
 
-                        <p>
-                             Attempts: @cq.QuizAttempts.Count() <br />
-                             Students: @Model.clas.Students.Count()
-                        </p>
-
-                        @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = cq.Quiz.Id, classId = Model.clas.Id }, null)
+                            @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = @Model.clas.ClassQuizs.ElementAt(i).Quiz.Id, classId = Model.clas.Id }, null)
+                        </div>
                     </div>
+                }
                 </div>
             }
         </div>
     </div>
 </div>
 
+<style>
+    .row {
+        display: table;
+    }
+
+        .row [class*="col-"] {
+            float: none;
+            display: table-cell;
+            vertical-align: top;
+        }
+</style>
 
 
 @section Scripts{
