@@ -107,22 +107,22 @@ namespace Capstone.Controllers
         }
 
         // GET: Quizs/Edit/5
-        public ActionResult Edit(string id)
+        public PartialViewResult Edit(string id)
         {
-            if (!User.Identity.IsAuthenticated)
+            /*if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            /*if (quiz == null)
             {
                 return HttpNotFound();
-            }
+            }*/
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
-            return View(quiz);
+            return PartialView(quiz);
         }
 
         // POST: Quizs/Edit/5
@@ -139,28 +139,28 @@ namespace Capstone.Controllers
             {
                 db.Entry(quiz).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Advanced", "Quizs", new { id = quiz.Id });
             }
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
             return View(quiz);
         }
 
         // GET: Quizs/Delete/5
-        public ActionResult Delete(string id)
-        {
+        public PartialViewResult Delete(string id)
+        {/*
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+            /*if (quiz == null)
             {
                 return HttpNotFound();
-            }
-            return View(quiz);
+            }*/
+            return PartialView(quiz);
         }
 
         // POST: Quizs/Delete/5

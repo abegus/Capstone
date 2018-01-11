@@ -127,7 +127,7 @@ namespace Capstone.Controllers
                 db.ClassQuizs.Add(classQuiz);
                 db.SaveChanges();
 
-                return RedirectToAction("Advanced", "Classes", new { id = classQuiz.ClassId });
+                return RedirectToAction("Index", "Home");
                 // RedirectToAction("Index");
             }
 

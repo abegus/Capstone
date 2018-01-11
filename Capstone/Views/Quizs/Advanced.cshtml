@@ -33,6 +33,8 @@
 <div class="panel panel-default">
     <div class="panel panel-body">
         <h4>Quiz Details</h4>
+        <a id="@Model.Id" class="EditButton btn btn-primary">Edit</a>
+        <a id="@Model.Id" class="DeleteButton btn btn-primary">Delete</a>
         <hr />
         <dl class="dl-horizontal">
             <dt>
@@ -101,9 +103,8 @@
                         }</td>
                         <td>@item.Answer</td>
                         <td>
-                            <!--Edit too??? not for now-->
-                            @Html.ActionLink("Edit", "Edit", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, new { @class = "btn btn-primary" })
-                            @Html.ActionLink("Delete", "Delete", "Questions", new { Id = item.Id, quizId = ViewBag.quizId }, new { @class = "btn btn-primary" })
+                            <a id="@item.Id" class="EditQuestionButton btn btn-primary">Edit</a>
+                            <a id="@item.Id" class="DeleteQuestionButton btn btn-primary">Delete</a>
 
                         </td>
                     </tr>
@@ -117,13 +118,68 @@
     </div>
     </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 
 
 @section Scripts{
     <script>
+         $('.EditButton').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var quizId = "@Model.Id.ToString()";
+            //alert(test);
+
+            if (event.target.id != null) {
+                var DEST = "/Quizs/Edit/" + quizId;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#ModalPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+
+        $('.DeleteButton').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var quizId = "@Model.Id.ToString()";
+            //alert(test);
+
+            if (event.target.id != null) {
+                var DEST = "/Quizs/Delete/" + quizId;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#ModalPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+
         $('.NewQuestionButton').click(function (event) {
             //preliminary data gathering for Answers and Questions
             var test = "@Model.Id.ToString()";
@@ -131,6 +187,64 @@
 
             if (event.target.id != null) {
                 var DEST = "/Questions/Create?QuizId=" + test;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#ModalPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+
+        $('.EditQuestionButton').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var questionId = event.target.id;
+            var quizId = "@Model.Id.ToString()";
+            //alert(test);
+
+            if (event.target.id != null) {
+                var DEST = "/Questions/Edit/"+questionId+"?QuizId=" + quizId;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#ModalPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+
+        $('.DeleteQuestionButton').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var questionId = event.target.id;
+            var quizId = "@Model.Id.ToString()";
+            //alert(test);
+
+            if (event.target.id != null) {
+                var DEST = "/Questions/Delete/"+questionId+"?QuizId=" + quizId;
                 $.ajax({
                     url: DEST,
                     contentType: 'application/html; charset=utf-8',

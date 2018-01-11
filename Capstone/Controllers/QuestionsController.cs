@@ -163,23 +163,23 @@ namespace Capstone.Controllers
         }
 
         // GET: Questions/Edit/5
-        public ActionResult Edit(string id, string quizId)
+        public PartialViewResult Edit(string id, string quizId)
         {
-            if (!User.Identity.IsAuthenticated)
+            /*if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             Question question = db.Questions.Find(id);
-            if (question == null)
+            /*if (question == null)
             {
                 return HttpNotFound();
-            }
+            }*/
             ViewBag.quizId = quizId;
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
-            return View(question);
+            return PartialView(question);
         }
 
         // POST: Questions/Edit/5
@@ -231,22 +231,22 @@ namespace Capstone.Controllers
         }
 
         // GET: Questions/Delete/5
-        public ActionResult Delete(string id, string quizId)
+        public PartialViewResult Delete(string id, string quizId)
         {
-            if (!User.Identity.IsAuthenticated)
+            /*if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             ViewBag.quizId = quizId;
             Question question = db.Questions.Find(id);
-            if (question == null)
+            /*if (question == null)
             {
                 return HttpNotFound();
-            }
-            return View(question);
+            }*/
+            return PartialView(question);
         }
 
         // POST: Questions/Delete/5

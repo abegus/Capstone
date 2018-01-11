@@ -30,7 +30,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
-        <th></th>
+        <th>
+            Actions
+        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -46,8 +48,6 @@
         </td>
         <td>
             @Html.ActionLink("Select", "Advanced", new { id = item.Id }, new { @class = "btn btn-primary" }) 
-            @Html.ActionLink("Edit Quiz Info", "Edit", new { id=item.Id }, new { @class = "btn btn-primary" }) 
-            @Html.ActionLink("Delete Quiz", "Delete", new { id=item.Id }, new { @class = "btn btn-primary" })
         </td>
     </tr>
 }
