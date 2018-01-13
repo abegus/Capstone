@@ -45,7 +45,7 @@ namespace Capstone.Controllers
         }
 
         // GET: Students/Create
-        public ActionResult Create(String classId)
+        public PartialViewResult Create(String classId)
         {
             //do this to maintain the student to class relationship for a backtrack
             Student student = new Student();
@@ -54,7 +54,7 @@ namespace Capstone.Controllers
 
   
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
-            return View(student);
+            return PartialView(student);
         }
 
         // POST: Students/Create
@@ -79,19 +79,19 @@ namespace Capstone.Controllers
         }
 
         // GET: Students/Edit/5
-        public ActionResult Edit(string id)
+        public PartialViewResult Edit(string id)
         {
-            if (id == null)
+            /*if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             Student student = db.Students.Find(id);
-            if (student == null)
+           /* if (student == null)
             {
                 return HttpNotFound();
-            }
+            }*/
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", student.ClassId);
-            return View(student);
+            return PartialView(student);
         }
 
         // POST: Students/Edit/5
@@ -112,18 +112,18 @@ namespace Capstone.Controllers
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(string id)
+        public PartialViewResult Delete(string id)
         {
-            if (id == null)
+            /*(if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             Student student = db.Students.Find(id);
-            if (student == null)
+            /*if (student == null)
             {
                 return HttpNotFound();
-            }
-            return View(student);
+            }*/
+            return PartialView(student);
         }
 
         // POST: Students/Delete/5

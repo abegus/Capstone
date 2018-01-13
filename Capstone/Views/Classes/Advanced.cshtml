@@ -28,6 +28,11 @@
         </dd>
 
     </dl>
+
+    @Html.ActionLink("Edit Class Info", "Edit", new { id = Model.currentClass.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete Class", "Delete", new { id = Model.currentClass.Id }, new { @class = "btn btn-primary" })
+
+    <hr />
     <table class="table" id="StudentTable">
         <tr>
             <th>First Name</th> <th>Last Name</th><th>Parent Email</th><th>Action</th>
@@ -39,6 +44,8 @@
                 <td>
                     @Html.ActionLink("Edit","Edit","Students", new { Id = item.Id}, null) |
                     @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)
+                    <a id="@item.Id" class="EditStudent btn btn-primary">Edit</a>
+                    <a id="@item.Id" class="DeleteStudent btn btn-primary">Delete</a>
                 </td>
             </tr>
         }
@@ -50,61 +57,125 @@
         and then on submit, do an ajax post and then remove the dynmically created elements.
         
         In the StudentCreate controller method, I would want to return a partial view instead.-->
-    <button class="btn btn-primary">@Html.ActionLink("Add Student", "Create", "Students", new { classId = Model.currentClass.Id }, null)</button>
+
+    <a class="AddStudent btn btn-primary" id="AddStudent">Add Student</a>
 </div>
 
 <br />
 
-<div>
-    <table class="table" id="QuizTable">
-        <tr>
-            <th>Quiz Name</th>
-            <th>Quiz Description</th>
-            <th>Core Standard</th>
-            <th>Action</th>
-        </tr>
-        @foreach (var item in Model.quizzes)
-        {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.Description</td>
-                <td>@item.CoreStandard.Name</td>
-                <td>
-                    @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = item.Id, classId = Model.currentClass.Id }, null) |
-                    @Html.ActionLink("Details", "Advanced", "Quizs", new { Id = item.Id }, null) |
-                    @Html.ActionLink("Remove Quiz", "Delete", "ClassQuizs", new { quizId = item.Id, classId = Model.currentClass.Id }, null)
-                </td>
-            </tr>
-        }
-    </table>
-
-    <!--<button class="btn btn-primary">Html.ActionLink("Add Quiz to Class", "AddQuiz", "Classes", new { classId = Model.currentClass.Id }, null)</button>-->
-    <button class="btn btn-primary">@Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new {  classId = Model.currentClass.Id }, null)</button>
-</div>
-
-<br /><br />
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.currentClass.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Student Overview</h4>
+            </div>
+            <div id="StudentPopup" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
      
+@section Scripts{
+    <script>
+         $('.EditStudent').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var studentId = event.target.id;
+            var classId = "@Model.currentClass.Id.ToString()";
+            //alert(test);
 
-<script>
-    function addRow() {
-        /*document.getElementById("AddField").innerHTML = "YOU CLICKED ME!";
-        var parent = document.getElementById("StudentSection");
-        var node = document.createElement("div");
-        var nameBox = document.createElement("textarea");
-        parent.appendChild(node);
-        parent.appendChild(nameBox);*/
-        var table = document.getElementById("StudentTable");
-        var tbody = table.firstChild();
-        var row = document.createElement("tr");
-        var firstTd = document.createElement("td");
-        var first = firstTd.appendChild(document.createElement());
-        tbody.addRow();
-    }
-</script>
+            if (event.target.id != null) {
+                var DEST = "/Students/Edit/"+studentId;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#StudentPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+
+        $('.DeleteStudent').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            var studentId = event.target.id;
+
+            //alert(test);
+
+            if (event.target.id != null) {
+                var DEST = "/Students/Delete/" + studentId;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#StudentPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#ModalPopup").html("");
+            }
+        });
+
+        $('#AddStudent').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            //alert(event.target.id);
+            var classId = "@Model.currentClass.Id.ToString()";
+
+            if (event.target.id != null) {
+                var DEST = "/Students/Create?classId=" + classId;
+                    $.ajax({
+                        url: DEST,
+                        contentType: 'application/html; charset=utf-8',
+                        type: 'GET',
+                        dataType: 'html'
+
+                    })
+                        .success(function (result) {
+                            $("#StudentPopup").html(result);
+                            $("#myModal").modal()
+
+                        })
+                        .error(function (xhr, status) {
+                            alert(status);
+                        })
+            }
+            else {
+                $("#StudentPopup").html("");
+            }
+        });
+    </script>
+}
