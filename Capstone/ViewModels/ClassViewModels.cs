@@ -39,7 +39,7 @@ namespace Capstone.ViewModels
 
         public List<Quiz> quizzes { get; set; }
 
-        public ICollection<Student> students { get; set; }
+        public IEnumerable<Student> students { get; set; }
 
         public BrowseViewModel browseModel { get; set; }
     }

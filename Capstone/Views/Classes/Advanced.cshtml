@@ -35,7 +35,14 @@
     <hr />
     <table class="table" id="StudentTable">
         <tr>
-            <th>First Name</th> <th>Last Name</th><th>Parent Email</th><th>Action</th>
+            <th>First Name</th> 
+            <th>
+                Last Name
+                @Html.ActionLink("Last Name", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.NameSortParm })
+            </th>
+            <th>Parent Email
+            @Html.ActionLink("Attempts", "Advanced", new { id =Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })</th>
+            <th>Action</th>
         </tr>
         @foreach (var item in Model.students)
         {

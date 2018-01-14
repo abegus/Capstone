@@ -34,7 +34,7 @@ namespace Capstone.Controllers
         }
 
         // GET: Classes/Advanced/5
-        public ActionResult Advanced(string id)
+        public ActionResult Advanced(string id, string sortOrder)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -46,32 +46,34 @@ namespace Capstone.Controllers
             ManageClassViewModel vm = new ManageClassViewModel();
             //BrowseViewModel bm = new BrowseViewModel();
 
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.AttemptSortParm = sortOrder == "attempts_asc" ? "attempts_desc" : "attempts_asc";
+
             Class @class = db.Classes.Find(id);
-
-            var students = @class.Students;
-            List<Quiz> quizzes = new List<Quiz>();
-
-            foreach (var cq in @class.ClassQuizs)
-            {
-                quizzes.Add((from q in db.Quizs where q.Id == cq.QuizId select q).FirstOrDefault());
-            }
-
             vm.currentClass = @class;
-            vm.quizzes = quizzes;
-            vm.students = students;
-
-            // bm.currentClass = @class;
-            //bm.quizzes = quizzes;
-
-            //vm.browseModel = bm;
-
-
+            vm.students = @class.Students;
 
             if (@class == null)
             {
                 return HttpNotFound();
             }
-            //return View(@class);
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    vm.students = vm.students.OrderByDescending(s => s.Last);
+                    break;
+                case "attempts_asc":
+                    vm.students = vm.students.OrderBy(s => s.QuizAttempts);
+                    break;
+                case "attempts_desc":
+                    vm.students = vm.students.OrderByDescending(s => s.QuizAttempts);
+                    break;
+                default:
+                    //name_asc
+                    vm.students = vm.students.OrderBy(s => s.Last);
+                    break;
+            }
 
             return View(vm);
         }
