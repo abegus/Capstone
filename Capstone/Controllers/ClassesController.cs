@@ -33,6 +33,19 @@ namespace Capstone.Controllers
             return View(x.ToList());
         }
 
+        // GET: Classes/Analysis/
+        public ActionResult Analysis()
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            var user = db.AspNetUsers.Find(User.Identity.GetUserId());
+
+            Class c = db.Classes.Find(user.DefaultClassId);
+            //c.Students = c.Students.OrderBy(s => s.Last);
+            return View(c);
+        }
+
         // GET: Classes/Advanced/5
         public ActionResult Advanced(string id, string sortOrder)
         {

@@ -1,0 +1,64 @@
+﻿@model Capstone.Models.Class
+
+@{
+    ViewBag.Title = "Analysi";
+}
+
+<h2>Analysis</h2>
+
+<div>
+    <h4>Class</h4>
+    <hr />
+    <table class="table">
+        <tr id="QuizRow">
+            <th>Student</th>
+            @foreach(var cq in Model.ClassQuizs)
+            {
+                <th id="@cq.Quiz.Id">@cq.Quiz.Name</th>
+            }
+        </tr>
+        @foreach(var stud in Model.Students)
+        {
+            <tr>
+                <td>@stud.First @stud.Last</td>
+                @foreach(var cq in Model.ClassQuizs)
+                {
+                    <td>
+                        @if (cq.QuizAttempts.Where(q => q.StudentId == stud.Id).Count() > 0)
+                        {
+                            @cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().numCorrect<span> / @cq.Quiz.Questions.Count()</span>
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.Id, quizId = cq.Quiz.Id, studentId = stud.Id }, null)
+                        }
+                        
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+
+    <!--<dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SchoolName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SchoolName)
+        </dd>
+
+    </dl>-->
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

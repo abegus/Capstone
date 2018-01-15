@@ -338,6 +338,7 @@
     <Content Include="Views\DynamicTesting\GetQuestion.cshtml" />
     <Content Include="Views\Students\Overview.cshtml" />
     <Content Include="Views\Classes\ChangeDefault.cshtml" />
+    <Content Include="Views\Classes\Analysis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
