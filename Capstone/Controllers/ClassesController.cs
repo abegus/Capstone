@@ -42,7 +42,8 @@ namespace Capstone.Controllers
             var user = db.AspNetUsers.Find(User.Identity.GetUserId());
 
             Class c = db.Classes.Find(user.DefaultClassId);
-            //c.Students = c.Students.OrderBy(s => s.Last);
+
+            c.Students = c.Students.OrderBy(s => s.Last).ToList();
             return View(c);
         }
 

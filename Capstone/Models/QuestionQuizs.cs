@@ -23,6 +23,8 @@ namespace Capstone.Models
         [Column(Order = 1)]
         public string Question_Id { get; set; }
 
+        public int QuestionIndex { get; set; }
+
         public virtual Question Question { get; set; }
 
         public virtual Quiz Quiz { get; set; }

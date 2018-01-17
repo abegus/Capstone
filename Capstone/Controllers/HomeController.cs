@@ -33,6 +33,7 @@ namespace Capstone.Controllers
             HomeViewModel vm = new HomeViewModel();
             AspNetUser u = db.AspNetUsers.Find(userId);
             Class c = db.Classes.Find(u.DefaultClassId);
+            c.Students = c.Students.OrderBy(s => s.Last).ToList();
 
             //get the default class if it exists,
             if (c != null)
