@@ -29,15 +29,13 @@
 </div>
 
 
-<ul id="sortable">
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li>
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 5</li>
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 6</li>
-    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 7</li>
-</ul>
+<div>
+    Thinking to auto send NextIndex along with create question so then it knows what index to set the question to.
+    After this, every question being created will already have an index, so it will be as simple as sorting by the index in the display.
+    Also, Do the rearanging of index in the javsacript (to update fields). I will have to have an async save post that sends all of the
+    data back (indexes to questions in the given quiz)...
+</div>
+<a href="https://www.codeproject.com/Tips/855577/List-of-Model-Object-Post-to-Controller-in-ASP-NET">How to do a post of a list of objects in MVC controller...</a>
 
 
 <div class="panel panel-default">
@@ -82,47 +80,58 @@
             <h4>Quiz Questions</h4>
         </div>
         <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary" >Add Question</a></p>
-         <table class="table" id="StudentTable">
+         <table class="ui-sortable table" id="tblLocations">
             <tr>
-                <th>Description</th>
+                <th>Question Index</th>
                 <th>Type</th>
                 <th>Question</th>
                 <th>Answer</th>
+                <th>Description</th>
                 <th>Action</th>
             </tr>
             @if (Model.Questions.Count > 0)
             {
-                foreach (var item in Model.Questions)
+                for (int i = 1; i < Model.Questions.Count() + 1; i++)
                 {
-                    <tr>
-                        <td>@item.Description</td>
-                        <td>@if (item.Type == 0)
-                        {
+                    <tr class="ui-state-default ui-sortable-handle" id="@i">
+                        <td class="index">
+                            <!--@Model.Questions.ElementAt(i-1).QuestionIndex-->
+                            @i
+                        </td>
+                        <td>
+                            @if (Model.Questions.ElementAt(i - 1).Type == 0)
+                            {
                             <div>Picture</div>
                         }
-                        @if (item.Type == 1)
+                        @if (Model.Questions.ElementAt(i - 1).Type == 1)
                         {
                             <div>Text</div>
-                        }</td>
-                        <td>@if (item.Type == 0)
-                        {
-                            @Html.Image(item.Picture);
                         }
-                        @if(item.Type == 1){
-                            @item.Text
-                        }</td>
-                        <td>@item.Answer</td>
+                            </td>
+                            <td>
+                                @if (Model.Questions.ElementAt(i - 1).Type == 0)
+                                {
+                                @Html.Image(Model.Questions.ElementAt(i - 1).Picture);
+                            }
+                            @if (Model.Questions.ElementAt(i - 1).Type == 1)
+                            {
+                                @Model.Questions.ElementAt(i - 1).Text
+                            }
+                        </td>   
+                        <td>@Model.Questions.ElementAt(i - 1).Answer</td>
+                        <td>@Model.Questions.ElementAt(i - 1).Description</td>
                         <td>
-                            <a id="@item.Id" class="EditQuestionButton btn btn-primary">Edit</a>
-                            <a id="@item.Id" class="DeleteQuestionButton btn btn-primary">Delete</a>
+                            <a id="@Model.Questions.ElementAt(i-1).Id" class="EditQuestionButton btn btn-primary">Edit</a>
+                            <a id="@Model.Questions.ElementAt(i-1).Id" class="DeleteQuestionButton btn btn-primary">Delete</a>
 
                         </td>
                     </tr>
                 }
+                
             }
         </table>
 
-        <!--<button class="btn btn-primary">@Html.ActionLink("Add Question", "Create", "Questions", new { QuizId = Model.Id }, null)</button>-->
+        @Html.ActionLink("Add Question test", "Create", "Questions", new { QuizId = Model.Id, NextIndex = Model.Questions.Count()+1 }, null)-->
         <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
         <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary">Add Question</a></p>
     </div>
@@ -134,11 +143,37 @@
 
 @section Scripts{
     <script>
-
         $(function () {
-            $("#sortable").sortable();
-            $("#sortable").disableSelection();
+            $("#tblLocations").sortable({
+                items: 'tr:not(tr:first-child)',
+                cursor: 'pointer',
+                axis: 'y',
+                dropOnEmpty: false,
+                start: function (e, ui) {
+                    ui.item.addClass("selected");
+                    ui.item.startPos = ui.item.index();
+                },
+                helper: fixHelperModified,
+                stop: updateIndex,
+                receive: function (e, ui) {
+                    $(this).find("tbody").append(ui.item);
+                }
+            });
         });
+        
+        var fixHelperModified = function (e, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width())
+            });
+            return $helper;
+        },
+            updateIndex = function (e, ui) {
+                $('td.index', ui.item.parent()).each(function (i) {
+                    $(this).html(i + 1);
+                });
+            };
 
         //
 
@@ -202,9 +237,11 @@
             //preliminary data gathering for Answers and Questions
             var test = "@Model.Id.ToString()";
             //alert(test);
+            var numQuestions = @Model.Questions.Count();
+            numQuestions++;
 
             if (event.target.id != null) {
-                var DEST = "/Questions/Create?QuizId=" + test;
+                var DEST = "/Questions/Create?QuizId=" + test+"&NextIndex="+numQuestions;
                 $.ajax({
                     url: DEST,
                     contentType: 'application/html; charset=utf-8',

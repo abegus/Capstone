@@ -40,6 +40,8 @@ namespace Capstone.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Quiz quiz = db.Quizs.Find(id);
+            quiz.Questions = quiz.Questions.OrderBy(q => q.QuestionIndex).ToList();
+                //.Students.OrderBy(s => s.Last).ToList(); 
             ViewBag.quizId = id;
             if (quiz == null)
             {

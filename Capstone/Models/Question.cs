@@ -18,6 +18,8 @@ namespace Capstone.Models
 
         public string Id { get; set; }
 
+        public int QuestionIndex { get; set; }
+
         //1 is TEXT   0 is PICTURE
         public int Type { get; set; }
 

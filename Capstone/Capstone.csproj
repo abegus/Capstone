@@ -219,6 +219,10 @@
     <Compile Include="Migrations\201801171826408_adding question indexes.Designer.cs">
       <DependentUpon>201801171826408_adding question indexes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801191648139_questionindex.cs" />
+    <Compile Include="Migrations\201801191648139_questionindex.Designer.cs">
+      <DependentUpon>201801191648139_questionindex.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -412,6 +416,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801171826408_adding question indexes.resx">
       <DependentUpon>201801171826408_adding question indexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801191648139_questionindex.resx">
+      <DependentUpon>201801191648139_questionindex.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -47,11 +47,13 @@ namespace Capstone.Controllers
         }
 
         // GET: Questions/Create
-        public PartialViewResult Create(string QuizId)
+        public PartialViewResult Create(string QuizId, int NextIndex)
         {
             QuestionViewModel ques = new QuestionViewModel();
             ques.QuizId = QuizId;
             ques.UserId = User.Identity.GetUserId();
+
+            ques.questionIndex = NextIndex;
 
             ViewBag.FileError = "";
             ViewBag.quizId = QuizId;
@@ -102,7 +104,8 @@ namespace Capstone.Controllers
                     Text = question.Text,
                     Description = question.Description,
                     StandardId = question.StandardId,
-                    UserId = User.Identity.GetUserId()
+                    UserId = User.Identity.GetUserId(),
+                    QuestionIndex = question.questionIndex
                    // Picture = data
 
                 };
