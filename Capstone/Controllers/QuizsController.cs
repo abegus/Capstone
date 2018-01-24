@@ -50,6 +50,24 @@ namespace Capstone.Controllers
             return View(quiz);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Advanced(Quiz quiz, IEnumerable<Question> questions)
+        {
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login", "Account");
+
+            if (ModelState.IsValid)
+            {
+                
+
+               // db.Quizs.Add(newQuiz);
+               // db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(quiz);
+        }
+
         // GET: Quizs/Details/5
         public ActionResult Details(string id)
         {

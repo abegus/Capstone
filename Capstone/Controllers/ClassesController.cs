@@ -24,12 +24,7 @@ namespace Capstone.Controllers
                 return RedirectToAction("Login", "Account");
 
             var userid = User.Identity.GetUserId();
-            //db.
             var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == true select cl;
-            //any() == false models a NOT EXISTS
-            //var b = 2;
-            // 
-            //return View(db.Classes.ToList());
             return View(x.ToList());
         }
 
