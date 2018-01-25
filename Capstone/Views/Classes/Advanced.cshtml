@@ -37,11 +37,10 @@
         <tr>
             <th>First Name</th> 
             <th>
-                Last Name
                 @Html.ActionLink("Last Name", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.NameSortParm })
             </th>
             <th>Parent Email
-            @Html.ActionLink("Attempts", "Advanced", new { id =Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })</th>
+                @Html.ActionLink("Quizzes Completed", "Advanced", new { id =Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })</th>
             <th>Action</th>
         </tr>
         @foreach (var item in Model.students)
@@ -49,8 +48,8 @@
             <tr>
                 <td>@item.First</td><td>@item.Last</td><td>@item.Email</td>
                 <td>
-                    @Html.ActionLink("Edit","Edit","Students", new { Id = item.Id}, null) |
-                    @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)
+                    <!--@Html.ActionLink("Edit","Edit","Students", new { Id = item.Id}, null) |
+                    @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)-->
                     <a id="@item.Id" class="EditStudent btn btn-primary">Edit</a>
                     <a id="@item.Id" class="DeleteStudent btn btn-primary">Delete</a>
                 </td>

@@ -23,8 +23,10 @@ namespace Capstone.Models
         public string Name { get; set; }
 
         [Required]
-        [StringLength(10)]
+        [StringLength(20)]
         public string Grade { get; set; }
+
+        public string Category { get; set; }
 
         public string Description { get; set; }
 

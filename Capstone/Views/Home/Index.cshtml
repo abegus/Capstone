@@ -61,23 +61,29 @@
                 <h3 style="display: inline-block !important; margin-right:15px;">Class Quizzes</h3>
 
                 @Html.ActionLink("Create New Quiz", "Create", "Quizs", new {  }, null) | 
-                @Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { classId = Model.clas.Id }, null)
+                @Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { classId = Model.clas.Id }, null) |
             </div>
-            @for (int i = 0; i < Model.clas.ClassQuizs.Count(); i++)
+            @for (int i = 0; i < Model.clas.ClassQuizs.Count(); i += 0)
             {
-                <div class="row">
-                @for (int j = i + 4; i < j && i < Model.clas.ClassQuizs.Count(); i++)
+                <div class="row col-sm-12">
+                @for (int j = i + 4; i < j ; i++)
                 {
                     <div class="col-sm-3 panel panel-default item" style="padding:0px;font-weight:bolder;">
-                        <div class="panel-heading">@Model.clas.ClassQuizs.ElementAt(i).Quiz.Name</div>
-                        <div class="panel-body">
-                            <p>
-                                Attempts: @Model.clas.ClassQuizs.ElementAt(i).QuizAttempts.Count() <br />
-                                Students: @Model.clas.Students.Count()
-                            </p>
+                        @if (i < Model.clas.ClassQuizs.Count())
+                        {
+                            <div class="panel-heading">
+                                @Model.clas.ClassQuizs.ElementAt(i).Quiz.Name
+                                @Html.ActionLink("X", "Delete", "ClassQuizs", new { classId = Model.clas.Id, quizId = @Model.clas.ClassQuizs.ElementAt(i).QuizId}, null)
+                            </div>
+                            <div class="panel-body">
+                                <p>
+                                    Attempts: @Model.clas.ClassQuizs.ElementAt(i).QuizAttempts.Count() <br />
+                                    Students: @Model.clas.Students.Count()
+                                </p>
 
-                            @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = @Model.clas.ClassQuizs.ElementAt(i).Quiz.Id, classId = Model.clas.Id }, null)
-                        </div>
+                                @Html.ActionLink("Take Quiz", "Index", "Overview", new { quizId = @Model.clas.ClassQuizs.ElementAt(i).Quiz.Id, classId = Model.clas.Id }, null)
+                            </div>
+                        }
                     </div>
                 }
                 </div>

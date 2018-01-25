@@ -46,10 +46,11 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Grade,Description")] CoreStandard coreStandard)
+        public ActionResult Create([Bind(Include = "Name,Grade,Category,Description")] CoreStandard coreStandard)
         {
             if (ModelState.IsValid)
             {
+                coreStandard.Id = Guid.NewGuid().ToString();
                 db.CoreStandards.Add(coreStandard);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,7 +79,7 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Grade,Description")] CoreStandard coreStandard)
+        public ActionResult Edit([Bind(Include = "Id,Name,Grade,Category,Description")] CoreStandard coreStandard)
         {
             if (ModelState.IsValid)
             {

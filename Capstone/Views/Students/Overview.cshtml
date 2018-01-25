@@ -17,7 +17,9 @@
             {
                 if (qa.StudentId == Model.Id)
                 {
-                    <dd>@qa.numCorrect / @cq.Quiz.Questions.Count()</dd>
+                    <dd>@qa.numCorrect / @cq.Quiz.Questions.Count() 
+                    @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = cq.QuizId, classId = Model.ClassId, studentId = Model.Id }, null)
+                    </dd>
 
                 }
             }

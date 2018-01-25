@@ -99,7 +99,6 @@
                             <td id="@Model.Questions.ElementAt(i-1).Id" style="display:none">
                                 @Model.Questions.ElementAt(i-1).Id
                             </td>
-                            <td> @Html.TextBox("[" + i + "].Id") </td>
                             <td class="index">
                                 <!--@Model.Questions.ElementAt(i - 1).QuestionIndex-->
                                 @i
@@ -137,7 +136,6 @@
                 }
             </table>
 
-            @Html.ActionLink("Add Question test", "Create", "Questions", new { QuizId = Model.Id, NextIndex = Model.Questions.Count() + 1 }, null)-->
             <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
             <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary">Add Question</a></p>
         </div>

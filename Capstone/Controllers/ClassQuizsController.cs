@@ -206,7 +206,7 @@ namespace Capstone.Controllers
             ClassQuiz classQuiz = db.ClassQuizs.Find(quizId,classId);
             db.ClassQuizs.Remove(classQuiz);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         protected override void Dispose(bool disposing)

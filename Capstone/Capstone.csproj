@@ -223,6 +223,10 @@
     <Compile Include="Migrations\201801191648139_questionindex.Designer.cs">
       <DependentUpon>201801191648139_questionindex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801251541467_category field in ccs.cs" />
+    <Compile Include="Migrations\201801251541467_category field in ccs.Designer.cs">
+      <DependentUpon>201801251541467_category field in ccs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -419,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801191648139_questionindex.resx">
       <DependentUpon>201801191648139_questionindex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801251541467_category field in ccs.resx">
+      <DependentUpon>201801251541467_category field in ccs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
