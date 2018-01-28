@@ -1,0 +1,124 @@
+﻿<!--model IEnumerable<Capstone.Models.Quiz>
+using Capstone.Models-->
+
+
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Capstone.Models.Quiz>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Community Quizzes</h2>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Quiz Details</h4>
+            </div>
+            <div id="StudentPopup" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <!--https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application-->
+    <p>
+        Find by Core Standard: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Quiz Name", "Index", new { sortOrder = ViewBag.NameSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Popular", "Index", new { sortOrder = ViewBag.PopularSortParm })
+        </th>
+        <th>
+            Core Standard
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @item.ClassQuizs.Count()
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CoreStandard.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("Add", "Create", "ClassQuizs", new { quizId = item.Id }, null) |
+            <a id="@item.Id" class="quizDetails">Details</a>
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+@section Scripts{
+    <script>
+        $('.quizDetails').click(function (event) {
+            //preliminary data gathering for Answers and Questions
+            //alert(event.target.id);
+
+            if (event.target.id != null) {
+                var DEST = "/Quizs/Details/" + event.target.id;
+                $.ajax({
+                    url: DEST,
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html'
+
+                })
+                    .success(function (result) {
+                        $("#StudentPopup").html(result);
+                        $("#myModal").modal()
+
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    })
+            }
+            else {
+                $("#StudentPopup").html("");
+            }
+        });
+    </script>
+}

@@ -69,21 +69,21 @@ namespace Capstone.Controllers
         }
 
         // GET: Quizs/Details/5
-        public ActionResult Details(string id)
+        public PartialViewResult Details(string id)
         {
-            if (!User.Identity.IsAuthenticated)
+            /*if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }*/
             Quiz quiz = db.Quizs.Find(id);
-            if (quiz == null)
+           /* if (quiz == null)
             {
                 return HttpNotFound();
-            }
-            return View(quiz);
+            }*/
+            return PartialView(quiz);
         }
 
         // GET: Quizs/Create

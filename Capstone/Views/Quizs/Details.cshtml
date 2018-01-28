@@ -1,14 +1,12 @@
 ﻿@model Capstone.Models.Quiz
+@using Capstone.Helpers
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
 <div>
-    <h4>Quiz</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.CoreStandard.Name)
@@ -35,8 +33,44 @@
         </dd>
 
     </dl>
+     <hr />
+    <table class="table">
+        <tr>
+            <th>Question Index</th>
+            <th>Type</th>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Description</th>
+        </tr>
+        @foreach(var item in Model.Questions)
+        {
+            <tr>
+                <td>
+                    @item.QuestionIndex
+                </td>
+                <td>
+                    @if (item.Type == 0)
+                    {
+                        <div>Picture</div>
+                    }
+                    @if (item.Type == 1)
+                    {
+                        <div>Text</div>
+                    }
+                </td>
+                <td>
+                    @if (item.Type == 0)
+                    {
+                        @Html.Image(item.Picture);
+                    }
+                    @if (item.Type == 1)
+                    {
+                        @item.Text
+                    }
+                </td>
+                <td>@item.Answer</td>
+                <td>@item.Description</td>
+            </tr>
+        }
+    </table>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

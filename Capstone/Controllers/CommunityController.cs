@@ -7,26 +7,74 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
-using Capstone.ViewModels;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace Capstone.Controllers
 {
-    public class ClassQuizsController : Controller
+    public class CommunityController : Controller
     {
         private MasterModel db = new MasterModel();
 
-        // GET: ClassQuizs
-        public ActionResult Index()
+        // GET: Community
+        //Index will serve as the browsing of the public quizzes that don't belong to the users class quizzes
+        public ActionResult Index(string sortOrder, string searchString, string currentFilter, int? page)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
+            
+            //get the user
+            var curUser = db.AspNetUsers.Find(User.Identity.GetUserId());
+            //get the default class
+            var defaultClass = db.Classes.Find(curUser.DefaultClassId);
+            //get all of the quizzes that aren't a part of the class defaultClass
+            IEnumerable<Quiz> publicQuizzes = (from quiz in db.Quizs
+                                 where !quiz.ClassQuizs.Any(cq => cq.ClassId == defaultClass.Id)//defaultClass.ClassQuizs.Contains(cq))
+                                 select quiz).AsEnumerable();
 
-            var classQuizs = db.ClassQuizs.Include(c => c.Class).Include(c => c.Quiz);
-            return View(classQuizs.ToList());
+            /* DO SORTING BASED ON: (1) Most popular.   (2) Core Standard.   (3) Keyword Search.    (4) ???   */
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.PopularSortParm = sortOrder == "popular_asc" ? "popular_desc" : "popular_asc";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                publicQuizzes = publicQuizzes.Where(s => s.CoreStandard.Name.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    publicQuizzes = publicQuizzes.OrderByDescending(s => s.Name);
+                    break;
+                case "popular_asc":
+                    publicQuizzes = publicQuizzes.OrderByDescending(s => s.ClassQuizs.Count());
+                    break;
+                case "popular_desc":
+                    publicQuizzes = publicQuizzes.OrderBy(s => s.ClassQuizs.Count());
+                    break;
+                default:
+                    publicQuizzes = publicQuizzes.OrderBy(s => s.Name);
+                    break;
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(publicQuizzes.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: ClassQuizs/Details/5
+        // GET: Community/Details/5
         public ActionResult Details(string id)
         {
             if (!User.Identity.IsAuthenticated)
@@ -44,95 +92,18 @@ namespace Capstone.Controllers
             return View(classQuiz);
         }
 
-        // GET: ClassQuizs/Create
-        //public ActionResult Create(BrowseViewModel bm)
-        public ActionResult Create(string classId, string quizId)
+        // GET: Community/Create
+        public ActionResult Create()
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var userId = User.Identity.GetUserId();
-            //THIS HANDLES 2 CASES: COMING FROM CLASS,     COMING FROM QUIZ
-
-            BrowseViewModel bm = new BrowseViewModel();
-
-            if(classId != null)
-            {
-                bm = CreateFromClass(classId,bm);
-               //get every quiz that isnt already in your class (that belongs to you FOR NOW. if I am going to change this, then make a browsing search that shows all of them).
-                List<Quiz> allUsersQuizzes = (from q in db.Quizs where q.UserId == userId select q).ToList();
-                if(bm.quizzes != null)
-                {
-                    List<Quiz> nonQuizzes = (allUsersQuizzes.Where(q => !bm.quizzes.Any(q2 => q2.Id == q.Id))).ToList();
-                    allUsersQuizzes = nonQuizzes;
-                }
-                List<Class> singleClass = new List<Class>();
-                singleClass.Add(bm.currentClass);
-                ViewBag.ClassId = new SelectList(singleClass, "Id", "Name");
-                ViewBag.QuizId = new SelectList(allUsersQuizzes, "Id", "Name");
-
-                //if there are no quizzes, then redirect to quiz creation
-                //CHANGE THIS IN THE FUTURE, IT IS A TEMPORARY FIX
-                if(allUsersQuizzes.Count < 1)
-                {
-                    return RedirectToAction("Create", "Quizs");
-                }
-                return View();
-            }
-
-            else
-            {
-                var quizToAdd = (from quiz in db.Quizs where quiz.Id == quizId select quiz);
-
-                if (quizToAdd != null)
-                {
-                    ViewBag.QuizId = new SelectList(quizToAdd, "Id", "Name");
-                }
-                else
-                {
-                    return RedirectToAction("Create", "Quizs");
-                }
-                var user = db.AspNetUsers.Find(User.Identity.GetUserId());
-                var curClass = from cla in db.Classes where cla.Id == user.DefaultClassId select cla;
-                if(curClass != null)
-                {
-                    ViewBag.ClassId = new SelectList(curClass, "Id", "Name");
-                }
-                else
-                {
-                    return RedirectToAction("Create", "Quizs");
-                }
-                return View();
-            }
-            
-
-
-            //ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
+            ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
             ViewBag.QuizId = new SelectList(db.Quizs, "Id", "Name");
             return View();
         }
 
-        private BrowseViewModel CreateFromQuiz(string quizId, BrowseViewModel bm)
-        {
-            return bm;
-        }
-
-        public BrowseViewModel CreateFromClass(string classId, BrowseViewModel bm)
-        {
-            Class @class = db.Classes.Find(classId);
-            List<Quiz> quizzes = new List<Quiz>();
-
-            foreach (var cq in @class.ClassQuizs)
-            {
-                quizzes.Add((from q in db.Quizs where q.Id == cq.QuizId select q).FirstOrDefault());
-            }
-
-            bm.currentClass = @class;
-            bm.quizzes = quizzes;
-            return bm;
-        }
-
-        // POST: ClassQuizs/Create
+        // POST: Community/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -146,9 +117,7 @@ namespace Capstone.Controllers
             {
                 db.ClassQuizs.Add(classQuiz);
                 db.SaveChanges();
-
-                return RedirectToAction("Index", "Home");
-                // RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
 
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name", classQuiz.ClassId);
@@ -156,7 +125,7 @@ namespace Capstone.Controllers
             return View(classQuiz);
         }
 
-        // GET: ClassQuizs/Edit/5
+        // GET: Community/Edit/5
         public ActionResult Edit(string id)
         {
             if (!User.Identity.IsAuthenticated)
@@ -176,7 +145,7 @@ namespace Capstone.Controllers
             return View(classQuiz);
         }
 
-        // POST: ClassQuizs/Edit/5
+        // POST: Community/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -197,17 +166,17 @@ namespace Capstone.Controllers
             return View(classQuiz);
         }
 
-        // GET: ClassQuizs/Delete/5
-        public ActionResult Delete(string quizId, string classId)
+        // GET: Community/Delete/5
+        public ActionResult Delete(string id)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            if (quizId == null || classId == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ClassQuiz classQuiz = db.ClassQuizs.Find(quizId,classId);
+            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
             if (classQuiz == null)
             {
                 return HttpNotFound();
@@ -215,18 +184,18 @@ namespace Capstone.Controllers
             return View(classQuiz);
         }
 
-        // POST: ClassQuizs/Delete/5
+        // POST: Community/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string quizId, string classId)
+        public ActionResult DeleteConfirmed(string id)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            ClassQuiz classQuiz = db.ClassQuizs.Find(quizId,classId);
+            ClassQuiz classQuiz = db.ClassQuizs.Find(id);
             db.ClassQuizs.Remove(classQuiz);
             db.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
