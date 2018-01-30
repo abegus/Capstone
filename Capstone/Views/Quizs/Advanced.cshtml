@@ -30,9 +30,7 @@
 
 
 <div>
-    Thinking to auto send NextIndex along with create question so then it knows what index to set the question to.
-    After this, every question being created will already have an index, so it will be as simple as sorting by the index in the display.
-    Also, Do the rearanging of index in the javsacript (to update fields). I will have to have an async save post that sends all of the
+    Do the rearanging of index in the javsacript (to update fields). I will have to have an async save post that sends all of the
     data back (indexes to questions in the given quiz)...
 </div>
 <a href="https://stackoverflow.com/questions/11531769/saving-many-to-many-relationship-data-on-mvc-create-view">How to do a post of a list of objects in MVC controller...</a>
@@ -141,7 +139,7 @@
         </div>
         </div>
 
-        <input type="submit" value="Submit" /> <br /><br />
+        <input class=" btn btn-default" type="submit" value="Update Order" /> <br /><br />
 }
 <p>
     @Html.ActionLink("Back to List", "Index")

@@ -34,9 +34,9 @@ namespace Capstone.Models
 
         public string Description { get; set; }
 
-        [Required]
-        [StringLength(128)]
-        public string StandardId { get; set; }
+       // [Required]
+       // [StringLength(128)]
+       // public string StandardId { get; set; }
 
 
 

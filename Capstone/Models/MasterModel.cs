@@ -83,11 +83,11 @@ namespace Capstone.Models
                 .Property(e => e.Grade)
                 .IsFixedLength();
 
-            modelBuilder.Entity<CoreStandard>()
+           /* modelBuilder.Entity<CoreStandard>()
                 .HasMany(e => e.Questions)
                 .WithRequired(e => e.CoreStandard)
                 .HasForeignKey(e => e.StandardId)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(false);*/
 
             modelBuilder.Entity<CoreStandard>()
                 .HasMany(e => e.Quizs)

@@ -103,7 +103,7 @@ namespace Capstone.Controllers
                     Type = type,
                     Text = question.Text,
                     Description = question.Description,
-                    StandardId = question.StandardId,
+                    //StandardId = question.StandardId,
                     UserId = User.Identity.GetUserId(),
                     QuestionIndex = question.questionIndex
                    // Picture = data
@@ -139,7 +139,7 @@ namespace Capstone.Controllers
                 return RedirectToAction("Index", "Questions");
             }
 
-             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+            // ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
              return View(question);
          }
 
@@ -181,7 +181,7 @@ namespace Capstone.Controllers
                 return HttpNotFound();
             }*/
             ViewBag.quizId = quizId;
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+            //ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
             return PartialView(question);
         }
 
@@ -190,7 +190,7 @@ namespace Capstone.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserId,Type,Picture,Text,Answer,Description,StandardId")] Question question, HttpPostedFileBase file, string quizId)
+        public ActionResult Edit([Bind(Include = "Id,UserId,Type,Picture,Text,Answer,Description")] Question question, HttpPostedFileBase file, string quizId)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -229,7 +229,7 @@ namespace Capstone.Controllers
                     return RedirectToAction("Advanced", "Quizs", new { id = quizId });
                 return RedirectToAction("Index", "Questions");
             }
-            ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
+            //ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
             return View(question);
         }
 

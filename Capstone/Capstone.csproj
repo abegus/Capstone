@@ -234,6 +234,10 @@
     <Compile Include="Migrations\201801251541467_category field in ccs.Designer.cs">
       <DependentUpon>201801251541467_category field in ccs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801300247326_removing core standards from quesitons.cs" />
+    <Compile Include="Migrations\201801300247326_removing core standards from quesitons.Designer.cs">
+      <DependentUpon>201801300247326_removing core standards from quesitons.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -390,7 +394,6 @@
     <Content Include="Views\Questions\Delete.cshtml" />
     <Content Include="Views\Questions\Details.cshtml" />
     <Content Include="Views\Questions\Edit.cshtml" />
-    <Content Include="Views\Questions\Index.cshtml" />
     <Content Include="Views\Quizs\Advanced.cshtml" />
     <Content Include="Views\Overview\Index.cshtml" />
     <Content Include="Views\ClassQuizs\Create.cshtml" />
@@ -439,6 +442,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801251541467_category field in ccs.resx">
       <DependentUpon>201801251541467_category field in ccs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801300247326_removing core standards from quesitons.resx">
+      <DependentUpon>201801300247326_removing core standards from quesitons.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

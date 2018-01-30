@@ -13,16 +13,17 @@
         @foreach (var cq in Model.Class.ClassQuizs)
         {
             <dt>@cq.Quiz.Name</dt>
-            foreach (var qa in cq.QuizAttempts)
+            <dd>
+            @foreach (var qa in cq.QuizAttempts)
             {
                 if (qa.StudentId == Model.Id)
                 {
-                    <dd>@qa.numCorrect / @cq.Quiz.Questions.Count() 
-                    @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = cq.QuizId, classId = Model.ClassId, studentId = Model.Id }, null)
-                    </dd>
-
+                    <span>@qa.numCorrect / @cq.Quiz.Questions.Count() </span>
+                   
                 }
             }
+                @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = cq.QuizId, classId = Model.ClassId, studentId = Model.Id }, null)
+            </dd>
         }
     </dl>
 
@@ -30,6 +31,5 @@
     
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
 </p>

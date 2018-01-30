@@ -7,97 +7,108 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div>
-    <h4>Class</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.currentClass.Name)
-        </dt>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>
+                Class Name
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.currentClass.Name)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.currentClass.Name)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.currentClass.SchoolName)
-        </dt>
+            <dt>
+                School Name
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.currentClass.SchoolName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.currentClass.SchoolName)
+            </dd>
 
-    </dl>
-
-    @Html.ActionLink("Edit Class Info", "Edit", new { id = Model.currentClass.Id }, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Delete Class", "Delete", new { id = Model.currentClass.Id }, new { @class = "btn btn-primary" })
-
-    <hr />
-    <table class="table" id="StudentTable">
-        <tr>
-            <th>First Name</th> 
-            <th>
-                @Html.ActionLink("Last Name", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.NameSortParm })
-            </th>
-            <th>Parent Email
-                @Html.ActionLink("Quizzes Completed", "Advanced", new { id =Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })</th>
-            <th>Action</th>
-        </tr>
-        @foreach (var item in Model.students)
-        {
-            <tr>
-                <td>@item.First</td><td>@item.Last</td><td>@item.Email</td>
-                <td>
-                    <!--@Html.ActionLink("Edit","Edit","Students", new { Id = item.Id}, null) |
-                    @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)-->
-                    <a id="@item.Id" class="EditStudent btn btn-primary">Edit</a>
-                    <a id="@item.Id" class="DeleteStudent btn btn-primary">Delete</a>
-                </td>
-            </tr>
-        }
-    </table>
-
-   
-    <!--<button onclick="addRow()" id="AddField" type="button" class="btn btn-primary">AddNew</button>-->
-    <!--Recreate button to do an AJAX (script) call that goes to that address, which will then reply with the information and it will create the modal window,
-        and then on submit, do an ajax post and then remove the dynmically created elements.
-        
-        In the StudentCreate controller method, I would want to return a partial view instead.-->
-
-    <a class="AddStudent btn btn-primary" id="AddStudent">Add Student</a>
-</div>
-
-<br />
-
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.currentClass.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Student Overview</h4>
-            </div>
-            <div id="StudentPopup" class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
+        </dl>
+        <hr />
+        @Html.ActionLink("Edit Class Info", "Edit", new { id = Model.currentClass.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Delete Class", "Delete", new { id = Model.currentClass.Id }, new { @class = "btn btn-primary" })
     </div>
 </div>
-     
-@section Scripts{
-    <script>
+
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-sm-2">
+            <h4>Students</h4>
+        </div>
+        <table class="table" id="StudentTable" style="margin-top:25px">
+            <tr>
+                <th>First</th>
+                <th>
+                    @Html.ActionLink("Last", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.NameSortParm })
+                </th>
+                <th>
+                    @Html.ActionLink("Quizzes Completed", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })
+                    (Parent Email)
+                </th>
+                <th>Action</th>
+            </tr>
+            @foreach (var item in Model.students)
+            {
+                <tr>
+                    <td>@item.First</td>
+                    <td>@item.Last</td>
+                    <td>@item.Email</td>
+                    <td>
+                        <!--@Html.ActionLink("Edit","Edit","Students", new { Id = item.Id}, null) |
+                        @Html.ActionLink("Delete", "Delete", "Students", new { Id = item.Id }, null)-->
+                        <a id="@item.Id" class="EditStudent btn btn-primary">Edit</a>
+                        <a id="@item.Id" class="DeleteStudent btn btn-primary">Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+
+        <!--<button onclick="addRow()" id="AddField" type="button" class="btn btn-primary">AddNew</button>-->
+        <!--Recreate button to do an AJAX (script) call that goes to that address, which will then reply with the information and it will create the modal window,
+            and then on submit, do an ajax post and then remove the dynmically created elements.
+
+            In the StudentCreate controller method, I would want to return a partial view instead.-->
+
+        <a class="AddStudent btn btn-primary" id="AddStudent">Add Student</a>
+    </div>
+
+    <br />
+
+    <p>
+       
+    </p>
+    </div>
+@Html.ActionLink("Back to List", "Index")
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Student Overview</h4>
+                </div>
+                <div id="StudentPopup" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @section Scripts{
+        <script>
          $('.EditStudent').click(function (event) {
             //preliminary data gathering for Answers and Questions
             var studentId = event.target.id;
@@ -183,5 +194,5 @@
                 $("#StudentPopup").html("");
             }
         });
-    </script>
-}
+        </script>
+    }

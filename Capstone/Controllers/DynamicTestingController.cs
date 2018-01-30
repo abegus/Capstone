@@ -53,7 +53,7 @@ namespace Capstone.Controllers
                     Type = question.Type,
                     Picture = question.Picture,
                     Description = question.Description,
-                    StandardId = question.StandardId,
+                    //StandardId = question.StandardId,
                     Answer = "-1"
                 };
                 vm.jsonQuestions.Add(q);

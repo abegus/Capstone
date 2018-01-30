@@ -27,10 +27,7 @@ namespace Capstone.ViewModels
         public string Answer { get; set; }
 
         public string Description { get; set; }
-
-        [Required]
-        [StringLength(128)]
-        public string StandardId { get; set; }
+        
 
         public virtual CoreStandard CoreStandard { get; set; }
 

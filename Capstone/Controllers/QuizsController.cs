@@ -119,7 +119,7 @@ namespace Capstone.Controllers
 
                 db.Quizs.Add(newQuiz);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Advanced","Quizs",new { id = newQuiz.Id});
             }
 
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
