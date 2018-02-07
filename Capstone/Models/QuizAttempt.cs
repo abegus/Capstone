@@ -26,8 +26,6 @@ namespace Capstone.Models
 
         public int toalQuestions { get; set; }
 
-
-
         [Required]
         [StringLength(128)]
         public string QuizId { get; set; }

@@ -27,6 +27,8 @@ namespace Capstone.Models
         //from                         (ClassQuiz, Student) <== Answer ==> Question
         public virtual DbSet<QuizAttempt> QuizAttempts { get; set; }
 
+
+
         //added for many to many relationship
         //public virtual DbSet<QuestionQuizs> QuestionQuizs { get; set; }
 

@@ -24,7 +24,7 @@ namespace Capstone.Controllers
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
 
-            var questions = db.Questions.Include(q => q.CoreStandard);
+            var questions = db.Questions;//.Include(q => q.CoreStandard);
             return View(questions.ToList());
         }
 

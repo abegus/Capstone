@@ -1,35 +1,66 @@
-﻿@model Capstone.Models.Student
+﻿@model Dictionary<Capstone.Models.ClassQuiz,Capstone.Models.QuizAttempt>
 
 <div>
-    <h4>@Model.First @Model.Last</h4>
+    <h4>@ViewBag.StudentName</h4>
     <hr />
 
-
+	<!--
     <p>
         Most Recent Quiz Attempts
     </p>
-    http://www.chartjs.org/docs/latest/
-    <dl class="dl-horizontal">
-        @foreach (var cq in Model.Class.ClassQuizs)
+    http://www.chartjs.org/docs/latest/ -->
+
+	<table class="table-bordered">
+		<tr>
+			<th>Quiz</th>
+			<th>Most recent attempt</th>
+			<th>Date</th>
+			<th>Take</th>
+		</tr>
+		@foreach(var item in Model)
+		{
+			<tr>
+				<td>@item.Key.Quiz.Name</td>
+				<td>
+					@if(item.Value != null)
+					{
+						<span>(@item.Value.numCorrect / @item.Value.ClassQuiz.Quiz.Questions.Count())</span>
+					}
+					else{ <span>N/A</span>
+					}
+
+				</td>
+				<td>@if (item.Value != null) {
+					<span>@item.Value.date</span>
+				}</td>
+				<td>
+					@Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId}, null)
+				</td>
+			</tr>
+		}
+	</table>
+
+    <!--<dl class="dl-horizontal">
+        foreach (var cq in Model.Class.ClassQuizs)
         {
-            <dt>@cq.Quiz.Name</dt>
+            <dt>cq.Quiz.Name</dt>
             <dd>
-            @foreach (var qa in cq.QuizAttempts)
+            foreach (var qa in cq.QuizAttempts)
             {
                 if (qa.StudentId == Model.Id)
                 {
-                    <span>@qa.numCorrect / @cq.Quiz.Questions.Count() </span>
+                    <span>qa.numCorrect / cq.Quiz.Questions.Count() </span>
                    
                 }
             }
-                @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = cq.QuizId, classId = Model.ClassId, studentId = Model.Id }, null)
+                
             </dd>
         }
-    </dl>
+    </dl>-->
 
 
     
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) 
+    @Html.ActionLink("Edit", "Edit", new { id = ViewBag.StudentId }) 
 </p>

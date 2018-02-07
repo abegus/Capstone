@@ -238,6 +238,10 @@
     <Compile Include="Migrations\201801300247326_removing core standards from quesitons.Designer.cs">
       <DependentUpon>201801300247326_removing core standards from quesitons.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802062220348_removing question standards.cs" />
+    <Compile Include="Migrations\201802062220348_removing question standards.Designer.cs">
+      <DependentUpon>201802062220348_removing question standards.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
@@ -445,6 +449,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801300247326_removing core standards from quesitons.resx">
       <DependentUpon>201801300247326_removing core standards from quesitons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802062220348_removing question standards.resx">
+      <DependentUpon>201802062220348_removing question standards.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
