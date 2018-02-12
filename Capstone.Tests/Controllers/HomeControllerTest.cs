@@ -1,22 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data;
+using System.Data.Entity;
 using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Capstone;
 using Capstone.Controllers;
+using Capstone.Models;
+using System.Web;
+using Moq;
+using System.Security.Principal;
 
 namespace Capstone.Tests.Controllers
 {
+
     [TestClass]
     public class HomeControllerTest
     {
+
         [TestMethod]
         public void Index()
         {
             // Arrange
             HomeController controller = new HomeController();
+            var context = new Mock<HttpContextBase>();
+            var mockIdentity = new Mock<IIdentity>();
+            context.SetupGet(x => x.User.Identity).Returns(mockIdentity.Object);
+            mockIdentity.Setup(x => x.Name).Returns("test_name");
 
             // Act
             ViewResult result = controller.Index() as ViewResult;

@@ -13,13 +13,7 @@ namespace Capstone.Controllers
     public class StudentsController : Controller
     {
         private MasterModel db = new MasterModel();
-
-        // GET: Students
-       /* public ActionResult Index()
-        {
-            var students = db.Students.Include(s => s.Class);
-            return View(students.ToList());
-        }*/
+        
 
         // GET: Students/Details/5
         public ActionResult Details(string id)
@@ -40,8 +34,32 @@ namespace Capstone.Controllers
         public PartialViewResult Overview(string id)
         {
             Student s = db.Students.Find(id);
+            Dictionary<ClassQuiz, QuizAttempt> studentAttempts = new Dictionary<ClassQuiz, QuizAttempt>();
+            foreach (var cq in s.Class.ClassQuizs)
+            {
+                //grab the most recent quizAttempt if one exists in the last X days?
+                var attempt = (from qa in db.QuizAttempts
+                                       where qa.StudentId == id && cq.QuizId == qa.QuizId
+                                       group qa by qa.QuizId into grop
+                                       select grop.OrderByDescending(g => g.date));
 
-            return PartialView(s);
+                if(attempt == null || !attempt.Any())
+                {
+                    studentAttempts[cq] = null;
+                }
+                else
+                {
+                    if (!attempt.Any())
+                        studentAttempts[cq] = null;
+                    else
+                        studentAttempts[cq] = attempt.First().First();
+                }
+            }
+            ViewBag.StudentName = s.First + " " + s.Last;
+            ViewBag.StudentId = id;
+
+            //return PartialView(s);
+            return PartialView(studentAttempts);
         }
 
         // GET: Students/Create
@@ -50,9 +68,7 @@ namespace Capstone.Controllers
             //do this to maintain the student to class relationship for a backtrack
             Student student = new Student();
             student.ClassId = classId;
-            //student.First = classId;
-
-  
+            
             ViewBag.ClassId = new SelectList(db.Classes, "Id", "Name");
             return PartialView(student);
         }
