@@ -7,13 +7,13 @@ namespace Capstone.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class addingquestionindexes : IMigrationMetadata
+    public sealed partial class firstonserver : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addingquestionindexes));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(firstonserver));
         
         string IMigrationMetadata.Id
         {
-            get { return "201801171826408_adding question indexes"; }
+            get { return "201802061705570_first on server"; }
         }
         
         string IMigrationMetadata.Source

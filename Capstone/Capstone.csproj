@@ -214,29 +214,9 @@
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\JavaScriptConverter.cs" />
-    <Compile Include="Migrations\201801082052091_test.cs" />
-    <Compile Include="Migrations\201801082052091_test.Designer.cs">
-      <DependentUpon>201801082052091_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801101704340_adding DefaultClassId.cs" />
-    <Compile Include="Migrations\201801101704340_adding DefaultClassId.Designer.cs">
-      <DependentUpon>201801101704340_adding DefaultClassId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801171826408_adding question indexes.cs" />
-    <Compile Include="Migrations\201801171826408_adding question indexes.Designer.cs">
-      <DependentUpon>201801171826408_adding question indexes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801191648139_questionindex.cs" />
-    <Compile Include="Migrations\201801191648139_questionindex.Designer.cs">
-      <DependentUpon>201801191648139_questionindex.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801251541467_category field in ccs.cs" />
-    <Compile Include="Migrations\201801251541467_category field in ccs.Designer.cs">
-      <DependentUpon>201801251541467_category field in ccs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801300247326_removing core standards from quesitons.cs" />
-    <Compile Include="Migrations\201801300247326_removing core standards from quesitons.Designer.cs">
-      <DependentUpon>201801300247326_removing core standards from quesitons.cs</DependentUpon>
+    <Compile Include="Migrations\201802061705570_first on server.cs" />
+    <Compile Include="Migrations\201802061705570_first on server.Designer.cs">
+      <DependentUpon>201802061705570_first on server.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
@@ -335,7 +315,9 @@
     <Content Include="Scripts\quizScript.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -428,23 +410,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801082052091_test.resx">
-      <DependentUpon>201801082052091_test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801101704340_adding DefaultClassId.resx">
-      <DependentUpon>201801101704340_adding DefaultClassId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801171826408_adding question indexes.resx">
-      <DependentUpon>201801171826408_adding question indexes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801191648139_questionindex.resx">
-      <DependentUpon>201801191648139_questionindex.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801251541467_category field in ccs.resx">
-      <DependentUpon>201801251541467_category field in ccs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801300247326_removing core standards from quesitons.resx">
-      <DependentUpon>201801300247326_removing core standards from quesitons.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802061705570_first on server.resx">
+      <DependentUpon>201802061705570_first on server.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -3,7 +3,7 @@ namespace Capstone.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class test : DbMigration
+    public partial class firstonserver : DbMigration
     {
         public override void Up()
         {
@@ -30,19 +30,20 @@ namespace Capstone.Migrations
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
+                        QuestionIndex = c.Int(nullable: false),
                         Type = c.Int(nullable: false),
                         Picture = c.Binary(storeType: "image"),
                         Text = c.String(),
                         Answer = c.String(nullable: false, maxLength: 50),
                         Description = c.String(),
-                        StandardId = c.String(nullable: false, maxLength: 128),
                         UserId = c.String(nullable: false, maxLength: 128),
+                        CoreStandard_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .ForeignKey("dbo.CoreStandard", t => t.StandardId)
-                .Index(t => t.StandardId)
-                .Index(t => t.UserId);
+                .ForeignKey("dbo.CoreStandard", t => t.CoreStandard_Id)
+                .Index(t => t.UserId)
+                .Index(t => t.CoreStandard_Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -50,6 +51,7 @@ namespace Capstone.Migrations
                     {
                         Id = c.String(nullable: false, maxLength: 128),
                         Email = c.String(maxLength: 256),
+                        DefaultClassId = c.String(),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
                         SecurityStamp = c.String(),
@@ -155,7 +157,8 @@ namespace Capstone.Migrations
                     {
                         Id = c.String(nullable: false, maxLength: 128),
                         Name = c.String(nullable: false, maxLength: 50),
-                        Grade = c.String(nullable: false, maxLength: 10, fixedLength: true),
+                        Grade = c.String(nullable: false, maxLength: 20, fixedLength: true),
+                        Category = c.String(),
                         Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -187,10 +190,10 @@ namespace Capstone.Migrations
         {
             DropForeignKey("dbo.QuestionQuizs", "Quiz_Id", "dbo.Quiz");
             DropForeignKey("dbo.QuestionQuizs", "Question_Id", "dbo.Question");
+            DropForeignKey("dbo.Question", "CoreStandard_Id", "dbo.CoreStandard");
             DropForeignKey("dbo.Teaches", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Quiz", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Quiz", "StandardId", "dbo.CoreStandard");
-            DropForeignKey("dbo.Question", "StandardId", "dbo.CoreStandard");
             DropForeignKey("dbo.ClassQuiz", "QuizId", "dbo.Quiz");
             DropForeignKey("dbo.QuizAttempt", new[] { "QuizId", "ClassId" }, "dbo.ClassQuiz");
             DropForeignKey("dbo.Teaches", "ClassId", "dbo.Class");
@@ -211,8 +214,8 @@ namespace Capstone.Migrations
             DropIndex("dbo.ClassQuiz", new[] { "QuizId" });
             DropIndex("dbo.Quiz", new[] { "UserId" });
             DropIndex("dbo.Quiz", new[] { "StandardId" });
+            DropIndex("dbo.Question", new[] { "CoreStandard_Id" });
             DropIndex("dbo.Question", new[] { "UserId" });
-            DropIndex("dbo.Question", new[] { "StandardId" });
             DropIndex("dbo.Answer", new[] { "QuizAttempt_Id" });
             DropIndex("dbo.Answer", new[] { "QuestionId" });
             DropTable("dbo.QuestionQuizs");
