@@ -8,7 +8,7 @@ namespace Capstone.Models
     public partial class MasterModel : DbContext
     {
         public MasterModel()
-            : base("name=NewCapstoneModel")
+            : base("name=DatabaseConnection") //NewCapstoneModel
         {
         }
 

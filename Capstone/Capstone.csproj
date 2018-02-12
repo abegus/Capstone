@@ -214,13 +214,9 @@
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\JavaScriptConverter.cs" />
-    <Compile Include="Migrations\201802061705570_first on server.cs" />
-    <Compile Include="Migrations\201802061705570_first on server.Designer.cs">
-      <DependentUpon>201802061705570_first on server.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802062220348_removing question standards.cs" />
-    <Compile Include="Migrations\201802062220348_removing question standards.Designer.cs">
-      <DependentUpon>201802062220348_removing question standards.cs</DependentUpon>
+    <Compile Include="Migrations\201802121953346_Initial to server datbase.cs" />
+    <Compile Include="Migrations\201802121953346_Initial to server datbase.Designer.cs">
+      <DependentUpon>201802121953346_Initial to server datbase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
@@ -414,11 +410,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802061705570_first on server.resx">
-      <DependentUpon>201802061705570_first on server.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802062220348_removing question standards.resx">
-      <DependentUpon>201802062220348_removing question standards.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201802121953346_Initial to server datbase.resx">
+      <DependentUpon>201802121953346_Initial to server datbase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

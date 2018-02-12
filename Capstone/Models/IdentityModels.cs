@@ -21,7 +21,7 @@ namespace Capstone.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("NewCapstoneModel", throwIfV1Schema: false) //DefaultConnection
+            : base("DatabaseConnection", throwIfV1Schema: false) //DefaultConnection //NewCapstoneModel
         {
         }
 

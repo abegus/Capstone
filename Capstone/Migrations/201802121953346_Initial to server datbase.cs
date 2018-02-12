@@ -3,7 +3,7 @@ namespace Capstone.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class firstonserver : DbMigration
+    public partial class Initialtoserverdatbase : DbMigration
     {
         public override void Up()
         {
@@ -37,13 +37,10 @@ namespace Capstone.Migrations
                         Answer = c.String(nullable: false, maxLength: 50),
                         Description = c.String(),
                         UserId = c.String(nullable: false, maxLength: 128),
-                        CoreStandard_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .ForeignKey("dbo.CoreStandard", t => t.CoreStandard_Id)
-                .Index(t => t.UserId)
-                .Index(t => t.CoreStandard_Id);
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -190,7 +187,6 @@ namespace Capstone.Migrations
         {
             DropForeignKey("dbo.QuestionQuizs", "Quiz_Id", "dbo.Quiz");
             DropForeignKey("dbo.QuestionQuizs", "Question_Id", "dbo.Question");
-            DropForeignKey("dbo.Question", "CoreStandard_Id", "dbo.CoreStandard");
             DropForeignKey("dbo.Teaches", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Quiz", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Quiz", "StandardId", "dbo.CoreStandard");
@@ -214,7 +210,6 @@ namespace Capstone.Migrations
             DropIndex("dbo.ClassQuiz", new[] { "QuizId" });
             DropIndex("dbo.Quiz", new[] { "UserId" });
             DropIndex("dbo.Quiz", new[] { "StandardId" });
-            DropIndex("dbo.Question", new[] { "CoreStandard_Id" });
             DropIndex("dbo.Question", new[] { "UserId" });
             DropIndex("dbo.Answer", new[] { "QuizAttempt_Id" });
             DropIndex("dbo.Answer", new[] { "QuestionId" });
