@@ -10,6 +10,9 @@ using Capstone.Models;
 using Capstone.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Collections;
+using System.IO;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Capstone.Controllers
 {
@@ -40,6 +43,73 @@ namespace Capstone.Controllers
 
             c.Students = c.Students.OrderBy(s => s.Last).ToList();
             return View(c);
+        }
+
+       /* public ActionResult ExportToExcel()
+        {
+            var gv = new GridView();
+            var employeeList = (from e in db.Employees
+                                join d in db.Departments on e.DepartmentId equals d.DepartmentId
+                                select new EmployeeViewModel
+                                {
+                                    Name = e.Name,
+                                    Email = e.Email,
+                                    Age = (int)e.Age,
+                                    Address = e.Address,
+                                    Department = d.DepartmentName
+                                }).ToList();
+            gv.DataSource = this.GetEmployeeList();
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=DemoExcel.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter objStringWriter = new StringWriter();
+            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+            gv.RenderControl(objHtmlTextWriter);
+            Response.Output.Write(objStringWriter.ToString());
+            Response.Flush();
+            Response.End();
+            return View("Index");
+        }*/
+
+        public void ExportClientsListToExcel()
+        { 
+
+            var user = db.AspNetUsers.Find(User.Identity.GetUserId());
+
+            Class c = db.Classes.Find(user.DefaultClassId);
+
+            c.Students = c.Students.OrderBy(s => s.Last).ToList();
+
+            var grid = new System.Web.UI.WebControls.GridView();
+
+            grid.DataSource = /*from d in dbContext.diners
+                              where d.user_diners.All(m => m.user_id == userID) && d.active == true */
+                              from d in c.Students
+                              select new
+                              {
+                                  FirstName = d.First,
+                                  LastName = d.Last,
+                                  Email = d.Email
+
+                              };
+
+            grid.DataBind();
+
+            Response.ClearContent();
+            Response.AddHeader("content-disposition", "attachment; filename=Exported_Class_Analysis.xls");
+            Response.ContentType = "application/excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Write(sw.ToString());
+
+            Response.End();
+
         }
 
         // GET: Classes/Advanced/5
