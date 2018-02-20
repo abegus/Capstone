@@ -23,20 +23,20 @@ textarea {
     max-width: 280px;
 }
 
-button * {
+/*button * {
     color:white;
 }
-
+    /*
 /* CUSTOM STYLING */
 .navbar{
     /*background-color:#565656;*/
 }
 
 .stylebox{
-    background-color:#D7CEC7;
+   /* background-color:#D7CEC7;*/
 }
 
-/* Buttons */
+/* Buttons 
 .btn-primary{
     background-color:#76323F;
     border-color:#565656;
@@ -47,7 +47,7 @@ button * {
 }
 .a:hover{
     color:white;
-}
+}*/
 
 
 /* QUIZ ADVANCED */

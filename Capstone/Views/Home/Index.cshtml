@@ -4,12 +4,12 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row-fluid">
+<!--<div class="row-fluid" style="margin-bottom:5px;">
     <h2 style="display: inline-block !important; margin-right:15px;">
         @Model.clas.Name - @Model.clas.SchoolName
     </h2>
-    @Html.ActionLink("Change Default Class", "ChangeDefault", "Classes", new { classId = Model.clas.Id }, null)
-</div>
+    @Html.ActionLink("Change Default Class", "ChangeDefault", "Classes", new { classId = Model.clas.Id }, new { @class = "btn btn-default " })
+</div>-->
 
 
 
@@ -35,14 +35,22 @@
 </div>
 
 
-<div class="container panel panel-default" ><!--style="background-color:#D7CEC7">-->
+<div class=" panel panel-default" style="margin-top:15px;"><!--style="background-color:#D7CEC7">-->
+	<div class="panel-heading">
+		<div class="row-fluid" style="margin-bottom:5px;">
+			<h2 style="display: inline-block !important; margin-right:15px;">
+				@Model.clas.Name - @Model.clas.SchoolName
+			</h2>
+			@Html.ActionLink("Change Default Class", "ChangeDefault", "Classes", new { classId = Model.clas.Id }, new { @class = "btn btn-default btn-sm" })
+		</div>
+	</div>
     <div class="panel-body">
         <div class="col-sm-3">
-            <div class="row-fluid">
+            <div class="row-fluid" style="margin-bottom:5px;">
 
                 <h3 style="display: inline-block !important; margin-right:15px;">Students</h3>
 
-                @Html.ActionLink("Manage", "Advanced", "Classes", new { id = Model.clas.Id}, null)
+                @Html.ActionLink("Manage", "Advanced", "Classes", new { id = Model.clas.Id}, new { @class = "btn btn-default btn-sm" })
             </div>
 
             <ul class="list-group">
@@ -60,12 +68,12 @@
 
                 <h3 style="display: inline-block !important; margin-right:15px;">Class Quizzes</h3>
 
-                @Html.ActionLink("Create New Quiz", "Create", "Quizs", new {  }, null) | 
-                @Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { classId = Model.clas.Id }, null) |
+                @Html.ActionLink("Create New Quiz", "Create", "Quizs", null, new { @class = "btn btn-default btn-sm" })
+                @Html.ActionLink("Add Quiz to Class", "Create", "ClassQuizs", new { classId = Model.clas.Id }, new { @class = "btn btn-default btn-sm" })
             </div>
             @for (int i = 0; i < Model.clas.ClassQuizs.Count(); i += 0)
             {
-                <div class="row col-sm-12">
+                <div class="row col-sm-12" style="margin-top:5px;">
                 @for (int j = i + 4; i < j ; i++)
                 {
                     <div class="col-sm-3 panel panel-default item" style="padding:0px;font-weight:bolder;">
@@ -73,7 +81,7 @@
                         {
                             <div class="panel-heading">
                                 @Model.clas.ClassQuizs.ElementAt(i).Quiz.Name
-                                @Html.ActionLink("X", "Delete", "ClassQuizs", new { classId = Model.clas.Id, quizId = @Model.clas.ClassQuizs.ElementAt(i).QuizId}, null)
+                                @Html.ActionLink("X", "Delete", "ClassQuizs", new { classId = Model.clas.Id, quizId = @Model.clas.ClassQuizs.ElementAt(i).QuizId}, new { @class = "btn btn-primary btn-xs" })
                             </div>
                             <div class="panel-body">
                                 <p>

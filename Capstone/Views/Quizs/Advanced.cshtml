@@ -41,8 +41,7 @@
     <div class="panel panel-default">
         <div class="panel panel-body">
             <h4>Quiz Details</h4>
-            <a id="@Model.Id" class="EditButton btn btn-primary">Edit</a>
-            <a id="@Model.Id" class="DeleteButton btn btn-primary">Delete</a>
+            
             <hr />
             <dl class="dl-horizontal">
                 <dt>
@@ -70,6 +69,8 @@
                 </dd>
 
             </dl>
+			<a id="@Model.Id" class="EditButton btn btn-primary">Edit</a>
+			<a id="@Model.Id" class="DeleteButton btn btn-primary">Delete</a>
         </div>
     </div>
 
@@ -80,7 +81,7 @@
                 <h4>Quiz Questions</h4>
             </div>
             <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary" >Add Question</a></p>
-             <table class="ui-sortable table" id="tblLocations">
+             <table class="ui-sortable table table-striped table-hover" id="tblLocations">
                 <tr>
                     <th>Question Index</th>
                     <th>Type</th>
