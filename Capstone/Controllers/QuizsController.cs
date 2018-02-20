@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
 using Microsoft.AspNet.Identity;
-using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
@@ -26,7 +25,7 @@ namespace Capstone.Controllers
             //var quizs = db.Quizs;
             var userId = User.Identity.GetUserId();
             var quizs = from qui in db.Quizs where qui.AspNetUser.Id == userId select qui;
-            // var quizs = db.Quizs.Include(q => q.CoreStandard);
+           // var quizs = db.Quizs.Include(q => q.CoreStandard);
             return View(quizs.ToList());
         }
 
@@ -42,7 +41,7 @@ namespace Capstone.Controllers
             }
             Quiz quiz = db.Quizs.Find(id);
             quiz.Questions = quiz.Questions.OrderBy(q => q.QuestionIndex).ToList();
-            //.Students.OrderBy(s => s.Last).ToList(); 
+                //.Students.OrderBy(s => s.Last).ToList(); 
             ViewBag.quizId = id;
             if (quiz == null)
             {
@@ -60,10 +59,10 @@ namespace Capstone.Controllers
 
             if (ModelState.IsValid)
             {
+                
 
-
-                // db.Quizs.Add(newQuiz);
-                // db.SaveChanges();
+               // db.Quizs.Add(newQuiz);
+               // db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(quiz);
@@ -80,10 +79,10 @@ namespace Capstone.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }*/
             Quiz quiz = db.Quizs.Find(id);
-            /* if (quiz == null)
-             {
-                 return HttpNotFound();
-             }*/
+           /* if (quiz == null)
+            {
+                return HttpNotFound();
+            }*/
             return PartialView(quiz);
         }
 
@@ -120,29 +119,12 @@ namespace Capstone.Controllers
 
                 db.Quizs.Add(newQuiz);
                 db.SaveChanges();
-                return RedirectToAction("Advanced", "Quizs", new { id = newQuiz.Id });
+                return RedirectToAction("Advanced","Quizs",new { id = newQuiz.Id});
             }
 
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
             return View(quiz);
         }
-
-
-        [HttpPost]
-        public ActionResult UpdateQuestionOrder(IEnumerable<QuestionOrder> updatedQuestions)
-        {
-            //if (!User.Identity.IsAuthenticated)
-
-            foreach(var q in updatedQuestions)
-            {
-                var tempQuestion = db.Questions.Find(q.QuestionId);
-                tempQuestion.QuestionIndex = q.QuestionIndex;
-            }
-            db.SaveChanges();
-
-            return RedirectToAction("Index", "Quizs");
-        }
-
 
         // GET: Quizs/Edit/5
         public PartialViewResult Edit(string id)

@@ -94,8 +94,13 @@
                     for (int i = 1; i < Model.Questions.Count() + 1; i++)
                     {
                         <tr class="ui-state-default ui-sortable-handle" id="@i">
-                            <td id="@Model.Questions.ElementAt(i-1).Id" style="display:none">@Model.Questions.ElementAt(i-1).Id</td>
-                            <td class="index">@i</td>
+                            <td id="@Model.Questions.ElementAt(i-1).Id" style="display:none">
+                                @Model.Questions.ElementAt(i-1).Id
+                            </td>
+                            <td class="index">
+                                <!--@Model.Questions.ElementAt(i - 1).QuestionIndex-->
+                                @i
+                            </td>
                             <td>
                                 @if (Model.Questions.ElementAt(i - 1).Type == 0)
                                 {
@@ -134,7 +139,7 @@
         </div>
         </div>
 
-		<input id="clickMe" style="display: block; margin-top: 10px;" class="btn btn-default" type="button" value="Save Question Order" onclick="exportPositions();" />
+        <input class=" btn btn-default" type="submit" value="Update Order" /> <br /><br />
 }
 <p>
     @Html.ActionLink("Back to List", "Index")
@@ -143,51 +148,6 @@
 
 @section Scripts{
     <script>
-		function exportPositions() {//cy
-			var list = [];
-
-			var table = document.getElementById("tblLocations");
-			for (var i = 1, row; row = table.rows[i]; i++) {
-				//iterate through rows
-				var obj = {};
-				//rows would be accessed using the "row" variable assigned in the for loop
-				for (var j = 0, col; col = row.cells[j]; j++) {
-					if (j == 0) {
-						obj['QuestionId'] = col.innerText ;
-						console.log(col.innerText);
-					}
-					else if (j == 1) {
-						console.log(col.innerText );
-						obj['QuestionIndex'] = parseInt(col.innerText);
-					}
-					//iterate through columns
-					//columns would be accessed using the "col" variable assigned in the for loop
-				}
-				list.push(obj);
-			}
-
-			list = JSON.stringify({
-				'updatedQuestions': list
-			});
-
-
-			console.log(list);
-
-			var url = '../UpdateQuestionOrder';
-			$.ajax({
-				type: 'POST',
-				url: url,
-				data: list,
-				dataType: 'json',
-				contentType: 'application/json;charset=utf-8',
-				success: function (data) { alert(data); },
-				failure: function (errMsg) {
-					alert(errMsg);
-				}
-			});
-		}
-
-
         $(function () {
             $("#tblLocations").sortable({
                 items: 'tr:not(tr:first-child)',
