@@ -7,13 +7,13 @@ namespace Capstone.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class Initialtoserverdatbase : IMigrationMetadata
+    public sealed partial class addingadminflagtousers : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialtoserverdatbase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addingadminflagtousers));
         
         string IMigrationMetadata.Id
         {
-            get { return "201802121953346_Initial to server datbase"; }
+            get { return "201803060037213_adding admin flag to users"; }
         }
         
         string IMigrationMetadata.Source

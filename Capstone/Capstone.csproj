@@ -56,6 +56,11 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.7\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -214,9 +219,9 @@
     </Compile>
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Helpers\JavaScriptConverter.cs" />
-    <Compile Include="Migrations\201802121953346_Initial to server datbase.cs" />
-    <Compile Include="Migrations\201802121953346_Initial to server datbase.Designer.cs">
-      <DependentUpon>201802121953346_Initial to server datbase.cs</DependentUpon>
+    <Compile Include="Migrations\201803060037213_adding admin flag to users.cs" />
+    <Compile Include="Migrations\201803060037213_adding admin flag to users.Designer.cs">
+      <DependentUpon>201803060037213_adding admin flag to users.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\QuizAttempt.cs" />
@@ -412,8 +417,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201802121953346_Initial to server datbase.resx">
-      <DependentUpon>201802121953346_Initial to server datbase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803060037213_adding admin flag to users.resx">
+      <DependentUpon>201803060037213_adding admin flag to users.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

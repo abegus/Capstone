@@ -1,5 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
+@using Microsoft.AspNet.Identity;
+@using System;
+@using System.Collections.Generic;
+@using System.Data;
+@using System.Data.Entity;
+@using System.Linq;
+@using System.Net;
+@using System.Web;
+@using System.Web.Mvc;
+@using Capstone.Models;
+@using Microsoft.AspNet.Identity;
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,12 +40,21 @@
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     }
                     @if (User.Identity.IsAuthenticated)
-                    {
+					{
+						MasterModel db = new MasterModel();
+						AspNetUser user = db.AspNetUsers.Find(User.Identity.GetUserId());
+
                         <li>@Html.ActionLink("Home","Index","Home")</li>
                         <li>@Html.ActionLink("My Quizzes", "Index", "Quizs")</li>
                         <li>@Html.ActionLink("My Classes", "Index", "Classes")</li>
                         <li>@Html.ActionLink("Analysis", "Analysis", "Classes")</li>
                         <li>@Html.ActionLink("Community", "Index", "Community")</li>
+
+						if (user.Admin != null)
+						{
+							<li>@Html.ActionLink("Admin Module", "Index", "CoreStandards")</li>
+						}
+
                         <!--<li>@Html.ActionLink("***CCS", "Index", "CoreStandards")</li>
                         <li>@Html.ActionLink("***Question", "Index", "Questions")</li>-->
                     }

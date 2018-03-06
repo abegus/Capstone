@@ -24,6 +24,8 @@ namespace Capstone.Models
         //added so a default class can be loaded without needed to select
         public string DefaultClassId { get; set; }
 
+        public bool? Admin { get; set; }
+
         public bool EmailConfirmed { get; set; }
 
         public string PasswordHash { get; set; }

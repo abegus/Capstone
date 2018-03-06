@@ -13,6 +13,8 @@ using System.Collections;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Runtime.InteropServices;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Capstone.Controllers
 {
@@ -45,70 +47,138 @@ namespace Capstone.Controllers
             return View(c);
         }
 
-       /* public ActionResult ExportToExcel()
-        {
-            var gv = new GridView();
-            var employeeList = (from e in db.Employees
-                                join d in db.Departments on e.DepartmentId equals d.DepartmentId
-                                select new EmployeeViewModel
-                                {
-                                    Name = e.Name,
-                                    Email = e.Email,
-                                    Age = (int)e.Age,
-                                    Address = e.Address,
-                                    Department = d.DepartmentName
-                                }).ToList();
-            gv.DataSource = this.GetEmployeeList();
-            gv.DataBind();
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=DemoExcel.xls");
-            Response.ContentType = "application/ms-excel";
-            Response.Charset = "";
-            StringWriter objStringWriter = new StringWriter();
-            HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
-            gv.RenderControl(objHtmlTextWriter);
-            Response.Output.Write(objStringWriter.ToString());
-            Response.Flush();
-            Response.End();
-            return View("Index");
-        }*/
+        /* public ActionResult ExportToExcel()
+         {
+             var gv = new GridView();
+             var employeeList = (from e in db.Employees
+                                 join d in db.Departments on e.DepartmentId equals d.DepartmentId
+                                 select new EmployeeViewModel
+                                 {
+                                     Name = e.Name,
+                                     Email = e.Email,
+                                     Age = (int)e.Age,
+                                     Address = e.Address,
+                                     Department = d.DepartmentName
+                                 }).ToList();
+             gv.DataSource = this.GetEmployeeList();
+             gv.DataBind();
+             Response.ClearContent();
+             Response.Buffer = true;
+             Response.AddHeader("content-disposition", "attachment; filename=DemoExcel.xls");
+             Response.ContentType = "application/ms-excel";
+             Response.Charset = "";
+             StringWriter objStringWriter = new StringWriter();
+             HtmlTextWriter objHtmlTextWriter = new HtmlTextWriter(objStringWriter);
+             gv.RenderControl(objHtmlTextWriter);
+             Response.Output.Write(objStringWriter.ToString());
+             Response.Flush();
+             Response.End();
+             return View("Index");
+         }*/
 
-        public void ExportClientsListToExcel()
-        { 
+        //public void ExportClientsListToExcel()
+        public ActionResult ExportClientsListToExcel()
+        {
+            Excel.Application xlApp = new Microsoft.Office.Interop.Excel.Application();
+
+            /* if (xlApp == null)
+             {
+                 //MessageBox.Show("Excel is not properly installed!!");
+                 return;
+             }*/
 
             var user = db.AspNetUsers.Find(User.Identity.GetUserId());
-
             Class c = db.Classes.Find(user.DefaultClassId);
-
             c.Students = c.Students.OrderBy(s => s.Last).ToList();
 
-            var grid = new System.Web.UI.WebControls.GridView();
+            Excel.Workbook xlWorkBook;
+            Excel.Worksheet xlWorkSheet;
+            object misValue = System.Reflection.Missing.Value;
 
-            grid.DataSource = /*from d in dbContext.diners
-                              where d.user_diners.All(m => m.user_id == userID) && d.active == true */
-                              from d in c.Students
-                              select new
-                              {
-                                  FirstName = d.First,
-                                  LastName = d.Last,
-                                  Email = d.Email
+            xlWorkBook = xlApp.Workbooks.Add(misValue);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                              };
+            xlWorkSheet.Cells[1, 1] = "Students";
+            for (int i = 0; i < c.ClassQuizs.Count; i++)
+            {
+                xlWorkSheet.Cells[1, i + 2] = c.ClassQuizs.ElementAt(i).Quiz.Name;
+            }
 
-            grid.DataBind();
+            for(int i = 0; i < c.Students.Count; i++)
+            {
+                Student stud = c.Students.ElementAt(i);
+                xlWorkSheet.Cells[i + 2, 1] = stud.First + stud.Last;
+                for(int j = 0; j < c.ClassQuizs.Count; j++)
+                {
+                    ClassQuiz cq = c.ClassQuizs.ElementAt(j);
+                    if(cq.QuizAttempts.Where(q => q.StudentId == stud.Id).Count() > 0)
+                    {
+                        double x = cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().numCorrect / (double)cq.Quiz.Questions.Count();
+                        xlWorkSheet.Cells[i + 2, j + 2] = x;
+                    }
+                    else
+                    {
+                        xlWorkSheet.Cells[i + 2, j + 2] = "NO ATTEMPTS";
+                    }
+                }
+            }
+            xlWorkBook.Close(true, misValue, misValue);
 
-            Response.ClearContent();
-            Response.AddHeader("content-disposition", "attachment; filename=Exported_Class_Analysis.xls");
-            Response.ContentType = "application/excel";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            xlApp.Quit();
 
-            grid.RenderControl(htw);
+            Marshal.ReleaseComObject(xlWorkSheet);
+            Marshal.ReleaseComObject(xlWorkBook);
+            Marshal.ReleaseComObject(xlApp);
 
-            Response.Write(sw.ToString());
+            return RedirectToAction("Analysis", "Classes");
 
-            Response.End();
+            //Getting the location and file name of the excel to save from user. 
+            /* SaveFileDialog saveDialog = new SaveFileDialog();
+             saveDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+             saveDialog.FilterIndex = 2;
+
+                 xlWorkBook.SaveAs(saveDialog.FileName);*/
+
+            // xlWorkBook.SaveAs("C:\\csharp-Excel.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            //xlWorkBook.Close(true, misValue, misValue);
+            // xlApp.Quit();
+
+            
+
+            //MessageBox.Show("Excel file created , you can find the file d:\\csharp-Excel.xls");
+
+            /* var user = db.AspNetUsers.Find(User.Identity.GetUserId());
+
+             Class c = db.Classes.Find(user.DefaultClassId);
+
+             c.Students = c.Students.OrderBy(s => s.Last).ToList();
+
+             var grid = new System.Web.UI.WebControls.GridView();
+
+             grid.DataSource = //from d in dbContext.diners
+                               //where d.user_diners.All(m => m.user_id == userID) && d.active == true 
+                               from d in c.Students
+                               select new
+                               {
+                                   FirstName = d.First,
+                                   LastName = d.Last,
+                                   Email = d.Email
+
+                               };
+
+             grid.DataBind();
+
+             Response.ClearContent();
+             Response.AddHeader("content-disposition", "attachment; filename=Exported_Class_Analysis.xls");
+             Response.ContentType = "application/excel";
+             StringWriter sw = new StringWriter();
+             HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+             grid.RenderControl(htw);
+
+             Response.Write(sw.ToString());
+
+             Response.End();*/
 
         }
 
