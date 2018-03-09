@@ -62,6 +62,20 @@ namespace Capstone.Controllers
             return PartialView(studentAttempts);
         }
 
+
+        public ActionResult StudentForQuiz(string studentId, string quizId, string classId)
+        {
+            if(db.Students.Find(studentId) == null || db.Quizs.Find(quizId) == null)
+            {
+                return RedirectToAction("Home", "Index");
+            }
+
+            Student stud = db.Students.Find(studentId);
+            Quiz quiz = db.Quizs.Find(quizId);
+
+            return View();
+        }
+
         // GET: Students/Create
         public PartialViewResult Create(String classId)
         {
