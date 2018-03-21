@@ -247,6 +247,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BrowseQuizViewModels.cs" />
     <Compile Include="ViewModels\DynamicViewModel.cs" />
+    <Compile Include="ViewModels\QuestionOrder.cs" />
     <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModels.cs" />
     <Compile Include="ViewModels\StudentForQuizModel.cs" />
