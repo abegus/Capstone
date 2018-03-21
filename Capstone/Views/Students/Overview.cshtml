@@ -38,7 +38,7 @@
 					@Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId}, null)
 				</td>
 				<td>
-					@Html.ActionLink("Details", "StudentForQuiz", "Student", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId }, null)
+					@Html.ActionLink("Details", "StudentForQuiz", "Students", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId }, null)
 				</td>
 			</tr>
 		}

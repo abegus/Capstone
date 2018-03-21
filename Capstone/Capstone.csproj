@@ -249,6 +249,7 @@
     <Compile Include="ViewModels\DynamicViewModel.cs" />
     <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModels.cs" />
+    <Compile Include="ViewModels\StudentForQuizModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bootswatch.css" />

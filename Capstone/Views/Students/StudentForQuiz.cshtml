@@ -1,50 +1,29 @@
-﻿@model Capstone.Models.Student
+﻿@model Capstone.ViewModels.StudentForQuizModel
 
 @{
     ViewBag.Title = "StudentForQuiz";
 }
 
-<h2>StudentForQuiz</h2>
-
+<h3>@Model.student.First @Model.student.Last for @Model.quiz.Name</h3>
 <div>
-    <h4>Student</h4>
+   
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Class.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Class.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.First)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.First)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Last)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Last)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-
-    </dl>
+	<table class="table">
+		<tr>
+			<td>Num Correct</td>
+			<td>Total Questions</td>
+			<td>Date</td>
+		</tr>
+		@foreach(var qa in Model.attempts)
+		{
+			<tr>
+				<td>@qa.numCorrect</td>
+				<td>@Model.quiz.Questions.Count()</td>
+				<td>@qa.date</td>
+			</tr>
+		}
+	</table>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

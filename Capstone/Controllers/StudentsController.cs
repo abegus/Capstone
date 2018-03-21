@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
+using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
@@ -72,8 +73,10 @@ namespace Capstone.Controllers
 
             Student stud = db.Students.Find(studentId);
             Quiz quiz = db.Quizs.Find(quizId);
+            Class cla = db.Classes.Find(classId);
+            StudentForQuizModel vm = new StudentForQuizModel(quiz, stud, cla);
 
-            return View();
+            return View(vm);
         }
 
         // GET: Students/Create
