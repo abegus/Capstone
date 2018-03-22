@@ -392,6 +392,11 @@ namespace Capstone.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            Session.Clear();//clear session
+            Session.Abandon();//Abandon session
+            Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(-1));
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoStore();
             return RedirectToAction("Index", "Home");
         }
 

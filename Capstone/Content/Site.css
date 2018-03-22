@@ -2,6 +2,9 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
+a:hover {
+    cursor: pointer;
+}
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
