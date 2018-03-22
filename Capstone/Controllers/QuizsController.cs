@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
 using Microsoft.AspNet.Identity;
+using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
@@ -124,6 +125,21 @@ namespace Capstone.Controllers
 
             ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", quiz.StandardId);
             return View(quiz);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateQuestionOrder(IEnumerable<QuestionOrder> updatedQuestions)
+        {
+            //if (!User.Identity.IsAuthenticated)
+
+            foreach(var q in updatedQuestions)
+            {
+                var tempQuestion = db.Questions.Find(q.QuestionId);
+                tempQuestion.QuestionIndex = q.QuestionIndex;
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Quizs");
         }
 
         // GET: Quizs/Edit/5

@@ -16,6 +16,7 @@
 			<th>Most recent attempt</th>
 			<th>Date</th>
 			<th>Take</th>
+			<th>Details</th>
 		</tr>
 		@foreach(var item in Model)
 		{
@@ -35,6 +36,9 @@
 				}</td>
 				<td>
 					@Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId}, null)
+				</td>
+				<td>
+					@Html.ActionLink("Details", "StudentForQuiz", "Students", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId }, null)
 				</td>
 			</tr>
 		}

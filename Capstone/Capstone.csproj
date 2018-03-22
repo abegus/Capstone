@@ -247,8 +247,10 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\BrowseQuizViewModels.cs" />
     <Compile Include="ViewModels\DynamicViewModel.cs" />
+    <Compile Include="ViewModels\QuestionOrder.cs" />
     <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModels.cs" />
+    <Compile Include="ViewModels\StudentForQuizModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bootswatch.css" />
@@ -401,6 +403,7 @@
     <Content Include="Views\Community\Details.cshtml" />
     <Content Include="Views\Community\Edit.cshtml" />
     <Content Include="Views\Community\Index.cshtml" />
+    <Content Include="Views\Students\StudentForQuiz.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

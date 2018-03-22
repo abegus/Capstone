@@ -1,0 +1,29 @@
+﻿@model Capstone.ViewModels.StudentForQuizModel
+
+@{
+    ViewBag.Title = "StudentForQuiz";
+}
+
+<h3>@Model.student.First @Model.student.Last for @Model.quiz.Name</h3>
+<div>
+   
+    <hr />
+	<table class="table">
+		<tr>
+			<td>Num Correct</td>
+			<td>Total Questions</td>
+			<td>Date</td>
+		</tr>
+		@foreach(var qa in Model.attempts)
+		{
+			<tr>
+				<td>@qa.numCorrect</td>
+				<td>@Model.quiz.Questions.Count()</td>
+				<td>@qa.date</td>
+			</tr>
+		}
+	</table>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

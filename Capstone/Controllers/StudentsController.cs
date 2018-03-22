@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Capstone.Models;
+using Capstone.ViewModels;
 
 namespace Capstone.Controllers
 {
@@ -60,6 +61,22 @@ namespace Capstone.Controllers
 
             //return PartialView(s);
             return PartialView(studentAttempts);
+        }
+
+
+        public ActionResult StudentForQuiz(string studentId, string quizId, string classId)
+        {
+            if(db.Students.Find(studentId) == null || db.Quizs.Find(quizId) == null)
+            {
+                return RedirectToAction("Home", "Index");
+            }
+
+            Student stud = db.Students.Find(studentId);
+            Quiz quiz = db.Quizs.Find(quizId);
+            Class cla = db.Classes.Find(classId);
+            StudentForQuizModel vm = new StudentForQuizModel(quiz, stud, cla);
+
+            return View(vm);
         }
 
         // GET: Students/Create
