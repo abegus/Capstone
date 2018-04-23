@@ -31,7 +31,7 @@ namespace Capstone.Controllers
         }
 
         // GET: Quizs/Advanced/5
-        public ActionResult Advanced(string id)
+        public ActionResult Advanced(string id, string err)
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
@@ -40,6 +40,8 @@ namespace Capstone.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            if(err != null)
+                ViewBag.FileError = err;
             Quiz quiz = db.Quizs.Find(id);
             quiz.Questions = quiz.Questions.OrderBy(q => q.QuestionIndex).ToList();
                 //.Students.OrderBy(s => s.Last).ToList(); 

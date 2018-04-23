@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        
+        <div id="Errors" style="color:red"></div>
         <div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -92,7 +92,8 @@
 
         <div class="form-group showRest" >
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+				<div id="validateButton" class="btn btn-default">Submit</div>
+                <input type="submit" value="Create" style="display:none" class="btn btn-default submitReal" />
             </div>
         </div>
     </div>
@@ -117,13 +118,32 @@
 
 }
 <script>
+	$("#validateButton").click(function (event) {
+		var x = $("input#Text").val();
+		var y = $("input#file").val();
+		var z = $("input#Answer").val();
+
+		if (x == "" && y == "") {
+			$("#Errors").text("Need to select a type of question and enter valid data");
+		}
+		else if (z == "") {
+			$("#Errors").text("A question needs an answer");
+		}
+		//alert(y);
+		else {
+			$(".submitReal").click();
+		}
+	});
+		
+	
     function TextOn() {
         var di = document.getElementById("txt");
         var dd = document.getElementById("pic");
         di.style.display = "inline";
         dd.style.display = "none"
         showRest();
-    }
+	}
+
     function PictureOn() {
         var di = document.getElementById("txt");
         var dd = document.getElementById("pic");

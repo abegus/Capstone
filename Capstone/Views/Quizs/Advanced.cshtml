@@ -2,142 +2,143 @@
 @using Capstone.Helpers
 
 @{
-    ViewBag.Title = "Advanced";
+	ViewBag.Title = "Advanced";
 }
 
 <h2>Quiz Overview</h2>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
+	<div class="modal-dialog">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Question</h4>
-            </div>
-            <div id="ModalPopup" class="modal-body">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Question</h4>
+			</div>
+			<div id="ModalPopup" class="modal-body">
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
 
-    </div>
+	</div>
 </div>
 
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    <div class="panel panel-default">
-        <div class="panel panel-body">
-            <h4>Quiz Details</h4>
-            
-            <hr />
-            <dl class="dl-horizontal">
-                <dt>
-                    Quiz Name
-                </dt>
+	@Html.AntiForgeryToken()
+	<div class="panel panel-default">
+		<div class="panel panel-body">
+			<h4>Quiz Details</h4>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
+			<hr />
+			<dl class="dl-horizontal">
+				<dt>
+					Quiz Name
+				</dt>
 
-                <dt>
-                   Core Standard
-                </dt>
+				<dd>
+					@Html.DisplayFor(model => model.Name)
+				</dd>
 
-                <dd>
-                    @Html.DisplayFor(model => model.CoreStandard.Name)
-                </dd>
+				<dt>
+					Core Standard
+				</dt>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
+				<dd>
+					@Html.DisplayFor(model => model.CoreStandard.Name)
+				</dd>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
+				<dt>
+					@Html.DisplayNameFor(model => model.Description)
+				</dt>
 
-            </dl>
+				<dd>
+					@Html.DisplayFor(model => model.Description)
+				</dd>
+
+			</dl>
 			<a id="@Model.Id" class="EditButton btn btn-primary">Edit</a>
 			<a id="@Model.Id" class="DeleteButton btn btn-primary">Delete</a>
-        </div>
-    </div>
+		</div>
+	</div>
+	<div id="Errors" style="color:red">@ViewBag.FileError</div>
+	<br />
+	<div class="panel panel-default">
+		<div class="panel panel-body">
+			<div class="col-sm-2">
+				<h4>Quiz Questions</h4>
+			</div>
 
-    <br />
-    <div class="panel panel-default">
-        <div class="panel panel-body">
-            <div class="col-sm-2">
-                <h4>Quiz Questions</h4>
-            </div>
-            <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary" >Add Question</a></p>
-             <table class="ui-sortable table table-striped table-hover" id="tblLocations">
-                <tr>
-                    <th>Question Index</th>
-                    <th>Type</th>
-                    <th>Question</th>
-                    <th>Answer</th>
-                    <th>Description</th>
-                    <th>Action</th>
-                </tr>
-                @if (Model.Questions.Count > 0)
-                {
-                    for (int i = 1; i < Model.Questions.Count() + 1; i++)
-                    {
-                        <tr class="ui-state-default ui-sortable-handle" id="@i">
+			<p><a id="@Model.Id" class="NewQuestionButton btn btn-primary">Add Question</a></p>
+			<table class="ui-sortable table table-striped table-hover" id="tblLocations">
+				<tr>
+					<th>Question Index</th>
+					<th>Type</th>
+					<th>Question</th>
+					<th>Answer</th>
+					<th>Description</th>
+					<th>Action</th>
+				</tr>
+				@if (Model.Questions.Count > 0)
+				{
+					for (int i = 1; i < Model.Questions.Count() + 1; i++)
+					{
+						<tr class="ui-state-default ui-sortable-handle" id="@i">
 							<td id="@Model.Questions.ElementAt(i-1).Id" style="display:none">@Model.Questions.ElementAt(i - 1).Id</td>
 							<td class="index">@i</td>
-                            <td>
-                                @if (Model.Questions.ElementAt(i - 1).Type == 0)
-                                {
-                                <div>Picture</div>
-                                }
-                            @if (Model.Questions.ElementAt(i - 1).Type == 1)
-                            {
-                                <div>Text</div>
-                            }
-                                </td>
-                                <td>
-                                    @if (Model.Questions.ElementAt(i - 1).Type == 0)
-                                    {
-                                        @Html.Image(Model.Questions.ElementAt(i - 1).Picture);
-                                    }
-                                    @if (Model.Questions.ElementAt(i - 1).Type == 1)
-                                    {
-                                        @Model.Questions.ElementAt(i - 1).Text
-                                    }
-                                </td>   
-                            <td>@Model.Questions.ElementAt(i - 1).Answer</td>
-                            <td>@Model.Questions.ElementAt(i - 1).Description</td>
-                            <td>
-                                <a id="@Model.Questions.ElementAt(i - 1).Id" class="EditQuestionButton btn btn-primary">Edit</a>
-                                <a id="@Model.Questions.ElementAt(i - 1).Id" class="DeleteQuestionButton btn btn-primary">Delete</a>
+							<td>
+								@if (Model.Questions.ElementAt(i - 1).Type == 0)
+								{
+									<div>Picture</div>
+								}
+								@if (Model.Questions.ElementAt(i - 1).Type == 1)
+								{
+									<div>Text</div>
+								}
+							</td>
+							<td>
+								@if (Model.Questions.ElementAt(i - 1).Type == 0)
+								{
+									@Html.Image(Model.Questions.ElementAt(i - 1).Picture);
+								}
+								@if (Model.Questions.ElementAt(i - 1).Type == 1)
+								{
+									@Model.Questions.ElementAt(i - 1).Text
+								}
+							</td>
+							<td>@Model.Questions.ElementAt(i - 1).Answer</td>
+							<td>@Model.Questions.ElementAt(i - 1).Description</td>
+							<td>
+								<a id="@Model.Questions.ElementAt(i - 1).Id" class="EditQuestionButton btn btn-primary">Edit</a>
+								<a id="@Model.Questions.ElementAt(i - 1).Id" class="DeleteQuestionButton btn btn-primary">Delete</a>
 
-                            </td>
-                        </tr>
-                    }
+							</td>
+						</tr>
+					}
 
-                }
-            </table>
+				}
+			</table>
 
-            <!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
-            <p><a id="@Model.Id" class="NewQuestionButton btn btn-primary">Add Question</a></p>
-        </div>
-        </div>
+			<!--Html.ActionLink("Add Question", "Create", "Questions", null, null)-->
+			<p><a id="@Model.Id" class="NewQuestionButton btn btn-primary">Add Question</a></p>
+		</div>
+	</div>
 
-		<input id="clickMe" style="display: block; margin-top: 10px;" class="btn btn-default" type="button" value="Save Question Order" onclick="exportPositions();" />
+	<input id="clickMe" style="display: block; margin-top: 10px;" class="btn btn-default" type="button" value="Save Question Order" onclick="exportPositions();" />
 }
 <p>
-    @Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Back to List", "Index")
 </p>
 
 
 @section Scripts{
-    <script>
+	<script>
 		function exportPositions() {//cy
 			var list = [];
 
@@ -199,7 +200,7 @@
                 }
             });
         });
-        
+
         var fixHelperModified = function (e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
@@ -359,5 +360,5 @@
                 $("#ModalPopup").html("");
             }
         });
-    </script>
+	</script>
 }

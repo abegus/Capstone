@@ -122,7 +122,8 @@ namespace Capstone.Controllers
                     {
                         ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name");
                         ViewBag.FileError = "Not a valid Image file format";
-                        return View(question);
+                        //return PartialView(question);
+                        return RedirectToAction("Advanced", "Quizs", new { id = quizId, err ="Not a valid Image file format" });
                     }
 
                     q.Picture = data;
@@ -140,7 +141,7 @@ namespace Capstone.Controllers
             }
 
             // ViewBag.StandardId = new SelectList(db.CoreStandards, "Id", "Name", question.StandardId);
-             return View(question);
+             return PartialView(question);
          }
 
         private byte[] ReduceSize(Stream stream, int maxWidth, int maxHeight)

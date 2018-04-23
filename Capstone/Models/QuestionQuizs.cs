@@ -12,7 +12,7 @@ namespace Capstone.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QuestionQuizs()
         {
-           // Answers = new HashSet<Answer>();
+            // Answers = new HashSet<Answer>();
         }
 
         [Key]
