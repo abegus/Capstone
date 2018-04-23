@@ -89,7 +89,7 @@ namespace Capstone.Controllers
                     StudentId = vm.studentId,
                     Student = db.Students.Find(vm.studentId),
                     numCorrect = 0,
-                    toalQuestions = 0
+                    toalQuestions = cq.Quiz.Questions.Count()
                 };
 
                 

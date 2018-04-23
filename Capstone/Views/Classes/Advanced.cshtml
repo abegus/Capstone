@@ -44,11 +44,12 @@
                 <th>First</th>
                 <th>
                     @Html.ActionLink("Last", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.NameSortParm })
-                </th>
+                </th><!--
                 <th>
-                    @Html.ActionLink("Quizzes Completed", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })
+                    Html.ActionLink("Quizzes Completed", "Advanced", new { id = Model.currentClass.Id, sortOrder = ViewBag.AttemptSortParm })
                     (Parent Email)
-                </th>
+                </th>-->
+				<th>Parent Email</th>
                 <th>Action</th>
             </tr>
             @foreach (var item in Model.students)

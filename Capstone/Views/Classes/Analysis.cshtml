@@ -23,17 +23,17 @@
                 <td>@stud.First @stud.Last</td>
                 @foreach(var cq in Model.ClassQuizs)
                 {
-                    <td>
-                        @if (cq.QuizAttempts.Where(q => q.StudentId == stud.Id).Count() > 0)
-                        {
-                            @cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().numCorrect<span> / @cq.Quiz.Questions.Count()</span>
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.Id, quizId = cq.Quiz.Id, studentId = stud.Id }, new { @class = "btn btn-primary btn-xs" })
-                        }
-                        
-                    </td>
+				<td>
+					@if (cq.QuizAttempts.Where(q => q.StudentId == stud.Id).Count() > 0)
+	{
+				@cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().numCorrect<span> / @cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().toalQuestions  </span><!-- cq.Quiz.Questions.Count()-->
+}
+else
+{
+				@Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { classId = Model.Id, quizId = cq.Quiz.Id, studentId = stud.Id }, new { @class = "btn btn-primary btn-xs" })
+}
+
+				</td>
                 }
             </tr>
         }
