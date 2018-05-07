@@ -6,7 +6,7 @@
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <h4>Change Default Class</h4>
-        
+        <div style="color:red">@ViewBag.Error</div>
         @Html.DropDownListFor(m => m.classId, Model.select, "Select Default Class")
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

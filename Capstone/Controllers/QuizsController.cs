@@ -211,22 +211,28 @@ namespace Capstone.Controllers
 
             Quiz quiz = db.Quizs.Find(id);
 
-           /* IQueryable<QuestionQuizs> qqs = (from qq in db.QuestionQuizs where qq.Quiz_Id.Equals(id) select qq);
-            foreach(var qq in qqs)
-            {
-                db.QuestionQuizs.Remove(qq);
-            }*/
 
-            //THIS IS A VERY INEFFICIENT QUERY. IT IS LOOKING AT THE ENTIRE QUIZ OBJECT
-            IQueryable<Question> questions = (from q in db.Questions from qui in q.Quizs where qui.Id == id select q);
-
-            foreach(var que in questions)
+            //either delete a quiz all together, or just remove it from the users association
+            var howManyUseThis = (from cq in db.ClassQuizs where cq.QuizId == id select cq).Count();
+            if(howManyUseThis <= 0)
             {
-                quiz.Questions.Remove(que);
+                //THIS IS A VERY INEFFICIENT QUERY. IT IS LOOKING AT THE ENTIRE QUIZ OBJECT
+                IQueryable<Question> questions = (from q in db.Questions from qui in q.Quizs where qui.Id == id select q);
+
+                foreach (var que in questions)
+                {
+                    quiz.Questions.Remove(que);
+                }
+
+                db.Quizs.Remove(quiz);
+            }
+            else
+            {
+
+                quiz.AspNetUser = null;
+                quiz.UserId = "aa969b91-c19e-446e-9cf1-7cad6a08c4b7";
             }
             
-            
-            db.Quizs.Remove(quiz);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

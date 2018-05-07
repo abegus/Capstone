@@ -14,16 +14,16 @@
 			<td>Total Questions</td>
 			<td>Date</td>
 		</tr>
-		@foreach(var qa in Model.attempts)
+		@foreach(var qa in Model.attempts.OrderByDescending(q => q.date))
 		{
 			<tr>
 				<td>@qa.numCorrect</td>
-				<td>@Model.quiz.Questions.Count()</td>
+				<td>@qa.toalQuestions</td>
 				<td>@qa.date</td>
 			</tr>
 		}
 	</table>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index","Home")
 </p>

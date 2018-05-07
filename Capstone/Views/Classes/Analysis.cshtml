@@ -26,7 +26,7 @@
 				<td>
 					@if (cq.QuizAttempts.Where(q => q.StudentId == stud.Id).Count() > 0)
 	{
-				@cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().numCorrect<span> / @cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().toalQuestions  </span><!-- cq.Quiz.Questions.Count()-->
+				@cq.QuizAttempts.Where(q => q.StudentId == stud.Id).OrderBy(q => q.date).LastOrDefault().numCorrect<span> / @cq.QuizAttempts.Where(q => q.StudentId == stud.Id).OrderBy(q => q.date).LastOrDefault().toalQuestions  </span><!-- cq.Quiz.Questions.Count()-->
 }
 else
 {

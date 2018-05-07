@@ -85,7 +85,7 @@ namespace Capstone.Controllers
                     QuizId = vm.quizId,
                     ClassId = vm.cla.Id,
                     ClassQuiz = cq,
-                    date = DateTime.UtcNow.Date,
+                    date = DateTime.UtcNow.AddHours(-6),
                     StudentId = vm.studentId,
                     Student = db.Students.Find(vm.studentId),
                     numCorrect = 0,
@@ -107,7 +107,7 @@ namespace Capstone.Controllers
                         AttemptId = qa.Id,
                         QuizAttempt = qa,
                         Correct = vm.answers[index],
-                        Date = DateTime.UtcNow.Date,
+                        Date = DateTime.UtcNow.AddHours(-6),
                         Notes = ""
                     };
 

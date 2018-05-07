@@ -113,7 +113,7 @@ namespace Capstone.Controllers
                     ClassQuiz cq = c.ClassQuizs.ElementAt(j);
                     if(cq.QuizAttempts.Where(q => q.StudentId == stud.Id).Count() > 0)
                     {
-                        double x = cq.QuizAttempts.Where(q => q.StudentId == stud.Id).FirstOrDefault().numCorrect / (double)cq.Quiz.Questions.Count();
+                        double x = cq.QuizAttempts.Where(q => q.StudentId == stud.Id).OrderBy(q => q.date).LastOrDefault().numCorrect / (double)cq.QuizAttempts.Where(q => q.StudentId == stud.Id).OrderBy(q => q.date).LastOrDefault().toalQuestions;
                         xlWorkSheet.Cells[i + 2, j + 2] = x;
                     }
                     else
@@ -365,6 +365,23 @@ namespace Capstone.Controllers
         {
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login", "Account");
+            if(classId == "")
+            {
+                ViewBag.Error = "Must select a class";
+                var userid = User.Identity.GetUserId();
+                var x = from cl in db.Classes where (from teach in db.Teaches where teach.UserId == userid && teach.ClassId == cl.Id select cl.Id).Any() == true select cl;
+                if (x == null)
+                {
+                    return HttpNotFound();
+                }
+                DefaultClassViewModel vm = new DefaultClassViewModel();
+                vm.select = new SelectList(x, "Id", "Name", 1);
+                vm.classId = "-1";
+                //vm.Classes = x;
+
+                return View(vm);
+
+            }
             var user = db.AspNetUsers.Find(User.Identity.GetUserId());
             user.DefaultClassId = classId;
             db.SaveChanges();
@@ -402,6 +419,22 @@ namespace Capstone.Controllers
 
             Class @class = db.Classes.Find(id);
             db.Classes.Remove(@class);
+            //now find if the user has any other classes
+            AspNetUser u = db.AspNetUsers.Find(User.Identity.GetUserId());
+            //check and grab the other class if there is any
+            var teaches = (from user in db.AspNetUsers where user.Id== u.Id select user.Teaches.FirstOrDefault());
+            //if the user teaches anything, make it default
+            if(teaches != null)
+            {
+                u.DefaultClassId = teaches.FirstOrDefault().ClassId;
+                var temp = teaches;
+            }
+            else
+            {
+                u.DefaultClassId = null;
+            }
+            
+
             db.SaveChanges();
             return RedirectToAction("Index");
         }

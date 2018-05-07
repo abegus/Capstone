@@ -1,4 +1,4 @@
-﻿@model Dictionary<Capstone.Models.ClassQuiz,Capstone.Models.QuizAttempt>
+﻿@model Dictionary<Capstone.Models.ClassQuiz,IEnumerable<Capstone.Models.QuizAttempt>>
 
 <div>
     <h4>@ViewBag.StudentName</h4>
@@ -25,14 +25,14 @@
 				<td>
 					@if(item.Value != null)
 					{
-						<span>(@item.Value.numCorrect / @item.Value.ClassQuiz.Quiz.Questions.Count())</span>
+					<span>(@item.Value.OrderBy(q => q.date).LastOrDefault().numCorrect / @item.Value.OrderBy(q => q.date).LastOrDefault().toalQuestions)</span>
 					}
 					else{ <span>N/A</span>
 					}
 
 				</td>
 				<td>@if (item.Value != null) {
-					<span>@item.Value.date</span>
+					<span>@item.Value.OrderBy(q => q.date).LastOrDefault().date</span>
 				}</td>
 				<td>
 					@Html.ActionLink("Take Quiz", "Take", "DynamicTesting", new { quizId = item.Key.QuizId, classId = item.Key.ClassId, studentId = ViewBag.StudentId}, null)
@@ -65,6 +65,3 @@
 
     
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = ViewBag.StudentId }) 
-</p>

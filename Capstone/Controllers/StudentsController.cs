@@ -35,7 +35,7 @@ namespace Capstone.Controllers
         public PartialViewResult Overview(string id)
         {
             Student s = db.Students.Find(id);
-            Dictionary<ClassQuiz, QuizAttempt> studentAttempts = new Dictionary<ClassQuiz, QuizAttempt>();
+            Dictionary<ClassQuiz, IEnumerable<QuizAttempt>> studentAttempts = new Dictionary<ClassQuiz, IEnumerable<QuizAttempt>>();
             foreach (var cq in s.Class.ClassQuizs)
             {
                 //grab the most recent quizAttempt if one exists in the last X days?
@@ -43,8 +43,12 @@ namespace Capstone.Controllers
                                        where qa.StudentId == id && cq.QuizId == qa.QuizId
                                        group qa by qa.QuizId into grop
                                        select grop.OrderByDescending(g => g.date));
+                var allAttempts = (from qa in db.QuizAttempts
+                                  where qa.StudentId == id && cq.QuizId == qa.QuizId
+                                  select qa);
+                
 
-                if(attempt == null || !attempt.Any())
+                if (attempt == null || !attempt.Any())
                 {
                     studentAttempts[cq] = null;
                 }
@@ -53,7 +57,15 @@ namespace Capstone.Controllers
                     if (!attempt.Any())
                         studentAttempts[cq] = null;
                     else
-                        studentAttempts[cq] = attempt.First().First();
+                    {
+                        // var temp = attempt.Last();
+                        //var first = allAttempts.First();
+                       // var last = allAttempts.Last();
+                        var temp1 = attempt.FirstOrDefault();
+                        //studentAttempts[cq] = attempt.FirstOrDefault().LastOrDefault();//.First().First();
+                        studentAttempts[cq] = allAttempts;
+                    }
+                        
                 }
             }
             ViewBag.StudentName = s.First + " " + s.Last;
