@@ -14,7 +14,7 @@
 
         @if (Model.Type == 1)
         {
-            <div id="fit1" style="text-align:center; padding-bottom:50px">
+            <div id="fit1" style="text-align:center; padding-bottom:50px; width:100%; height:80%">
                 @Model.Text
             </div>
         }
@@ -30,6 +30,10 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="~/Scripts/jquery.fittext.js"></script>
 <script>
-    jQuery("#fit1").fitText();
+	jQuery("#fit1").fitText();
+	//alert($("#fit1").html().length);
+	if ($("#fit1").html().length > 70) {
+		$("#fit1").css({ 'font-size': 40 });
+	}
 </script>
 

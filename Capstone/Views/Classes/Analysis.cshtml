@@ -17,7 +17,7 @@
                 <th id="@cq.Quiz.Id">@cq.Quiz.Name</th>
             }
         </tr>
-        @foreach(var stud in Model.Students)
+        @foreach(var stud in Model.Students.OrderBy(c => c.Last) )
         {
             <tr>
                 <td>@stud.First @stud.Last</td>
